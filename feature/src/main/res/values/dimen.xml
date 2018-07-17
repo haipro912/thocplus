@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="padding_normal">16dp</dimen>
+    <dimen name="spacing_normal">8dp</dimen>
+    <dimen name="padding10">10dp</dimen>
+
+    <dimen name="text_size_large_extra">26sp</dimen>
+    <dimen name="text_size_large">20sp</dimen>
+    <dimen name="text_size_header">18sp</dimen>
+    <dimen name="text_size_title">16sp</dimen>
+    <dimen name="text_size_second">14sp</dimen>
+    <dimen name="text_size_three">12sp</dimen>
+    <dimen name="text_size_player">12sp</dimen>
+
+    <dimen name="bottom_bar_height">52dp</dimen>
+    <dimen name="action_bar_height">48dp</dimen>
+
+    <dimen name="video_width">130dp</dimen>
+    <dimen name="video_height">73dp</dimen>
+
+</resources>

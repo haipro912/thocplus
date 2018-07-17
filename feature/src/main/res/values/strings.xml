@@ -1,0 +1,15 @@
+<resources>
+    <string name="api_retry_error">Please retry!</string>
+    <string name="api_default_error">Something wrong happened!</string>
+    <string name="some_error">Some Error Occurred!</string>
+    <string name="connection_error">Internet connection lost!</string>
+
+    <string name="back_exit">Nhấn Back thêm một lần nữa để thoát</string>
+
+    <string name="tab_chat">Chat</string>
+    <string name="tab_call">Call</string>
+    <string name="tab_social">Social</string>
+    <string name="tab_contact">Contact</string>
+    <string name="tab_more">More</string>
+
+</resources>
