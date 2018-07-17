@@ -1,16 +1,11 @@
 package com.vttm.mochaplus.feature;
 
-import android.Manifest;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.TextView;
 
 import com.bumptech.glide.manager.SupportRequestManagerFragment;
-import com.tbruyelle.rxpermissions2.RxPermissions;
-import com.vttm.mochaplus.feature.R;
 import com.vttm.mochaplus.feature.mvp.base.BaseActivity;
 import com.vttm.mochaplus.feature.mvp.base.BaseFragment;
 import com.vttm.mochaplus.feature.mvp.main.IMainView;
@@ -19,15 +14,13 @@ import com.vttm.mochaplus.feature.utils.AppConstants;
 import com.vttm.mochaplus.feature.utils.AppLogger;
 import com.vttm.mochaplus.feature.utils.ToastUtils;
 
-import static java.lang.System.currentTimeMillis;
-
 public class MainActivity extends BaseActivity  implements IMainView{
 
     public final String TAG = getClass().getSimpleName();
     private static final int COUNT_DONW = 2000;
     private boolean isTouchTwoTimes = false;
     private BaseFragment currentFragment;
-    private RxPermissions rxPermissions;
+//    private RxPermissions rxPermissions;
 
 
     // Used to load the 'native-lib' library on application startup.
@@ -47,8 +40,8 @@ public class MainActivity extends BaseActivity  implements IMainView{
 
     @Override
     protected void setUp() {
-        rxPermissions = new RxPermissions(this);
-        requestPermission();
+//        rxPermissions = new RxPermissions(this);
+//        requestPermission();
         showFragment(AppConstants.TAB_MAIN, null);
     }
 
@@ -164,24 +157,24 @@ public class MainActivity extends BaseActivity  implements IMainView{
     }
 
 
-    private void requestPermission()
-    {
-        rxPermissions.requestEach(Manifest.permission.READ_CONTACTS,
-                        Manifest.permission.READ_PHONE_STATE)
-                .subscribe(permission -> { // will emit 2 Permission objects
-                    if (permission.granted) {
-                        // `permission.name` is granted !
-                        AppLogger.i(TAG, "pass");
-                    } else if (permission.shouldShowRequestPermissionRationale) {
-                        // Bỏ qua ko hỏi lại
-                        AppLogger.i(TAG, "Bỏ qua ko hỏi lại");
-                    } else {
-                        AppLogger.i(TAG, "Bỏ qua");
-                        // Denied permission with ask never again
-                        // Need to go to the settings
-                    }
-                });
-    }
+//    private void requestPermission()
+//    {
+//        rxPermissions.requestEach(Manifest.permission.READ_CONTACTS,
+//                        Manifest.permission.READ_PHONE_STATE)
+//                .subscribe(permission -> { // will emit 2 Permission objects
+//                    if (permission.granted) {
+//                        // `permission.name` is granted !
+//                        AppLogger.i(TAG, "pass");
+//                    } else if (permission.shouldShowRequestPermissionRationale) {
+//                        // Bỏ qua ko hỏi lại
+//                        AppLogger.i(TAG, "Bỏ qua ko hỏi lại");
+//                    } else {
+//                        AppLogger.i(TAG, "Bỏ qua");
+//                        // Denied permission with ask never again
+//                        // Need to go to the settings
+//                    }
+//                });
+//    }
 
 
 
