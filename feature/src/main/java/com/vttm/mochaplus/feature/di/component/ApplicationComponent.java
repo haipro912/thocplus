@@ -19,9 +19,9 @@ import android.app.Application;
 import android.content.Context;
 
 import com.vttm.mochaplus.feature.ApplicationController;
+import com.vttm.mochaplus.feature.data.AppDataManager;
 import com.vttm.mochaplus.feature.di.ApplicationContext;
 import com.vttm.mochaplus.feature.di.module.ApplicationModule;
-import com.vttm.mochaplus.feature.data.AppDataManager;
 import com.vttm.mochaplus.feature.service.SyncService;
 
 import javax.inject.Singleton;

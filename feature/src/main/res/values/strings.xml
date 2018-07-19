@@ -12,4 +12,8 @@
     <string name="tab_contact">Contact</string>
     <string name="tab_more">More</string>
 
+    <string name="failed_load">Có lỗi xảy ra. Nhấn để thử lại!</string>
+    <string name="nodata_load">Không có dữ liệu!</string>
+    <string name="data_end">Đã tải hết dữ liệu</string>
+
 </resources>

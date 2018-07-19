@@ -37,6 +37,7 @@ public class RealmProvider implements DbProvider<Realm> {
 
     @Inject
     public RealmProvider(Application application) {
+        Realm.init(application);
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder()
                 .name("mochaplus.realm")
 //                .modules(new MySchemaModule())

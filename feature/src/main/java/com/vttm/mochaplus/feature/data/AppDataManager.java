@@ -18,6 +18,9 @@ package com.vttm.mochaplus.feature.data;
 import android.content.Context;
 
 
+import com.vttm.mochaplus.feature.data.db.datasource.exceptions.RepositoryException;
+import com.vttm.mochaplus.feature.data.db.model.CallHistoryConstant;
+import com.vttm.mochaplus.feature.data.db.model.ContactConstant;
 import com.vttm.mochaplus.feature.di.ApplicationContext;
 import com.vttm.mochaplus.feature.data.api.ApiHeader;
 import com.vttm.mochaplus.feature.data.api.ApiHelper;
@@ -27,6 +30,8 @@ import com.vttm.mochaplus.feature.data.api.response.NewsContentResponse;
 import com.vttm.mochaplus.feature.data.api.response.NewsResponse;
 import com.vttm.mochaplus.feature.data.db.DbHelper;
 import com.vttm.mochaplus.feature.data.prefs.PreferencesHelper;
+
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -86,5 +91,20 @@ public class AppDataManager implements DataManager {
     @Override
     public void setSessionToken(String sessionToken) {
 
+    }
+
+    @Override
+    public List<ContactConstant> getListContact() {
+        return mDbHelper.getListContact();
+    }
+
+    @Override
+    public List<CallHistoryConstant> getListCallHistory() {
+        return mDbHelper.getListCallHistory();
+    }
+
+    @Override
+    public List<ContactConstant> insertAll(List<ContactConstant> elementList) throws RepositoryException {
+        return mDbHelper.insertAll(elementList);
     }
 }

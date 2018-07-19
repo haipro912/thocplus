@@ -1,9 +1,9 @@
 package com.vttm.mochaplus.feature;
 
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.os.Bundle;
 
 import com.bumptech.glide.manager.SupportRequestManagerFragment;
 import com.vttm.mochaplus.feature.mvp.base.BaseActivity;

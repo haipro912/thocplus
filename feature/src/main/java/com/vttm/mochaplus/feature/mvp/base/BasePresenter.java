@@ -27,11 +27,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.vttm.mochaplus.feature.R;
+import com.vttm.mochaplus.feature.data.AppDataManager;
 import com.vttm.mochaplus.feature.data.DataManager;
 import com.vttm.mochaplus.feature.data.api.ApiError;
 import com.vttm.mochaplus.feature.utils.AppConstants;
 import com.vttm.mochaplus.feature.utils.rx.SchedulerProvider;
 
+import javax.inject.Inject;
 import javax.net.ssl.HttpsURLConnection;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -45,14 +47,14 @@ public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
 
     private static final String TAG = "BasePresenter";
 
-    private final DataManager mDataManager;
+    private final AppDataManager mDataManager;
     private final SchedulerProvider mSchedulerProvider;
     private final CompositeDisposable mCompositeDisposable;
 
     private V mMvpView;
 
-//    @Inject
-    public BasePresenter(DataManager dataManager,
+    @Inject
+    public BasePresenter(AppDataManager dataManager,
                          SchedulerProvider schedulerProvider,
                          CompositeDisposable compositeDisposable) {
         this.mDataManager = dataManager;

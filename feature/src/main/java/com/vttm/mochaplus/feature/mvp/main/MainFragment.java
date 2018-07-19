@@ -18,7 +18,6 @@ import com.vttm.mochaplus.feature.mvp.contact.ContactFragment;
 import com.vttm.mochaplus.feature.mvp.more.MoreFragment;
 import com.vttm.mochaplus.feature.mvp.social.SocialFragment;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainFragment extends BaseFragment{
@@ -42,8 +41,6 @@ public class MainFragment extends BaseFragment{
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         setUnBinder(ButterKnife.bind(this, view));
-
-        setUp(view);
 
         return view;
     }
@@ -100,7 +97,7 @@ public class MainFragment extends BaseFragment{
         }
         viewPager.setAdapter(pagerAdapter);
         viewPager.setOffscreenPageLimit(3);
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

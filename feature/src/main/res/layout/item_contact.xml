@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_contact"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/itemColor"
+    android:paddingBottom="@dimen/spacing_normal"
+    android:paddingTop="@dimen/spacing_normal">
+
+    <com.github.pavlospt.roundedletterview.RoundedLetterView
+        android:id="@+id/imvAvatar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginLeft="@dimen/padding_normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:rlv_backgroundColorValue="@android:color/holo_blue_bright"
+        app:rlv_titleColor="@android:color/white"
+        app:rlv_titleSize="25dp"
+        app:rlv_titleText="A" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imvAvatar">
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="@dimen/text_size_title" />
+
+        <TextView
+            android:id="@+id/tvPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvName"
+            android:layout_marginTop="2dp"
+            android:text="@string/app_name"
+            android:textColor="@color/textColorSecond"
+            android:textSize="@dimen/text_size_second" />
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>

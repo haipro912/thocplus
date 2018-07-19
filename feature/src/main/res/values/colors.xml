@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="bgColor">#e0e0e0</color>
+    <color name="itemColor">@android:color/white</color>
+
+    <color name="textColorPrimary">#ff000000</color>
+    <color name="textColorSecond">#999999</color>
+
+    <color name="color_animation">#30000000</color>
 </resources>

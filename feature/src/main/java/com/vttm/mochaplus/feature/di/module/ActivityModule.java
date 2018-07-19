@@ -18,9 +18,11 @@ package com.vttm.mochaplus.feature.di.module;
 import android.app.Activity;
 import android.content.Context;
 
-
 import com.vttm.mochaplus.feature.di.ActivityContext;
 import com.vttm.mochaplus.feature.di.PerActivity;
+import com.vttm.mochaplus.feature.mvp.contact.ContactPresenter;
+import com.vttm.mochaplus.feature.mvp.contact.IContactPresenter;
+import com.vttm.mochaplus.feature.mvp.contact.IContactView;
 import com.vttm.mochaplus.feature.mvp.main.IMainPresenter;
 import com.vttm.mochaplus.feature.mvp.main.IMainView;
 import com.vttm.mochaplus.feature.mvp.main.MainPresenter;
@@ -67,35 +69,12 @@ public class ActivityModule {
 
     @Provides
     @PerActivity
-    IMainPresenter<IMainView> provideMainPresenter(MainPresenter<IMainView>
-                                                           presenter) {
+    IMainPresenter<IMainView> provideMainPresenter(MainPresenter<IMainView> presenter) {
         return presenter;
     }
 
-//    @Provides
-//    @PerActivity
-//    ISplashPresenter<ISplashView> provideSplashPresenter(SplashPresenter<ISplashView>
-//                                                                 presenter) {
-//        return presenter;
-//    }
-//
-//    @Provides
-//    ITabNewsPresenter<ITabNewsView> provideTabNewsPresenter(TabNewsPresenter<ITabNewsView>
-//                                                                    presenter) {
-//        return presenter;
-//    }
-//
-//    @Provides
-//    ITabRadioPresenter<ITabRadioView> provideTabRadioPresenter(TabRadioPresenter<ITabRadioView>
-//                                                                       presenter) {
-//        return presenter;
-//    }
-//
-//    @Provides
-//    IChildNewsPresenter<IChildNewsView> provideChildNewsPresenter(ChildNewsPresenter<IChildNewsView>
-//                                                                          presenter) {
-//        return presenter;
-//    }
-
-
+    @Provides
+    IContactPresenter<IContactView> provideContactPresenter(ContactPresenter<IContactView> presenter) {
+        return presenter;
+    }
 }

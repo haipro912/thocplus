@@ -15,16 +15,15 @@
 
 package com.vttm.mochaplus.feature.mvp.base;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.vttm.mochaplus.feature.di.component.ActivityComponent;
-import com.vttm.mochaplus.feature.utils.CommonUtils;
 
 import butterknife.Unbinder;
 
@@ -37,7 +36,7 @@ public abstract class BaseFragment extends Fragment implements MvpView {
 
     private BaseActivity mActivity;
     private Unbinder mUnBinder;
-    private ProgressDialog mProgressDialog;
+    protected SwipeRefreshLayout layout_refresh;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,14 +62,35 @@ public abstract class BaseFragment extends Fragment implements MvpView {
 
     @Override
     public void showLoading() {
-        hideLoading();
-        mProgressDialog = CommonUtils.showLoadingDialog(this.getContext());
+//        if (mActivity != null) {
+//            mActivity.showLoading();
+//        }
+        showRefresh();
     }
 
     @Override
     public void hideLoading() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.cancel();
+//        if (mActivity != null) {
+//            mActivity.hideLoading();
+//        }
+        hideRefresh();
+    }
+
+    protected void showRefresh()
+    {
+        if(layout_refresh != null)
+        {
+            layout_refresh.setRefreshing(true);
+        }
+    }
+
+    protected void hideRefresh()
+    {
+        if(layout_refresh != null)
+        {
+            layout_refresh.setRefreshing(false);
+            layout_refresh.destroyDrawingCache();
+            layout_refresh.clearAnimation();
         }
     }
 
