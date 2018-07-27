@@ -40,6 +40,9 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
+    implementation project(':ChatLibrary')
+    implementation project(':Stringee')
+
     //Logger
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
@@ -47,7 +50,11 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.2.4'
 
     //Network
-    implementation "com.amitshekhar.android:rx2-android-networking:1.0.0"
+//    implementation "com.amitshekhar.android:android-networking:1.0.2"
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.11.0'
+    compile 'com.squareup.okhttp3:okhttp:3.11.0'
 
     //Load image
     implementation 'com.github.bumptech.glide:glide:4.0.0'

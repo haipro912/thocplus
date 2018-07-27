@@ -17,29 +17,25 @@ package com.vttm.mochaplus.feature.data;
 
 import android.content.Context;
 
-
+import com.vttm.mochaplus.feature.data.api.ApiHeader;
+import com.vttm.mochaplus.feature.data.api.ApiHelper;
+import com.vttm.mochaplus.feature.data.api.request.BaseRequest;
+import com.vttm.mochaplus.feature.data.api.request.VideoRequest;
+import com.vttm.mochaplus.feature.data.api.restful.ApiCallback;
+import com.vttm.mochaplus.feature.data.db.DbHelper;
 import com.vttm.mochaplus.feature.data.db.datasource.exceptions.RepositoryException;
 import com.vttm.mochaplus.feature.data.db.model.CallHistoryConstant;
 import com.vttm.mochaplus.feature.data.db.model.ContactConstant;
-import com.vttm.mochaplus.feature.di.ApplicationContext;
-import com.vttm.mochaplus.feature.data.api.ApiHeader;
-import com.vttm.mochaplus.feature.data.api.ApiHelper;
-import com.vttm.mochaplus.feature.data.api.request.NewsContentRequest;
-import com.vttm.mochaplus.feature.data.api.request.NewsRequest;
-import com.vttm.mochaplus.feature.data.api.response.NewsContentResponse;
-import com.vttm.mochaplus.feature.data.api.response.NewsResponse;
-import com.vttm.mochaplus.feature.data.db.DbHelper;
 import com.vttm.mochaplus.feature.data.prefs.PreferencesHelper;
+import com.vttm.mochaplus.feature.di.ApplicationContext;
 
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import io.reactivex.Observable;
-
 /**
- * Created by LienVT code phan nay on 27/01/17.
+ * Created by HaiKE code phan nay on 27/01/17.
  */
 
 @Singleton
@@ -69,13 +65,13 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Observable<NewsResponse> getNewsByCategory(NewsRequest request) {
-        return null;
+    public void getVideoCategory(BaseRequest request, ApiCallback callBack) {
+        mApiHelper.getVideoCategory(request, callBack);
     }
 
     @Override
-    public Observable<NewsContentResponse> getNewsContent(NewsContentRequest request) {
-        return null;
+    public void getVideoList(VideoRequest request, ApiCallback callBack) {
+        mApiHelper.getVideoList(request, callBack);
     }
 
     @Override

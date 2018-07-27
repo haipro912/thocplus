@@ -2,6 +2,13 @@ package com.vttm.mochaplus.feature.utils;
 
 public class Config {
 
+    public static final String REVISION = "1";
+
+    public static final String KEY = "CQPkng4R1wL@CZT29YDE94A$*";
+    public static final String RSA_KEY = "MIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgF3g82nB1ImzAwSN7JXeOC7wChDA4Nbzun" +
+            "/2B60sB04LCxBt88yRQTK734ugqAJ9cnYYNjwYfzcoTmubiMygsdtoNf1HTmezAL+ppsJxZ" +
+            "/TlfomXz6zUS2HxNUdNcgX0NdHpq5OR9713p6tiq5Z4TdYjja9P7FEG8p4xf8snDEjhAgMBAAE=";
+
     public static final class Extras {
         public static final String DEFAULT_ENCODING = "UTF-8";
         public static final String ENCODE_MD5 = "vt13579";

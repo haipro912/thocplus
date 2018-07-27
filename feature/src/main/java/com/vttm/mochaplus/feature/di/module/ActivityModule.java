@@ -26,6 +26,12 @@ import com.vttm.mochaplus.feature.mvp.contact.IContactView;
 import com.vttm.mochaplus.feature.mvp.main.IMainPresenter;
 import com.vttm.mochaplus.feature.mvp.main.IMainView;
 import com.vttm.mochaplus.feature.mvp.main.MainPresenter;
+import com.vttm.mochaplus.feature.mvp.video.home.IVideoPresenter;
+import com.vttm.mochaplus.feature.mvp.video.home.IVideoView;
+import com.vttm.mochaplus.feature.mvp.video.home.VideoPresenter;
+import com.vttm.mochaplus.feature.mvp.video.main.ITabVideoPresenter;
+import com.vttm.mochaplus.feature.mvp.video.main.ITabVideoView;
+import com.vttm.mochaplus.feature.mvp.video.main.TabVideoPresenter;
 import com.vttm.mochaplus.feature.utils.rx.AppSchedulerProvider;
 import com.vttm.mochaplus.feature.utils.rx.SchedulerProvider;
 
@@ -75,6 +81,16 @@ public class ActivityModule {
 
     @Provides
     IContactPresenter<IContactView> provideContactPresenter(ContactPresenter<IContactView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    ITabVideoPresenter<ITabVideoView> provideTabVideoPresenter(TabVideoPresenter<ITabVideoView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    IVideoPresenter<IVideoView> provideVideoPresenter(VideoPresenter<IVideoView> presenter) {
         return presenter;
     }
 }

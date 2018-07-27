@@ -28,7 +28,7 @@ public final class AppConstants {
     public static final String DB_NAME = "mochaplus.db";
     public static final String PREF_NAME = "mochaplus.pref";
 
-    public static final int API_STATUS_CODE_LOCAL_ERROR = 0;
+    public static final int NUM_SIZE = 20;
 
     public static final class FILE {
         public static final int BUFFER_SIZE_DEFAULT = 4096; // 4 Kb
@@ -38,6 +38,21 @@ public final class AppConstants {
 
     public static final int TAB_MAIN = 1;
 
+    public static final class LOGIN {
+        public static final int TAB_LOGIN = 0;
+        public static final int TAB_REGISTER = 1;
+        public static final int TAB_VERIFY = 2;
+    }
+
+    public static final class KEY_BUNDLE {
+        public static final String KEY_CATEGORY_ID = "KEY_CATEGORY_ID";
+    }
+
+    public static final class PREFERENCE {
+        public static final String PREF_DIR_NAME = "com.viettel.reeng.app";
+        public static final String PREF_PUBLIC_RSA_KEY = "PREF_PUBLIC_RSA_KEY";
+    }
+
     public static final class CONTACT {
         public static final int STATUS_LIMIT = 100;
         public static final int USER_NAME_MAX_LENGTH = 40;
@@ -45,6 +60,46 @@ public final class AppConstants {
         public static final int ACTIVE = 1;
         public static final int DEACTIVE = 2;
         public static final int SYSTEM_BLOCK = 4;
+
+        public static final int GROUP_NONE = 0;
+        public static final int GROUP_FAVORITE = 1;
+        public static final int GENDER_MALE = 1;    // nam
+        public static final int GENDER_FEMALE = 0;  // nu
+        public static final int CONTACT_VIEW_NOMAL = 1;
+        public static final int CONTACT_VIEW_CHECKBOX = 2;
+        public static final int CONTACT_VIEW_ICON_BLOCK = 3;
+        public static final int CONTACT_VIEW_SHARE = 4;
+        public static final int CONTACT_VIEW_THREAD_MESSAGE = 5;
+        public static final int CONTACT_VIEW_FORWARD_MESSAGE = 6;
+        public static final int CONTACT_VIEW_MEMBER_GROUP = 7;
+        public static final int CONTACT_VIEW_AVATAR_AND_NAME = 8;
+        //public static final int COLOR_AVATAR_SIZE = 20;
+        public static final int NUM_COLORS_AVATAR_DEFAULT = 10;
+        public static final int MIN_LENGTH_NUMBER = 1;
+        // group,stranger,officer list
+        public static final String TYPE_LIST = "display_type_list";
+        public static final int SHOW_LIST_GROUP = 1;
+        public static final int FRAG_LIST_UTIL = 3;
+        public static final int FRAG_LIST_SOCIAL_REQUEST = 4;
+        public static final int FRAG_LIST_CONTACT_WITH_ACTION = 5;
+        public static final int FRAG_LIST_FRIEND_MOCHA = 6;
+        public static final String DATA_FRAGMENT = "data_frag";
+        //stranger
+        public static final String STRANGER_MUSIC_ID = "music_stranger";
+        public static final String STRANGER_CONFIDE_ID = "talk_stranger";
+        public static final String STRANGER_MOCHA_ID = "mocha_stranger";
+        public static final int MAX_MEMBER_GROUP_SHOW = 5;
+        //follow
+        public static final int FOLLOW_STATE_UNKNOW = -2;//chua lay dc state
+        public static final int FOLLOW_STATE_NONE = 0;  // khong co quan he
+        public static final int FOLLOW_STATE_FOLLOWED = 1;//dang follow B
+        public static final int FOLLOW_STATE_BE_FOLLOWED = 2;// B follow minh
+        public static final int FOLLOW_STATE_FRIEND = 3;// friend
+
+        public static final int SOCIAL_SOURCE_MOCHA = 0;
+        public static final int SOCIAL_SOURCE_NON = 1;
+
+        public static final int DEFAULT_ALPHA_ACTIONBAR = 0;
     }
 
     public static final class IMAGE_TYPE {

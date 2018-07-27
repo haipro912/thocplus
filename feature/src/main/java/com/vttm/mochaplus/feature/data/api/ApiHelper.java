@@ -16,12 +16,11 @@
 package com.vttm.mochaplus.feature.data.api;
 
 
-import com.vttm.mochaplus.feature.data.api.request.NewsContentRequest;
-import com.vttm.mochaplus.feature.data.api.request.NewsRequest;
-import com.vttm.mochaplus.feature.data.api.response.NewsContentResponse;
-import com.vttm.mochaplus.feature.data.api.response.NewsResponse;
-
-import io.reactivex.Observable;
+import com.vttm.mochaplus.feature.data.api.request.BaseRequest;
+import com.vttm.mochaplus.feature.data.api.request.VideoRequest;
+import com.vttm.mochaplus.feature.data.api.response.VideoCategoryResponse;
+import com.vttm.mochaplus.feature.data.api.response.VideoResponse;
+import com.vttm.mochaplus.feature.data.api.restful.ApiCallback;
 
 /**
  * Created by janisharali on 27/01/17.
@@ -31,6 +30,6 @@ public interface ApiHelper {
 
     ApiHeader getApiHeader();
 
-    Observable<NewsResponse> getNewsByCategory(NewsRequest request);
-    Observable<NewsContentResponse> getNewsContent(NewsContentRequest request);
+    void getVideoCategory(BaseRequest request, ApiCallback<VideoCategoryResponse> callBack);
+    void getVideoList(VideoRequest request, ApiCallback<VideoResponse> callBack);
 }

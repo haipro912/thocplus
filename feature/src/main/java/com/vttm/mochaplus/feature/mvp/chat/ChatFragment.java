@@ -6,8 +6,10 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.vttm.mochaplus.feature.R;
+import com.vttm.mochaplus.feature.helper.image.ImageLoader;
 import com.vttm.mochaplus.feature.mvp.base.BaseFragment;
 
 public class ChatFragment extends BaseFragment {
@@ -28,6 +30,7 @@ public class ChatFragment extends BaseFragment {
 
     @Override
     protected void setUp(View view) {
-
+        ImageView imvImage = view.findViewById(R.id.imvImage);
+        ImageLoader.setImage(getBaseActivity(), "", imvImage);
     }
 }

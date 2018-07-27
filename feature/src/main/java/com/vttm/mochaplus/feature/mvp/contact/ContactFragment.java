@@ -43,7 +43,7 @@ public class ContactFragment extends BaseFragment implements AbsInterface.OnItem
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_child_base, container, false);
+        View view = inflater.inflate(R.layout.fragment_base, container, false);
 
         getActivityComponent().inject(this);
         presenter.onAttach(this);

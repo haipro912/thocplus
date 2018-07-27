@@ -2,12 +2,9 @@ package com.vttm.mochaplus.feature;
 
 import android.app.Application;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.interceptors.HttpLoggingInterceptor;
 import com.facebook.stetho.Stetho;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
-import com.vttm.mochaplus.BuildConfig;
 import com.vttm.mochaplus.feature.business.ContactBusiness;
 import com.vttm.mochaplus.feature.data.DataManager;
 import com.vttm.mochaplus.feature.di.component.ApplicationComponent;
@@ -49,11 +46,6 @@ public class ApplicationController extends Application {
         mApplicationComponent.inject(this);
 
         AppLogger.init();
-
-        AndroidNetworking.initialize(getApplicationContext());
-        if (BuildConfig.DEBUG) {
-            AndroidNetworking.enableLogging(HttpLoggingInterceptor.Level.BODY);
-        }
 
         CalligraphyConfig.initDefault(mCalligraphyConfig);
 

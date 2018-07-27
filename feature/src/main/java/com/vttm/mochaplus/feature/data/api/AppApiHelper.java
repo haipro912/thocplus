@@ -15,16 +15,23 @@
 
 package com.vttm.mochaplus.feature.data.api;
 
-import com.rx2androidnetworking.Rx2AndroidNetworking;
-import com.vttm.mochaplus.feature.data.api.request.NewsContentRequest;
-import com.vttm.mochaplus.feature.data.api.request.NewsRequest;
-import com.vttm.mochaplus.feature.data.api.response.NewsContentResponse;
-import com.vttm.mochaplus.feature.data.api.response.NewsResponse;
+import android.app.Application;
+
+import com.vttm.mochaplus.feature.data.api.request.BaseRequest;
+import com.vttm.mochaplus.feature.data.api.request.VideoRequest;
+import com.vttm.mochaplus.feature.data.api.response.VideoCategoryResponse;
+import com.vttm.mochaplus.feature.data.api.response.VideoResponse;
+import com.vttm.mochaplus.feature.data.api.restful.ApiCallback;
+import com.vttm.mochaplus.feature.data.api.restful.WSRestful;
+import com.vttm.mochaplus.feature.data.api.service.ApiService;
+import com.vttm.mochaplus.feature.helper.HttpHelper;
+
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import io.reactivex.Observable;
 
 /**
  * Created by janisharali on 28/01/17.
@@ -34,47 +41,66 @@ import io.reactivex.Observable;
 public class AppApiHelper implements ApiHelper {
 
     private ApiHeader mApiHeader;
+    private Application context;
 
     @Inject
-    public AppApiHelper(ApiHeader apiHeader) {
+    public AppApiHelper(Application context, ApiHeader apiHeader) {
         mApiHeader = apiHeader;
+        this.context = context;
     }
 
     @Override
     public ApiHeader getApiHeader() {
-        android.util.Log.d("AppApiHelper", "getApiHeader -  duyhuongggg: ");
         return mApiHeader;
     }
 
-    @Override
-    public Observable<NewsResponse> getNewsByCategory(NewsRequest request) {
-        android.util.Log.d("AppApiHelper", "getNewsByCategory -  duyhuongggg: request= " + request);
-        String url;
-        if (request.getCateId() == 1602) {
-            //world cup
-            //api: http://api.tinngan.vn/Tinngan.svc/getEventView/1602/1/20
-            url = ApiEndPoint.GET_NEWS_BY_EVENT + "/" + request.getCateId() + "/" + request.getPage() + "/" + request.getNum();
-        } else if (request.getCateId() == 3000) {
-            // hot news
-            url = ApiEndPoint.GET_HOT_NEWS + "/" + 0 + "/" + request.getPage() + "/" + request.getNum() +"/" + request.getUnixTime();
-        } else {
-            url = ApiEndPoint.GET_NEWS_BY_CATEGORY + "/" + request.getCateId() + "/" + request.getPage() + "/" + request.getNum() + "/" + request.getUnixTime();
-        }
-
-        return Rx2AndroidNetworking.get(url)
-                .addHeaders(mApiHeader.getProtectedApiHeader())
-                .build()
-                .getObjectObservable(NewsResponse.class);
+    private String getToken()
+    {
+        return "8229825071532685643600553";
     }
 
-
     @Override
-    public Observable<NewsContentResponse> getNewsContent(NewsContentRequest request) {
-        return Rx2AndroidNetworking.get(ApiEndPoint.GET_NEWS_CONTENT + "/" + request.getPid() + "/" + request.getCateId() + "/" + request.getContentId())
-                .addHeaders(mApiHeader.getProtectedApiHeader())
-                .build()
-                .getObjectObservable(NewsContentResponse.class);
+    public void getVideoCategory(BaseRequest request, ApiCallback<VideoCategoryResponse> callBack) {
+
+        final String timeStamp = System.currentTimeMillis() + "";
+        String security = HttpHelper.encryptDataV2(context, request.getMsisdn() + request.getDomain() + getToken() + timeStamp, getToken());
+
+        Map<String, String> data = new HashMap<>();
+        data.put("revision", request.getRevision());
+        data.put("domain", request.getDomain());
+        data.put("timestamp", timeStamp);
+        data.put("clientType", request.getClientType());
+        data.put("msisdn", request.getMsisdn());
+        data.put("vip", request.getVip());
+        data.put("security", URLEncoder.encode(security));
+
+        WSRestful restful = new WSRestful(context);
+        ApiService apiClient = restful.getInstance();
+        apiClient.getVideoCategory(data).enqueue(callBack);
     }
 
+    @Override
+    public void getVideoList(VideoRequest request, ApiCallback<VideoResponse> callBack) {
+
+        final String timeStamp = System.currentTimeMillis() + "";
+        String security = HttpHelper.encryptDataV2(context, request.getMsisdn() + request.getDomain() + request.getCategoryid() + request.getLimit() + request.getOffset() + request.getLastIdStr() + getToken() + timeStamp, getToken());
+
+        Map<String, String> data = new HashMap<>();
+        data.put("revision", request.getRevision());
+        data.put("domain", request.getDomain());
+        data.put("timestamp", timeStamp);
+        data.put("clientType", request.getClientType());
+        data.put("msisdn", request.getMsisdn());
+        data.put("vip", request.getVip());
+        data.put("offset", request.getOffset() + "");
+        data.put("limit", request.getLimit() + "");
+        data.put("categoryid", request.getCategoryid() + "");
+        data.put("lastIdStr", request.getLastIdStr());
+        data.put("security", URLEncoder.encode(security));
+
+        WSRestful restful = new WSRestful(context);
+        ApiService apiClient = restful.getInstance();
+        apiClient.getVideoList(data).enqueue(callBack);
+    }
 }
 

@@ -37,6 +37,7 @@ public abstract class BaseFragment extends Fragment implements MvpView {
     private BaseActivity mActivity;
     private Unbinder mUnBinder;
     protected SwipeRefreshLayout layout_refresh;
+    protected int currentPage;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

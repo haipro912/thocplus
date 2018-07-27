@@ -1,15 +1,12 @@
 package com.vttm.mochaplus.feature.helper;
 
-import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
+import com.vttm.mochaplus.feature.model.ReengAccount;
 import com.vttm.mochaplus.feature.utils.Config;
 
 import java.util.ArrayList;
@@ -106,10 +103,10 @@ public class PhoneNumberHelper {
         }
     }
 
-//    public boolean isViettelUser(ReengAccount account) {
-//        String jidNumber = account.getJidNumber();
-//        return isViettelNumber(jidNumber);
-//    }
+    public boolean isViettelUser(ReengAccount account) {
+        String jidNumber = account.getJidNumber();
+        return isViettelNumber(jidNumber);
+    }
 
 
     public String getAvatarNameFromName(String cname) {

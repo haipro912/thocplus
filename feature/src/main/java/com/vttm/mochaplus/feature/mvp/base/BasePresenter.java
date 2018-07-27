@@ -19,22 +19,11 @@ package com.vttm.mochaplus.feature.mvp.base;
  * Created by janisharali on 27/01/17.
  */
 
-import android.util.Log;
-
-import com.androidnetworking.common.ANConstants;
-import com.androidnetworking.error.ANError;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
-import com.vttm.mochaplus.feature.R;
 import com.vttm.mochaplus.feature.data.AppDataManager;
 import com.vttm.mochaplus.feature.data.DataManager;
-import com.vttm.mochaplus.feature.data.api.ApiError;
-import com.vttm.mochaplus.feature.utils.AppConstants;
 import com.vttm.mochaplus.feature.utils.rx.SchedulerProvider;
 
 import javax.inject.Inject;
-import javax.net.ssl.HttpsURLConnection;
 
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -98,50 +87,8 @@ public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
     }
 
     @Override
-    public void handleApiError(ANError error) {
+    public void handleApiError(Throwable error) {
 
-        if (error == null || error.getErrorBody() == null) {
-            getMvpView().onError(R.string.api_default_error);
-            return;
-        }
-
-        if (error.getErrorCode() == AppConstants.API_STATUS_CODE_LOCAL_ERROR
-                && error.getErrorDetail().equals(ANConstants.CONNECTION_ERROR)) {
-            getMvpView().onError(R.string.connection_error);
-            return;
-        }
-
-        if (error.getErrorCode() == AppConstants.API_STATUS_CODE_LOCAL_ERROR
-                && error.getErrorDetail().equals(ANConstants.REQUEST_CANCELLED_ERROR)) {
-            getMvpView().onError(R.string.api_retry_error);
-            return;
-        }
-
-        final GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
-        final Gson gson = builder.create();
-
-        try {
-            ApiError apiError = gson.fromJson(error.getErrorBody(), ApiError.class);
-
-            if (apiError == null || apiError.getMessage() == null) {
-                getMvpView().onError(R.string.api_default_error);
-                return;
-            }
-
-            switch (error.getErrorCode()) {
-                case HttpsURLConnection.HTTP_UNAUTHORIZED:
-                case HttpsURLConnection.HTTP_FORBIDDEN:
-                    setUserAsLoggedOut();
-                    getMvpView().openActivityOnTokenExpire();
-                case HttpsURLConnection.HTTP_INTERNAL_ERROR:
-                case HttpsURLConnection.HTTP_NOT_FOUND:
-                default:
-                    getMvpView().onError(apiError.getMessage());
-            }
-        } catch (JsonSyntaxException | NullPointerException e) {
-            Log.e(TAG, "handleApiError", e);
-            getMvpView().onError(R.string.api_default_error);
-        }
     }
 
     @Override

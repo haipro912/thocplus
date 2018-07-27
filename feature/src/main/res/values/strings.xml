@@ -9,6 +9,7 @@
     <string name="tab_chat">Chat</string>
     <string name="tab_call">Call</string>
     <string name="tab_social">Social</string>
+    <string name="tab_video">Video</string>
     <string name="tab_contact">Contact</string>
     <string name="tab_more">More</string>
 
@@ -16,4 +17,50 @@
     <string name="nodata_load">Không có dữ liệu!</string>
     <string name="data_end">Đã tải hết dữ liệu</string>
 
+
+
+
+
+    <string name="e200_ok">e200_ok</string>
+    <string name="e206_error_stranger_music_time_out">Invitation has timed out</string>
+    <string name="e401_unauthorized">Login failed. Please check your username or password.</string>
+    <string name="e402_no_permission_admin">You need administrative permission to perform this action</string>
+    <string name="e403_number_over_max">Exceed maximum allowed members</string>
+    <string name="e404_group_no_longer_exist">Group doesn\'t exist</string>
+    <string name="e405_user_invalid">The number is invalid</string>
+    <string name="e405_group_admin_exist">Group already has an administrator</string>
+    <string name="e406_required_information_not_provided">Login failed. Check your username or password.</string>
+    <string name="e409_resource_conflict">This phone number is already registered on another handset</string>
+    <string name="e415_not_allow_leave_room">You are not a member in this chat room</string>
+    <string name="e416_not_allow_invite">You are not a member in this group</string>
+    <string name="e423_group_name_error">Group name is invalid</string>
+    <string name="e490_illegal_state_exception">Can not connect to server</string>
+    <string name="e500_internal_server_error">Error occurred, please try again later.</string>
+    <string name="e503_user_unavailable_gsm_not_available">This phone number does not use Mocha. You cannot use this function</string>
+    <string name="e503_user_unavailable">Error occurred, please try again later.</string>
+    <string name="e503_user_unavailable_but_gsm_available">This contact has not installed Mocha yet. Send SMS Out?</string>
+    <string name="e505_user_notsupport_function">Receiver is using a version which does not support this function</string>
+    <string name="e550_password_over_limit">Request exceeds daily limit.</string>
+    <string name="e560_error_over_total_message">Your account has reached its monthly limit of free messages.</string>
+    <string name="e561_error_over_24h_messages">Your account has reached its daily limit of free messages.</string>
+    <string name="e601_error_but_undefined">Error occurred, please try again later.</string>
+    <string name="e603_error_iq_no_respone">No response</string>
+    <string name="e604_error_connect_server">Unstable connection. Please try again</string>
+    <string name="e666_not_support_function">This function is not supported</string>
+    <string name="e667_device_not_support_function">This device is not supported</string>
+    <string name="e668_file_not_found">File not found</string>
+
+    <string name="msg_title_email">Mocha: Feedback</string>
+    <string name="add_email_support" translatable="false">mocha@viettel.com.vn</string>
+    <string name="msg_content_email" translatable="false">Sent from : %1$s\nAndroid : %2$s\nVersion : %3$s - revision : %4$s\nDevice : %5$s</string>
+
+    <string name="message_text">message</string>
+    <string name="message_image">photo</string>
+    <string name="message_voice_mail">voice message</string>
+    <string name="message_voice_sticker">voice sticker</string>
+    <string name="message_share_contact">business card</string>
+    <string name="message_share_video">video</string>
+    <string name="message_share_location">location</string>
+    <string name="message_transfer_money">Airtime transfer</string>
+    <string name="message_event_follow_room">follow room</string>
 </resources>
