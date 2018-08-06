@@ -46,6 +46,7 @@ public final class AppConstants {
 
     public static final class KEY_BUNDLE {
         public static final String KEY_CATEGORY_ID = "KEY_CATEGORY_ID";
+        public static final String KEY_VIDEO_SELECT = "KEY_VIDEO_SELECT";
     }
 
     public static final class PREFERENCE {

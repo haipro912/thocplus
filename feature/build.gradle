@@ -92,4 +92,7 @@ dependencies {
     compile 'com.uphyca:stetho_realm:2.0.0'
 
     implementation 'com.github.pavlospt:roundedletterview:1.2'
+
+    //Loading like facebook
+    implementation 'com.facebook.shimmer:shimmer:0.3.0'
 }

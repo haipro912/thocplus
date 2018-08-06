@@ -1,4 +1,4 @@
-package com.vttm.mochaplus.feature.mvp.video.home;
+package com.vttm.mochaplus.feature.mvp.video.detail;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -6,11 +6,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.vttm.mochaplus.feature.R;
 import com.vttm.mochaplus.feature.data.api.response.VideoResponse;
 import com.vttm.mochaplus.feature.interfaces.AbsInterface;
@@ -23,22 +25,23 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-public class VideoFragment extends BaseFragment implements AbsInterface.OnItemListener, SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener, IVideoView {
+public class VideoDetailFragment extends BaseFragment implements AbsInterface.OnItemListener, SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener, IVideoDetailView {
     private View loadingView;
     private RecyclerView recyclerView;
 
-    private VideoAdapter adapter;
+    private VideoDetailAdapter adapter;
     private LinearLayoutManager layoutManager;
     private View notDataView, errorView;
+    private ShimmerFrameLayout shimmerFrameLayout;
     private ArrayList<VideoModel> datas = new ArrayList<>();
-    private int currentCategoryId;
-    private String lastId = "";
+
+    private VideoModel currentVideo;
 
     @Inject
-    IVideoPresenter<IVideoView> presenter;
+    IVideoDetailPresenter<IVideoDetailView> presenter;
 
-    public static VideoFragment newInstance(Bundle bundle) {
-        VideoFragment fragment = new VideoFragment();
+    public static VideoDetailFragment newInstance(Bundle bundle) {
+        VideoDetailFragment fragment = new VideoDetailFragment();
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -56,6 +59,13 @@ public class VideoFragment extends BaseFragment implements AbsInterface.OnItemLi
 
     @Override
     protected void setUp(View view) {
+
+        Object object = getArguments().getSerializable(AppConstants.KEY_BUNDLE.KEY_VIDEO_SELECT);;
+        if(object != null && object instanceof VideoModel)
+            currentVideo = (VideoModel) object;
+
+        shimmerFrameLayout = view.findViewById(R.id.shimmer_view_container);
+
         loadingView = view.findViewById(R.id.loadingView);
         layout_refresh = view.findViewById(R.id.refresh);
         recyclerView = view.findViewById(R.id.recycler_view);
@@ -67,12 +77,11 @@ public class VideoFragment extends BaseFragment implements AbsInterface.OnItemLi
         layoutManager = new LinearLayoutManager(getBaseActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new VideoAdapter(getBaseActivity(), R.layout.item_video, datas, this);
+        adapter = new VideoDetailAdapter(getBaseActivity(), R.layout.item_video, datas, this);
         adapter.setLoadMoreView(new CustomLoadMoreView());
         adapter.setOnLoadMoreListener(this, recyclerView);
         adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
         recyclerView.setAdapter(adapter);
-//        recyclerView.setPadding(recyclerView.getPaddingLeft(), getResources().getDimensionPixelOffset(R.dimen.padding10), recyclerView.getPaddingRight(), recyclerView.getPaddingBottom());
 
         notDataView = getBaseActivity().getLayoutInflater().inflate(R.layout.item_nodata, (ViewGroup) recyclerView.getParent(), false);
         notDataView.setOnClickListener(new View.OnClickListener() {
@@ -89,28 +98,29 @@ public class VideoFragment extends BaseFragment implements AbsInterface.OnItemLi
             }
         });
 
-        if(datas != null && datas.size() == 0)
+
+        if(currentVideo == null || (currentVideo != null && TextUtils.isEmpty(currentVideo.getOriginalPath())))
         {
-            currentPage = 0;
-            loadData();
+            //Neu ko co media url thi goi api lay chi tiet video
+
+        }
+        else
+        {
+            //Neu co media url thi play luon sau do goi api cap nhat chi tiet sau
+
         }
     }
 
     private void loadData() {
-        if(currentPage == 0 && datas.size() ==0)
-            loadingView.setVisibility(View.VISIBLE);
-        Bundle bundle = getArguments();
-        currentCategoryId = bundle.getInt(AppConstants.KEY_BUNDLE.KEY_CATEGORY_ID, -1);
-        if(currentCategoryId != -1)
-        {
-            recyclerView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if(presenter != null)
-                        presenter.loadData(currentPage, AppConstants.NUM_SIZE, currentCategoryId, lastId);
-                }
-            }, 200);
-        }
+
+
+        recyclerView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(presenter != null)
+                    presenter.loadData(currentPage, AppConstants.NUM_SIZE, currentCategoryId, lastId);
+            }
+        }, 200);
     }
 
     @Override
@@ -120,7 +130,6 @@ public class VideoFragment extends BaseFragment implements AbsInterface.OnItemLi
 
         if(response != null && response.getResult() != null && response.getResult().size() > 0)
         {
-            lastId = response.getLastIdStr();
             int count = response.getResult().size();
             if (currentPage == 0) {
                 if (count == 0) {

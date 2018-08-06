@@ -4,6 +4,7 @@ import com.vttm.mochaplus.feature.MainActivity;
 import com.vttm.mochaplus.feature.di.PerActivity;
 import com.vttm.mochaplus.feature.di.module.ActivityModule;
 import com.vttm.mochaplus.feature.mvp.contact.ContactFragment;
+import com.vttm.mochaplus.feature.mvp.video.detail.VideoDetailFragment;
 import com.vttm.mochaplus.feature.mvp.video.home.VideoFragment;
 import com.vttm.mochaplus.feature.mvp.video.main.TabVideoFragment;
 
@@ -22,4 +23,5 @@ public interface ActivityComponent {
     void inject(ContactFragment contactFragment);
     void inject(TabVideoFragment contactFragment);
     void inject(VideoFragment contactFragment);
+    void inject(VideoDetailFragment contactFragment);
 }

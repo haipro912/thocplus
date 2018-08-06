@@ -26,6 +26,9 @@ import com.vttm.mochaplus.feature.mvp.contact.IContactView;
 import com.vttm.mochaplus.feature.mvp.main.IMainPresenter;
 import com.vttm.mochaplus.feature.mvp.main.IMainView;
 import com.vttm.mochaplus.feature.mvp.main.MainPresenter;
+import com.vttm.mochaplus.feature.mvp.video.detail.IVideoDetailPresenter;
+import com.vttm.mochaplus.feature.mvp.video.detail.IVideoDetailView;
+import com.vttm.mochaplus.feature.mvp.video.detail.VideoDetailPresenter;
 import com.vttm.mochaplus.feature.mvp.video.home.IVideoPresenter;
 import com.vttm.mochaplus.feature.mvp.video.home.IVideoView;
 import com.vttm.mochaplus.feature.mvp.video.home.VideoPresenter;
@@ -91,6 +94,11 @@ public class ActivityModule {
 
     @Provides
     IVideoPresenter<IVideoView> provideVideoPresenter(VideoPresenter<IVideoView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    IVideoDetailPresenter<IVideoDetailView> provideVideoDetailPresenter(VideoDetailPresenter<IVideoDetailView> presenter) {
         return presenter;
     }
 }
