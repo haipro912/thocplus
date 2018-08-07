@@ -16,10 +16,14 @@
 package com.vttm.mochaplus.feature.data.api;
 
 import android.app.Application;
+import android.text.TextUtils;
 
 import com.vttm.mochaplus.feature.data.api.request.BaseRequest;
+import com.vttm.mochaplus.feature.data.api.request.VideoDetailRequest;
+import com.vttm.mochaplus.feature.data.api.request.VideoRelateRequest;
 import com.vttm.mochaplus.feature.data.api.request.VideoRequest;
 import com.vttm.mochaplus.feature.data.api.response.VideoCategoryResponse;
+import com.vttm.mochaplus.feature.data.api.response.VideoDetailResponse;
 import com.vttm.mochaplus.feature.data.api.response.VideoResponse;
 import com.vttm.mochaplus.feature.data.api.restful.ApiCallback;
 import com.vttm.mochaplus.feature.data.api.restful.WSRestful;
@@ -83,7 +87,9 @@ public class AppApiHelper implements ApiHelper {
     public void getVideoList(VideoRequest request, ApiCallback<VideoResponse> callBack) {
 
         final String timeStamp = System.currentTimeMillis() + "";
-        String security = HttpHelper.encryptDataV2(context, request.getMsisdn() + request.getDomain() + request.getCategoryid() + request.getLimit() + request.getOffset() + request.getLastIdStr() + getToken() + timeStamp, getToken());
+        String lastId =  TextUtils.isEmpty(request.getLastIdStr()) ? "" : request.getLastIdStr();
+
+        String security = HttpHelper.encryptDataV2(context, request.getMsisdn() + request.getDomain() + request.getCategoryid() + request.getLimit() + request.getOffset() + lastId + getToken() + timeStamp, getToken());
 
         Map<String, String> data = new HashMap<>();
         data.put("revision", request.getRevision());
@@ -95,12 +101,56 @@ public class AppApiHelper implements ApiHelper {
         data.put("offset", request.getOffset() + "");
         data.put("limit", request.getLimit() + "");
         data.put("categoryid", request.getCategoryid() + "");
-        data.put("lastIdStr", request.getLastIdStr());
+        data.put("lastIdStr", lastId);
         data.put("security", URLEncoder.encode(security));
 
         WSRestful restful = new WSRestful(context);
         ApiService apiClient = restful.getInstance();
         apiClient.getVideoList(data).enqueue(callBack);
+    }
+
+    @Override
+    public void getVideoDetail(VideoDetailRequest request, ApiCallback<VideoDetailResponse> callBack) {
+        final String timeStamp = System.currentTimeMillis() + "";
+        String security = HttpHelper.encryptDataV2(context, request.getMsisdn() + request.getDomain() + request.getUrl() + getToken() + timeStamp, getToken());
+
+        Map<String, String> data = new HashMap<>();
+        data.put("revision", request.getRevision());
+        data.put("domain", request.getDomain());
+        data.put("timestamp", timeStamp);
+        data.put("clientType", request.getClientType());
+        data.put("msisdn", request.getMsisdn());
+        data.put("vip", request.getVip());
+        data.put("security", URLEncoder.encode(security));
+        data.put("url", URLEncoder.encode(request.getUrl()));
+
+        WSRestful restful = new WSRestful(context);
+        ApiService apiClient = restful.getInstance();
+        apiClient.getVideoDetail(data).enqueue(callBack);
+    }
+
+    @Override
+    public void getVideoRelate(VideoRelateRequest request, ApiCallback<VideoResponse> callBack) {
+        final String timeStamp = System.currentTimeMillis() + "";
+        String lastId =  TextUtils.isEmpty(request.getLastIdStr()) ? "" : request.getLastIdStr();
+        String security = HttpHelper.encryptDataV2(context, request.getMsisdn() + request.getDomain() + request.getQuery() + request.getLimit() + request.getOffset() + lastId + getToken() + timeStamp, getToken());
+
+        Map<String, String> data = new HashMap<>();
+        data.put("revision", request.getRevision());
+        data.put("domain", request.getDomain());
+        data.put("timestamp", timeStamp);
+        data.put("clientType", request.getClientType());
+        data.put("msisdn", request.getMsisdn());
+        data.put("vip", request.getVip());
+        data.put("q", URLEncoder.encode(request.getQuery()));
+        data.put("offset", request.getOffset() + "");
+        data.put("limit", request.getLimit() + "");
+        data.put("lastIdStr", lastId);
+        data.put("security", URLEncoder.encode(security));
+
+        WSRestful restful = new WSRestful(context);
+        ApiService apiClient = restful.getInstance();
+        apiClient.getVideoRelate(data).enqueue(callBack);
     }
 }
 

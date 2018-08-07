@@ -71,7 +71,6 @@ public class TabVideoFragment extends BaseFragment implements ITabVideoView {
             pagerAdapter = new TabVideoAdapter(getChildFragmentManager());
         }
         viewPager.setAdapter(pagerAdapter);
-        viewPager.setOffscreenPageLimit(1);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

@@ -1,22 +1,26 @@
 package com.vttm.mochaplus.feature.data.api.request;
 
-public class VideoRequest extends BaseRequest {
+public class VideoRelateRequest extends BaseRequest {
     int offset;
     int limit;
-    int categoryid;
     String lastIdStr = "";
+    String query;
 
-    public VideoRequest(String revision, String domain, String clientType, String msisdn, String vip) {
-        super(revision, domain, clientType, msisdn, vip);
-    }
-
-    public VideoRequest(int offset, int limit, int categoryid, String lastIdStr, String revision, String domain, String clientType, String msisdn, String vip) {
+    public VideoRelateRequest(String query, int offset, int limit, String lastIdStr, String revision, String domain, String clientType, String msisdn, String vip) {
         super(revision, domain, clientType, msisdn, vip);
 
         this.offset = offset;
         this.limit = limit;
-        this.categoryid = categoryid;
         this.lastIdStr = lastIdStr;
+        this.query = query;
+    }
+
+    public String getQuery() {
+        return query;
+    }
+
+    public void setQuery(String query) {
+        this.query = query;
     }
 
     public int getOffset() {
@@ -33,14 +37,6 @@ public class VideoRequest extends BaseRequest {
 
     public void setLimit(int limit) {
         this.limit = limit;
-    }
-
-    public int getCategoryid() {
-        return categoryid;
-    }
-
-    public void setCategoryid(int categoryid) {
-        this.categoryid = categoryid;
     }
 
     public String getLastIdStr() {

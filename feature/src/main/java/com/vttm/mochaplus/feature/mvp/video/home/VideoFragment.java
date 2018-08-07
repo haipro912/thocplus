@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.vttm.mochaplus.feature.MainActivity;
 import com.vttm.mochaplus.feature.R;
 import com.vttm.mochaplus.feature.data.api.response.VideoResponse;
 import com.vttm.mochaplus.feature.interfaces.AbsInterface;
@@ -72,7 +73,7 @@ public class VideoFragment extends BaseFragment implements AbsInterface.OnItemLi
         adapter.setOnLoadMoreListener(this, recyclerView);
         adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
         recyclerView.setAdapter(adapter);
-        recyclerView.setPadding(recyclerView.getPaddingLeft(), getResources().getDimensionPixelOffset(R.dimen.padding10), recyclerView.getPaddingRight(), recyclerView.getPaddingBottom());
+//        recyclerView.setPadding(recyclerView.getPaddingLeft(), getResources().getDimensionPixelOffset(R.dimen.padding10), recyclerView.getPaddingRight(), recyclerView.getPaddingBottom());
 
         notDataView = getBaseActivity().getLayoutInflater().inflate(R.layout.item_nodata, (ViewGroup) recyclerView.getParent(), false);
         notDataView.setOnClickListener(new View.OnClickListener() {
@@ -89,24 +90,29 @@ public class VideoFragment extends BaseFragment implements AbsInterface.OnItemLi
             }
         });
 
-        currentPage = 0;
-        loadData();
+        Bundle bundle = getArguments();
+        currentCategoryId = bundle.getInt(AppConstants.KEY_BUNDLE.KEY_CATEGORY_ID, -1);
+
+        if(datas != null && datas.size() == 0)
+        {
+            recyclerView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    currentPage = 0;
+                    loadData();
+                }
+            }, 200);
+
+        }
     }
 
     private void loadData() {
         if(currentPage == 0 && datas.size() ==0)
             loadingView.setVisibility(View.VISIBLE);
-        Bundle bundle = getArguments();
-        currentCategoryId = bundle.getInt(AppConstants.KEY_BUNDLE.KEY_CATEGORY_ID, -1);
         if(currentCategoryId != -1)
         {
-            recyclerView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if(presenter != null)
-                        presenter.loadData(currentPage, AppConstants.NUM_SIZE, currentCategoryId, lastId);
-                }
-            }, 200);
+            if(presenter != null)
+                presenter.loadData(currentPage, AppConstants.NUM_SIZE, currentCategoryId, lastId);
         }
     }
 
@@ -124,9 +130,8 @@ public class VideoFragment extends BaseFragment implements AbsInterface.OnItemLi
                     adapter.setEmptyView(notDataView);
                 } else {
                     datas.clear();
-                    adapter.setNewData(response.getResult());
                     datas.addAll(response.getResult());
-//                    adapter.notifyDataSetChanged();
+                    adapter.setNewData(datas);
 
                     if (layoutManager != null)
                         layoutManager.scrollToPosition(0);
@@ -136,7 +141,6 @@ public class VideoFragment extends BaseFragment implements AbsInterface.OnItemLi
                     adapter.loadMoreEnd();
                 } else {
                     adapter.addData(response.getResult());
-                    datas.addAll(response.getResult());
                     adapter.loadMoreComplete();
                 }
             }
@@ -153,7 +157,12 @@ public class VideoFragment extends BaseFragment implements AbsInterface.OnItemLi
 
     @Override
     public void onItemClick(int pos) {
-
+        if(getBaseActivity() != null && getBaseActivity() instanceof MainActivity)
+        {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(AppConstants.KEY_BUNDLE.KEY_VIDEO_SELECT, datas.get(pos));
+            ((MainActivity)getBaseActivity()).showFragment(AppConstants.TAB_VIDEO_DETAIL, bundle);
+        }
     }
 
     @Override

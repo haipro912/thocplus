@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 public class ChannelModel {
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private int id;
     @SerializedName("name")
     @Expose
     private String name;
@@ -15,28 +15,28 @@ public class ChannelModel {
     private String urlAvatar;
     @SerializedName("is_follow")
     @Expose
-    private Integer isFollow;
+    private int isFollow;
     @SerializedName("categoryid")
     @Expose
-    private Integer categoryid;
+    private int categoryid;
     @SerializedName("numfollow")
     @Expose
-    private Integer numfollow;
+    private int numfollow;
     @SerializedName("is_registered")
     @Expose
-    private Integer isRegistered;
+    private int isRegistered;
     @SerializedName("type")
     @Expose
-    private Integer type;
+    private int type;
     @SerializedName("isMyChannel")
     @Expose
-    private Integer isMyChannel;
+    private int isMyChannel;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -56,51 +56,51 @@ public class ChannelModel {
         this.urlAvatar = urlAvatar;
     }
 
-    public Integer getIsFollow() {
+    public int getIsFollow() {
         return isFollow;
     }
 
-    public void setIsFollow(Integer isFollow) {
+    public void setIsFollow(int isFollow) {
         this.isFollow = isFollow;
     }
 
-    public Integer getCategoryid() {
+    public int getCategoryid() {
         return categoryid;
     }
 
-    public void setCategoryid(Integer categoryid) {
+    public void setCategoryid(int categoryid) {
         this.categoryid = categoryid;
     }
 
-    public Integer getNumfollow() {
+    public int getNumfollow() {
         return numfollow;
     }
 
-    public void setNumfollow(Integer numfollow) {
+    public void setNumfollow(int numfollow) {
         this.numfollow = numfollow;
     }
 
-    public Integer getIsRegistered() {
+    public int getIsRegistered() {
         return isRegistered;
     }
 
-    public void setIsRegistered(Integer isRegistered) {
+    public void setIsRegistered(int isRegistered) {
         this.isRegistered = isRegistered;
     }
 
-    public Integer getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(int type) {
         this.type = type;
     }
 
-    public Integer getIsMyChannel() {
+    public int getIsMyChannel() {
         return isMyChannel;
     }
 
-    public void setIsMyChannel(Integer isMyChannel) {
+    public void setIsMyChannel(int isMyChannel) {
         this.isMyChannel = isMyChannel;
     }
 }

@@ -37,6 +37,7 @@ public final class AppConstants {
     }
 
     public static final int TAB_MAIN = 1;
+    public static final int TAB_VIDEO_DETAIL = 2;
 
     public static final class LOGIN {
         public static final int TAB_LOGIN = 0;
@@ -46,6 +47,7 @@ public final class AppConstants {
 
     public static final class KEY_BUNDLE {
         public static final String KEY_CATEGORY_ID = "KEY_CATEGORY_ID";
+        public static final String KEY_VIDEO_SELECT = "KEY_VIDEO_SELECT";
     }
 
     public static final class PREFERENCE {

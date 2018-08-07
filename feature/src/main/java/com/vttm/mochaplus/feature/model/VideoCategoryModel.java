@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class    VideoCategoryModel implements Serializable {
+public class VideoCategoryModel implements Serializable {
     @SerializedName("id")
     @Expose
     private int id;

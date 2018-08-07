@@ -5,6 +5,7 @@ import com.vttm.mochaplus.feature.data.api.restful.ApiCallback;
 import com.vttm.mochaplus.feature.data.api.request.BaseRequest;
 import com.vttm.mochaplus.feature.data.api.response.VideoCategoryResponse;
 import com.vttm.mochaplus.feature.mvp.base.BasePresenter;
+import com.vttm.mochaplus.feature.utils.Config;
 import com.vttm.mochaplus.feature.utils.rx.SchedulerProvider;
 
 import javax.inject.Inject;
@@ -23,7 +24,7 @@ public class TabVideoPresenter<V extends ITabVideoView> extends BasePresenter<V>
 
     @Override
     public void loadCategory() {
-        getDataManager().getVideoCategory(new BaseRequest("15059", "hl2.mocha.com.vn", "Android", "01628874431", "NOVIP"),
+        getDataManager().getVideoCategory(new BaseRequest(Config.REVISION, Config.DOMAIN_VIDEO, Config.CLIENT_TYPE, "01628874431", "NOVIP"),
                 new ApiCallback<VideoCategoryResponse>() {
             @Override
             public void onResponse(Call<VideoCategoryResponse> call, Response<VideoCategoryResponse> response) {

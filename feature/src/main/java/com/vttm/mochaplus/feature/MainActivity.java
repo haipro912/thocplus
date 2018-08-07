@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.view.KeyEvent;
 
 import com.bumptech.glide.manager.SupportRequestManagerFragment;
 import com.vttm.mochaplus.feature.mvp.base.BaseActivity;
 import com.vttm.mochaplus.feature.mvp.base.BaseFragment;
 import com.vttm.mochaplus.feature.mvp.main.IMainView;
 import com.vttm.mochaplus.feature.mvp.main.MainFragment;
+import com.vttm.mochaplus.feature.mvp.video.detail.VideoDetailFragment;
 import com.vttm.mochaplus.feature.utils.AppConstants;
 import com.vttm.mochaplus.feature.utils.AppLogger;
 import com.vttm.mochaplus.feature.utils.ToastUtils;
@@ -51,6 +53,9 @@ public class MainActivity extends BaseActivity  implements IMainView{
         switch (tabId) {
             case AppConstants.TAB_MAIN:
                 currentFragment = MainFragment.newInstance();
+                break;
+            case AppConstants.TAB_VIDEO_DETAIL:
+                currentFragment = VideoDetailFragment.newInstance(bundle);
                 break;
         }
 
@@ -101,6 +106,15 @@ public class MainActivity extends BaseActivity  implements IMainView{
                     .commit();
         }
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            onBackPressed();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override

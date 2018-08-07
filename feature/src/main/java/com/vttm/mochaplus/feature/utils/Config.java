@@ -4,6 +4,9 @@ public class Config {
 
     public static final String REVISION = "1";
 
+    public static final String DOMAIN_VIDEO = "hl2.mocha.com.vn";
+    public static final String CLIENT_TYPE = "Android";
+
     public static final String KEY = "CQPkng4R1wL@CZT29YDE94A$*";
     public static final String RSA_KEY = "MIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgF3g82nB1ImzAwSN7JXeOC7wChDA4Nbzun" +
             "/2B60sB04LCxBt88yRQTK734ugqAJ9cnYYNjwYfzcoTmubiMygsdtoNf1HTmezAL+ppsJxZ" +

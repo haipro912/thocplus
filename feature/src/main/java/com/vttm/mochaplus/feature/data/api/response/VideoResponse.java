@@ -9,10 +9,10 @@ import java.util.List;
 public class VideoResponse {
     @SerializedName("lastId")
     @Expose
-    private Integer lastId;
+    private int lastId;
     @SerializedName("lastIdStr")
     @Expose
-    private String lastIdStr;
+    private String lastIdStr = "";
     @SerializedName("result")
     @Expose
     private List<VideoModel> result = null;
@@ -21,20 +21,20 @@ public class VideoResponse {
     private String desc;
     @SerializedName("ExecuteTime")
     @Expose
-    private Integer executeTime;
+    private int executeTime;
     @SerializedName("code")
     @Expose
-    private Integer code;
+    private int code;
 
     public VideoResponse(Object result) {
 
     }
 
-    public Integer getLastId() {
+    public int getLastId() {
         return lastId;
     }
 
-    public void setLastId(Integer lastId) {
+    public void setLastId(int lastId) {
         this.lastId = lastId;
     }
 
@@ -62,19 +62,19 @@ public class VideoResponse {
         this.desc = desc;
     }
 
-    public Integer getExecuteTime() {
+    public int getExecuteTime() {
         return executeTime;
     }
 
-    public void setExecuteTime(Integer executeTime) {
+    public void setExecuteTime(int executeTime) {
         this.executeTime = executeTime;
     }
 
-    public Integer getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
+    public void setCode(int code) {
         this.code = code;
     }
 }

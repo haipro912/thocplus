@@ -5,6 +5,7 @@ import com.vttm.mochaplus.feature.data.api.restful.ApiCallback;
 import com.vttm.mochaplus.feature.data.api.request.VideoRequest;
 import com.vttm.mochaplus.feature.data.api.response.VideoResponse;
 import com.vttm.mochaplus.feature.mvp.base.BasePresenter;
+import com.vttm.mochaplus.feature.utils.Config;
 import com.vttm.mochaplus.feature.utils.rx.SchedulerProvider;
 
 import javax.inject.Inject;
@@ -23,8 +24,7 @@ public class VideoPresenter<V extends IVideoView> extends BasePresenter<V>
 
     @Override
     public void loadData(int offset, int limit, int categoryId, String lastId) {
-        getDataManager().getVideoList(new VideoRequest(offset, limit, categoryId, lastId, "15059", "hl2.mocha.com.vn",
-                        "Android", "01628874431", "NOVIP"),
+        getDataManager().getVideoList(new VideoRequest(offset, limit, categoryId, lastId, Config.REVISION, Config.DOMAIN_VIDEO, Config.CLIENT_TYPE, "01628874431", "NOVIP"),
                 new ApiCallback<VideoResponse>() {
                     @Override
                     public void onResponse(Call<VideoResponse> call, Response<VideoResponse> response) {

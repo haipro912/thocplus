@@ -17,8 +17,11 @@ package com.vttm.mochaplus.feature.data.api;
 
 
 import com.vttm.mochaplus.feature.data.api.request.BaseRequest;
+import com.vttm.mochaplus.feature.data.api.request.VideoDetailRequest;
+import com.vttm.mochaplus.feature.data.api.request.VideoRelateRequest;
 import com.vttm.mochaplus.feature.data.api.request.VideoRequest;
 import com.vttm.mochaplus.feature.data.api.response.VideoCategoryResponse;
+import com.vttm.mochaplus.feature.data.api.response.VideoDetailResponse;
 import com.vttm.mochaplus.feature.data.api.response.VideoResponse;
 import com.vttm.mochaplus.feature.data.api.restful.ApiCallback;
 
@@ -32,4 +35,6 @@ public interface ApiHelper {
 
     void getVideoCategory(BaseRequest request, ApiCallback<VideoCategoryResponse> callBack);
     void getVideoList(VideoRequest request, ApiCallback<VideoResponse> callBack);
+    void getVideoDetail(VideoDetailRequest request, ApiCallback<VideoDetailResponse> callBack);
+    void getVideoRelate(VideoRelateRequest request, ApiCallback<VideoResponse> callBack);
 }

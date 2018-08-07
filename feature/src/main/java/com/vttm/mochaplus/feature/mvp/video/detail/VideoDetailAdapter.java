@@ -1,7 +1,6 @@
-package com.vttm.mochaplus.feature.mvp.video.home;
+package com.vttm.mochaplus.feature.mvp.video.detail;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -13,12 +12,12 @@ import com.vttm.mochaplus.feature.model.VideoModel;
 
 import java.util.List;
 
-public class VideoAdapter extends BaseQuickAdapter<VideoModel, BaseViewHolder> {
+public class VideoDetailAdapter extends BaseQuickAdapter<VideoModel, BaseViewHolder> {
 
     private Context context;
     private AbsInterface.OnItemListener onItemListener;
 
-    public VideoAdapter(Context context, int id, List<VideoModel> datas, AbsInterface.OnItemListener onItemListener) {
+    public VideoDetailAdapter(Context context, int id, List<VideoModel> datas, AbsInterface.OnItemListener onItemListener) {
         super(id, datas);
         this.context = context;
         this.onItemListener = onItemListener;
@@ -30,14 +29,6 @@ public class VideoAdapter extends BaseQuickAdapter<VideoModel, BaseViewHolder> {
         if (model != null) {
             ImageLoader.setImage(context, model.getImagePath(), model.getImage_path_small(), (ImageView) holder.getView(R.id.imvImage));
             holder.setText(R.id.tvTitle, model.getName());
-
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(onItemListener != null)
-                        onItemListener.onItemClick(holder.getAdapterPosition());
-                }
-            });
         }
     }
 }

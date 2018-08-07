@@ -1,6 +1,7 @@
 package com.vttm.mochaplus.feature.data.api.service;
 
 import com.vttm.mochaplus.feature.data.api.response.VideoCategoryResponse;
+import com.vttm.mochaplus.feature.data.api.response.VideoDetailResponse;
 import com.vttm.mochaplus.feature.data.api.response.VideoResponse;
 
 import java.util.Map;
@@ -16,4 +17,10 @@ public interface ApiService {
 
     @GET(ApiEndPoint.GET_VIDEO_LIST)
     Call<VideoResponse> getVideoList(@QueryMap(encoded=true) Map<String, String> options);
+
+    @GET(ApiEndPoint.GET_VIDEO_DETAIL)
+    Call<VideoDetailResponse> getVideoDetail(@QueryMap(encoded=true) Map<String, String> options);
+
+    @GET(ApiEndPoint.GET_VIDEO_RELATE)
+    Call<VideoResponse> getVideoRelate(@QueryMap(encoded=true) Map<String, String> options);
 }

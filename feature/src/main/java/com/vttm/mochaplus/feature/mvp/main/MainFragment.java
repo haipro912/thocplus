@@ -12,10 +12,10 @@ import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.vttm.mochaplus.feature.R;
 import com.vttm.mochaplus.feature.mvp.base.BaseFragment;
-import com.vttm.mochaplus.feature.mvp.call.CallFragment;
 import com.vttm.mochaplus.feature.mvp.chat.ChatFragment;
 import com.vttm.mochaplus.feature.mvp.contact.ContactFragment;
 import com.vttm.mochaplus.feature.mvp.more.MoreFragment;
+import com.vttm.mochaplus.feature.mvp.social.SocialFragment;
 import com.vttm.mochaplus.feature.mvp.video.main.TabVideoFragment;
 
 import butterknife.ButterKnife;
@@ -48,6 +48,9 @@ public class MainFragment extends BaseFragment{
     @Override
     protected void setUp(View view) {
         bottomBar = view.findViewById(R.id.bottomBar);
+        bottomBar.setMode(BottomNavigationBar.MODE_FIXED);
+        bottomBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
+
         viewPager = view.findViewById(R.id.tab_view_pager);
         setupViewPager();
         setupTabLayout();
@@ -55,14 +58,12 @@ public class MainFragment extends BaseFragment{
 
     private void setupTabLayout() {
 
-        bottomBar.setMode(BottomNavigationBar.MODE_SHIFTING);
-        bottomBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
         bottomBar.clearAll();
 
         bottomBar.addItem(new BottomNavigationItem(R.drawable.ic_chat, getResources().getString(R.string.tab_chat)).setActiveColorResource(R.color.colorAccent));
-        bottomBar.addItem(new BottomNavigationItem(R.drawable.ic_call, getResources().getString(R.string.tab_call)).setActiveColorResource(R.color.colorAccent));
         bottomBar.addItem(new BottomNavigationItem(R.drawable.ic_contact, getResources().getString(R.string.tab_contact)).setActiveColorResource(R.color.colorAccent));
         bottomBar.addItem(new BottomNavigationItem(R.drawable.ic_video, getResources().getString(R.string.tab_video)).setActiveColorResource(R.color.colorAccent));
+        bottomBar.addItem(new BottomNavigationItem(R.drawable.ic_social, getResources().getString(R.string.tab_social)).setActiveColorResource(R.color.colorAccent));
         bottomBar.addItem(new BottomNavigationItem(R.drawable.ic_more_horiz, getResources().getString(R.string.tab_more)).setActiveColorResource(R.color.colorAccent));
         bottomBar.setFirstSelectedPosition(0);
         bottomBar.initialise();
@@ -90,9 +91,9 @@ public class MainFragment extends BaseFragment{
         {
             pagerAdapter = new MainAdapter(getChildFragmentManager());
             pagerAdapter.addFragment(ChatFragment.newInstance(), getString(R.string.tab_chat));
-            pagerAdapter.addFragment(CallFragment.newInstance(), getString(R.string.tab_call));
             pagerAdapter.addFragment(ContactFragment.newInstance(), getString(R.string.tab_contact));
             pagerAdapter.addFragment(TabVideoFragment.newInstance(), getString(R.string.tab_video));
+            pagerAdapter.addFragment(SocialFragment.newInstance(), getString(R.string.tab_social));
             pagerAdapter.addFragment(MoreFragment.newInstance(), getString(R.string.tab_more));
         }
         viewPager.setAdapter(pagerAdapter);
