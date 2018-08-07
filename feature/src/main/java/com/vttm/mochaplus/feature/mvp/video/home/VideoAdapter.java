@@ -27,7 +27,7 @@ public class VideoAdapter extends BaseQuickAdapter<VideoModel, BaseViewHolder> {
     protected void convert(final BaseViewHolder holder, final VideoModel model) {
 
         if (model != null) {
-            ImageLoader.setImage(context, model.getImagePath(), (ImageView) holder.getView(R.id.imvImage));
+            ImageLoader.setImage(context, model.getImagePath(), model.getImage_path_small(), (ImageView) holder.getView(R.id.imvImage));
             holder.setText(R.id.tvTitle, model.getName());
         }
     }

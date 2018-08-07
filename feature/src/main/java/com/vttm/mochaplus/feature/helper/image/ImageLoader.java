@@ -29,14 +29,23 @@ public class ImageLoader {
     private static final String TAG = ImageLoader.class.getSimpleName();
     public static int FADE_TIME = 1000;
 
-    public static void setImage(Context context, String url, final ImageView imageView) {
+    public static void setImage(Context context, String url, String imageSmall, final ImageView imageView) {
         Random random = new Random();
         int index = random.nextInt(20);
         GlideApp.with(context)
                 .load(url)
+//                .placeholder(context.getResources().getDrawable(R.color.color_animation))
+                .thumbnail(GlideApp.with(context).load(imageSmall))
+                .error(context.getResources().getDrawable(R.color.color_animation))
+                .dontAnimate()
+                .transition(withCrossFade(R.anim.fade_in, 1000))
+                .into(imageView);
+    }
+
+    public static void setImage(Context context, int drawable, final ImageView imageView) {
+        GlideApp.with(context)
+                .load(drawable)
                 .placeholder(context.getResources().getDrawable(R.color.color_animation))
-//                .thumbnail(GlideApp.with(context)
-//                        .load("https://a.wattpad.com/useravatar/teen_reader_girl.256.629391.jpg"))
                 .error(context.getResources().getDrawable(R.color.color_animation))
                 .dontAnimate()
                 .transition(withCrossFade(R.anim.fade_in, 1000))

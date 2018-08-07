@@ -25,6 +25,12 @@ public class VideoModel implements Serializable{
     @SerializedName("image_path")
     @Expose
     private String imagePath;
+    @SerializedName("image_path_small")
+    @Expose
+    private String image_path_small;
+    @SerializedName("image_path_thump")
+    @Expose
+    private String image_path_thump;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
@@ -270,5 +276,21 @@ public class VideoModel implements Serializable{
 
     public void setFilmGroupsID(int filmGroupsID) {
         this.filmGroupsID = filmGroupsID;
+    }
+
+    public String getImage_path_small() {
+        return image_path_small;
+    }
+
+    public void setImage_path_small(String image_path_small) {
+        this.image_path_small = image_path_small;
+    }
+
+    public String getImage_path_thump() {
+        return image_path_thump;
+    }
+
+    public void setImage_path_thump(String image_path_thump) {
+        this.image_path_thump = image_path_thump;
     }
 }

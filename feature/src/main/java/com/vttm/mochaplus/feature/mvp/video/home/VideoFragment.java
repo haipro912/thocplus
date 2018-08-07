@@ -126,6 +126,7 @@ public class VideoFragment extends BaseFragment implements AbsInterface.OnItemLi
                     datas.clear();
                     adapter.setNewData(response.getResult());
                     datas.addAll(response.getResult());
+//                    adapter.notifyDataSetChanged();
 
                     if (layoutManager != null)
                         layoutManager.scrollToPosition(0);

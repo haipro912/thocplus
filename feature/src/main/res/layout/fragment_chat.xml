@@ -1,16 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/imvImage"
-        android:layout_width="400dp"
-        android:layout_height="400dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-</android.support.constraint.ConstraintLayout>
+    <com.camnter.easyrecyclerview.widget.EasyRecyclerView
+        android:id="@+id/section_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.camnter.easyrecyclerviewsidebar.EasyRecyclerViewSidebar
+        android:id="@+id/section_sidebar"
+        android:layout_width="30dp"
+        android:layout_height="fill_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center|end"/>
+
+    <RelativeLayout
+        android:id="@+id/section_floating_rl"
+        android:layout_width="70dp"
+        android:layout_height="60dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/img_show_float_bg"
+        android:visibility="invisible">
+
+        <com.camnter.easyrecyclerviewsidebar.EasyFloatingImageView
+            android:id="@+id/section_floating_iv"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerInParent="true"
+            android:visibility="invisible"/>
+
+        <TextView
+            android:id="@+id/section_floating_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="#ff444444"
+            android:textSize="23sp"
+            android:visibility="invisible"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

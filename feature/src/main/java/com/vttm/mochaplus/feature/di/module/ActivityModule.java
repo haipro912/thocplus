@@ -20,6 +20,9 @@ import android.content.Context;
 
 import com.vttm.mochaplus.feature.di.ActivityContext;
 import com.vttm.mochaplus.feature.di.PerActivity;
+import com.vttm.mochaplus.feature.mvp.call.CallPresenter;
+import com.vttm.mochaplus.feature.mvp.call.ICallPresenter;
+import com.vttm.mochaplus.feature.mvp.call.ICallView;
 import com.vttm.mochaplus.feature.mvp.contact.ContactPresenter;
 import com.vttm.mochaplus.feature.mvp.contact.IContactPresenter;
 import com.vttm.mochaplus.feature.mvp.contact.IContactView;
@@ -91,6 +94,11 @@ public class ActivityModule {
 
     @Provides
     IVideoPresenter<IVideoView> provideVideoPresenter(VideoPresenter<IVideoView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    ICallPresenter<ICallView> provideCallPresenter(CallPresenter<ICallView> presenter) {
         return presenter;
     }
 }

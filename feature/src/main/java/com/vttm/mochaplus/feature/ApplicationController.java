@@ -2,9 +2,7 @@ package com.vttm.mochaplus.feature;
 
 import android.app.Application;
 
-import com.facebook.stetho.Stetho;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
-import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 import com.vttm.mochaplus.feature.business.ContactBusiness;
 import com.vttm.mochaplus.feature.data.DataManager;
 import com.vttm.mochaplus.feature.di.component.ApplicationComponent;
@@ -49,11 +47,11 @@ public class ApplicationController extends Application {
 
         CalligraphyConfig.initDefault(mCalligraphyConfig);
 
-        Stetho.initialize(
-                Stetho.newInitializerBuilder(this)
-                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
-                        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
-                        .build());
+//        Stetho.initialize(
+//                Stetho.newInitializerBuilder(this)
+//                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+//                        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
+//                        .build());
         createBusiness();
         initData();
     }

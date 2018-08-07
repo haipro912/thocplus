@@ -8,8 +8,6 @@ import android.util.TimeFormatException;
 
 import com.vttm.mochaplus.feature.R;
 
-import org.jivesoftware.smack.packet.ReengMusicPacket;
-
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -406,14 +404,14 @@ public class TimeHelper {
 //        }
 //    }
 
-    public static boolean checkTimeOutAcceptStrangerMusic(ReengMusicPacket reengMusicPacket) {
-        long timeSend = reengMusicPacket.getTimeSend();
-        long timeReceive = reengMusicPacket.getTimeReceive();
-        long duration = timeReceive - timeSend;
-        // qua thoi gian timeout
-        // chua qua thi tra ve true
-        return duration > TIME_OUT_ACCEPT_STRANGER_MUSIC;
-    }
+//    public static boolean checkTimeOutAcceptStrangerMusic(ReengMusicPacket reengMusicPacket) {
+//        long timeSend = reengMusicPacket.getTimeSend();
+//        long timeReceive = reengMusicPacket.getTimeReceive();
+//        long duration = timeReceive - timeSend;
+//        // qua thoi gian timeout
+//        // chua qua thi tra ve true
+//        return duration > TIME_OUT_ACCEPT_STRANGER_MUSIC;
+//    }
 
     public static int getProgressPercentage(long currentDuration, long totalDuration) {
         if (currentDuration <= 0 || totalDuration <= 0) return 0;

@@ -9,4 +9,6 @@
     <color name="color_animation">#30000000</color>
     <color name="item_select">#f2ebebeb</color>
     <color name="bg_start_trans">#80000000</color>
+
+    <color name="divider">#ffE5E5E5</color>
 </resources>
