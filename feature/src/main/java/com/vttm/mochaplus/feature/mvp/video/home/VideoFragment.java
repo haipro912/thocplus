@@ -106,6 +106,18 @@ public class VideoFragment extends BaseFragment implements AbsInterface.OnItemLi
         }
     }
 
+    @Override
+    public void notifyNetworkChange(boolean flag) {
+        if(flag)
+        {
+            if(datas != null && datas.size() == 0)
+            {
+                currentPage = 0;
+                loadData();
+            }
+        }
+    }
+
     private void loadData() {
         if(currentPage == 0 && datas.size() ==0)
             loadingView.setVisibility(View.VISIBLE);

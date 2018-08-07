@@ -18,6 +18,7 @@ package com.vttm.mochaplus.feature.mvp.base;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,11 +34,15 @@ import android.widget.Toast;
 
 import com.vttm.mochaplus.feature.ApplicationController;
 import com.vttm.mochaplus.feature.R;
+import com.vttm.mochaplus.feature.broadcast.NetworkStateReceiver;
 import com.vttm.mochaplus.feature.di.component.ActivityComponent;
 import com.vttm.mochaplus.feature.di.component.DaggerActivityComponent;
 import com.vttm.mochaplus.feature.di.module.ActivityModule;
+import com.vttm.mochaplus.feature.event.NetworkEvent;
 import com.vttm.mochaplus.feature.utils.CommonUtils;
 import com.vttm.mochaplus.feature.utils.NetworkUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.Unbinder;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -47,13 +52,15 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  * Created by janisharali on 27/01/17.
  */
 
-public abstract class BaseActivity extends AppCompatActivity implements MvpView, BaseFragment.Callback {
+public abstract class BaseActivity extends AppCompatActivity implements MvpView, BaseFragment.Callback, NetworkStateReceiver.NetworkStateReceiverListener {
 
     private ProgressDialog mProgressDialog;
 
     private ActivityComponent mActivityComponent;
 
     private Unbinder mUnBinder;
+    protected BaseFragment currentFragment;
+    private NetworkStateReceiver networkStateReceiver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,6 +69,10 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView,
                 .activityModule(new ActivityModule(this))
                 .applicationComponent(((ApplicationController) getApplication()).getComponent())
                 .build();
+
+        networkStateReceiver = new NetworkStateReceiver();
+        networkStateReceiver.addListener(this);
+        this.registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
 
     }
 
@@ -179,7 +190,23 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView,
             mUnBinder.unbind();
         }
         super.onDestroy();
+
+        networkStateReceiver.removeListener(this);
+        this.unregisterReceiver(networkStateReceiver);
     }
 
     protected abstract void setUp();
+    protected abstract void notifyNetworkChange(boolean flag);
+
+    @Override
+    public void networkAvailable() {
+        notifyNetworkChange(true);
+        EventBus.getDefault().post(new NetworkEvent(true));
+    }
+
+    @Override
+    public void networkUnavailable() {
+        notifyNetworkChange(false);
+        EventBus.getDefault().post(new NetworkEvent(false));
+    }
 }

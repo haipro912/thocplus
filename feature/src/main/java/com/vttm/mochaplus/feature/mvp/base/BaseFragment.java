@@ -24,6 +24,11 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.vttm.mochaplus.feature.di.component.ActivityComponent;
+import com.vttm.mochaplus.feature.event.NetworkEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Unbinder;
 
@@ -167,6 +172,30 @@ public abstract class BaseFragment extends Fragment implements MvpView {
     }
 
     protected abstract void setUp(View view);
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(NetworkEvent event) {
+        notifyNetworkChange(event.isOnline());
+        EventBus.getDefault().cancelEventDelivery(event);
+    }
+
+    protected void notifyNetworkChange(boolean flag)
+    {
+
+    }
 
     @Override
     public void onDestroy() {

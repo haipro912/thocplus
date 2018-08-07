@@ -57,8 +57,19 @@ public class TabVideoFragment extends BaseFragment implements ITabVideoView {
         setupViewPager();
         setupTabLayout();
 
-        if(datas.size() == 0)
+        if(datas != null && datas.size() == 0)
             loadCategory();
+    }
+
+    @Override
+    public void notifyNetworkChange(boolean flag) {
+        if(flag)
+        {
+            if(datas != null && datas.size() == 0)
+            {
+                loadCategory();
+            }
+        }
     }
 
     private void setupTabLayout() {

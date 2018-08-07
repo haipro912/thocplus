@@ -24,6 +24,11 @@ public class LoginActivity extends BaseActivity{
         showFragment(AppConstants.LOGIN.TAB_LOGIN);
     }
 
+    @Override
+    protected void notifyNetworkChange(boolean flag) {
+
+    }
+
     private void showFragment(int id)
     {
         switch (id)

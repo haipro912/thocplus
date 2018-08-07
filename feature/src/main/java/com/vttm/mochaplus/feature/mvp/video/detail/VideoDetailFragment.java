@@ -74,6 +74,7 @@ public class VideoDetailFragment extends BaseFragment implements AbsInterface.On
 
         layout_refresh.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         layout_refresh.setOnRefreshListener(this);
+        layout_refresh.setEnabled(false);
 
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getBaseActivity());
@@ -113,6 +114,29 @@ public class VideoDetailFragment extends BaseFragment implements AbsInterface.On
         loadVideoDetail();
     }
 
+    @Override
+    public void notifyNetworkChange(boolean flag) {
+        if(flag)
+        {
+            if(currentVideo != null && TextUtils.isEmpty(currentVideo.getOriginalPath()))
+            {
+                loadVideoDetail();
+            }
+            else if(datas.size() == 1)
+            {
+                //Load video lien quan
+                recyclerView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        currentPage = 0;
+                        loadVideoRelate();
+                    }
+
+                }, 200);
+            }
+        }
+    }
+
     private void loadVideoDetail() {
         if(presenter != null)
         {
@@ -141,7 +165,7 @@ public class VideoDetailFragment extends BaseFragment implements AbsInterface.On
         }
 
         //Truong hop ko co du lieu de play thi show popup loi, nhan back quay lai man hinh truoc do
-        if(currentVideo != null && TextUtils.isEmpty(response.getVideoDetail().getOriginalPath()))
+        if(currentVideo != null && TextUtils.isEmpty(currentVideo.getOriginalPath()))
         {
             new MaterialDialog.Builder(getBaseActivity())
                     .title(R.string.app_name)

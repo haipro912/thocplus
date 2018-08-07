@@ -21,4 +21,9 @@ public class SplashActivity extends BaseActivity {
 
 
     }
+
+    @Override
+    protected void notifyNetworkChange(boolean flag) {
+
+    }
 }

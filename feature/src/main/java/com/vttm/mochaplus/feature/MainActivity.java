@@ -8,7 +8,6 @@ import android.view.KeyEvent;
 
 import com.bumptech.glide.manager.SupportRequestManagerFragment;
 import com.vttm.mochaplus.feature.mvp.base.BaseActivity;
-import com.vttm.mochaplus.feature.mvp.base.BaseFragment;
 import com.vttm.mochaplus.feature.mvp.main.IMainView;
 import com.vttm.mochaplus.feature.mvp.main.MainFragment;
 import com.vttm.mochaplus.feature.mvp.video.detail.VideoDetailFragment;
@@ -21,7 +20,6 @@ public class MainActivity extends BaseActivity  implements IMainView{
     public final String TAG = getClass().getSimpleName();
     private static final int COUNT_DONW = 2000;
     private boolean isTouchTwoTimes = false;
-    private BaseFragment currentFragment;
 //    private RxPermissions rxPermissions;
 
 
@@ -47,6 +45,10 @@ public class MainActivity extends BaseActivity  implements IMainView{
         showFragment(AppConstants.TAB_MAIN, null);
     }
 
+    @Override
+    protected void notifyNetworkChange(boolean flag) {
+
+    }
 
     @Override
     public void showFragment(int tabId, Bundle bundle) {
@@ -189,12 +191,6 @@ public class MainActivity extends BaseActivity  implements IMainView{
 //                    }
 //                });
 //    }
-
-
-
-
-
-
 
 
 
