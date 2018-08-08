@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/root"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refresh"
@@ -11,7 +11,7 @@
         android:background="@color/itemColor"
         android:descendantFocusability="blocksDescendants">
 
-        <include layout="@layout/layout_recycler_view"/>
+        <include layout="@layout/layout_recycler_view" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <include
@@ -19,5 +19,5 @@
         layout="@layout/layout_loading_process"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 </RelativeLayout>

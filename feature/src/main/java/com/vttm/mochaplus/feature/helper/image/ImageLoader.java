@@ -29,6 +29,18 @@ public class ImageLoader {
     private static final String TAG = ImageLoader.class.getSimpleName();
     public static int FADE_TIME = 1000;
 
+    public static void setImage(Context context, String url, final ImageView imageView) {
+        Random random = new Random();
+        int index = random.nextInt(20);
+        GlideApp.with(context)
+                .load(url)
+                .placeholder(context.getResources().getDrawable(R.color.color_animation))
+                .error(context.getResources().getDrawable(R.color.color_animation))
+                .dontAnimate()
+                .transition(withCrossFade(R.anim.fade_in, FADE_TIME))
+                .into(imageView);
+    }
+
     public static void setImage(Context context, String url, String imageSmall, final ImageView imageView) {
         Random random = new Random();
         int index = random.nextInt(20);
@@ -38,7 +50,7 @@ public class ImageLoader {
                 .thumbnail(GlideApp.with(context).load(imageSmall))
                 .error(context.getResources().getDrawable(R.color.color_animation))
                 .dontAnimate()
-                .transition(withCrossFade(R.anim.fade_in, 1000))
+                .transition(withCrossFade(R.anim.fade_in, FADE_TIME))
                 .into(imageView);
     }
 
@@ -48,7 +60,7 @@ public class ImageLoader {
                 .placeholder(context.getResources().getDrawable(R.color.color_animation))
                 .error(context.getResources().getDrawable(R.color.color_animation))
                 .dontAnimate()
-                .transition(withCrossFade(R.anim.fade_in, 1000))
+                .transition(withCrossFade(R.anim.fade_in, FADE_TIME))
                 .into(imageView);
     }
 

@@ -63,4 +63,7 @@
     <string name="message_share_location">location</string>
     <string name="message_transfer_money">Airtime transfer</string>
     <string name="message_event_follow_room">follow room</string>
+    <string name="like">Like</string>
+    <string name="comment">Comment</string>
+    <string name="share">Share</string>
 </resources>

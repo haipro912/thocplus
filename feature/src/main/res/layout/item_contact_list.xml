@@ -14,7 +14,7 @@
         android:layout_toRightOf="@id/section_iv"
         android:textColor="#ff444444"
         android:textSize="@dimen/text_size_title"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:layout_margin="12dp"
-            android:src="@drawable/img_default_head"/>
+            android:src="@drawable/img_default_head" />
 
         <TextView
             android:id="@+id/section_name_tv"
@@ -37,7 +37,7 @@
             android:layout_toEndOf="@id/section_iv"
             android:layout_toRightOf="@id/section_iv"
             android:textColor="#ff444444"
-            android:textSize="@dimen/text_size_title"/>
+            android:textSize="@dimen/text_size_title" />
 
         <View
             android:layout_width="match_parent"
@@ -45,6 +45,6 @@
             android:layout_below="@id/section_iv"
             android:layout_marginLeft="12dp"
             android:layout_marginStart="12dp"
-            android:background="#ffE5E5E5"/>
+            android:background="#ffE5E5E5" />
     </RelativeLayout>
 </LinearLayout>

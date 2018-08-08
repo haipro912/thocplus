@@ -1,12 +1,16 @@
 package com.vttm.mochaplus.feature.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class VideoModel implements Serializable{
+public class VideoModel implements Serializable, Parcelable {
     @SerializedName("id")
     @Expose
     private int id;
@@ -293,4 +297,86 @@ public class VideoModel implements Serializable{
     public void setImage_path_thump(String image_path_thump) {
         this.image_path_thump = image_path_thump;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.name);
+        dest.writeString(this.description);
+        dest.writeString(this.duration);
+        dest.writeString(this.originalPath);
+        dest.writeString(this.imagePath);
+        dest.writeString(this.image_path_small);
+        dest.writeString(this.image_path_thump);
+        dest.writeString(this.createdAt);
+        dest.writeInt(this.isView);
+        dest.writeInt(this.isLike);
+        dest.writeInt(this.isShare);
+        dest.writeInt(this.isFollow);
+        dest.writeString(this.link);
+        dest.writeString(this.username);
+        dest.writeString(this.aspecRatio);
+        dest.writeString(this.videoType);
+        dest.writeInt(this.totalLike);
+        dest.writeInt(this.totalView);
+        dest.writeInt(this.totalUnlike);
+        dest.writeInt(this.totalShare);
+        dest.writeInt(this.totalComment);
+        dest.writeInt(this.numfollow);
+        dest.writeList(this.categories);
+        dest.writeList(this.channels);
+        dest.writeInt(this.filmGroupsID);
+    }
+
+    public VideoModel() {
+    }
+
+    protected VideoModel(Parcel in) {
+        this.id = in.readInt();
+        this.name = in.readString();
+        this.description = in.readString();
+        this.duration = in.readString();
+        this.originalPath = in.readString();
+        this.imagePath = in.readString();
+        this.image_path_small = in.readString();
+        this.image_path_thump = in.readString();
+        this.createdAt = in.readString();
+        this.isView = in.readInt();
+        this.isLike = in.readInt();
+        this.isShare = in.readInt();
+        this.isFollow = in.readInt();
+        this.link = in.readString();
+        this.username = in.readString();
+        this.aspecRatio = in.readString();
+        this.videoType = in.readString();
+        this.totalLike = in.readInt();
+        this.totalView = in.readInt();
+        this.totalUnlike = in.readInt();
+        this.totalShare = in.readInt();
+        this.totalComment = in.readInt();
+        this.numfollow = in.readInt();
+        this.categories = new ArrayList<VideoCategoryModel>();
+        in.readList(this.categories, VideoCategoryModel.class.getClassLoader());
+        this.channels = new ArrayList<ChannelModel>();
+        in.readList(this.channels, ChannelModel.class.getClassLoader());
+        this.filmGroupsID = in.readInt();
+    }
+
+    public static final Parcelable.Creator<VideoModel> CREATOR = new Parcelable.Creator<VideoModel>() {
+        @Override
+        public VideoModel createFromParcel(Parcel source) {
+            return new VideoModel(source);
+        }
+
+        @Override
+        public VideoModel[] newArray(int size) {
+            return new VideoModel[size];
+        }
+    };
 }

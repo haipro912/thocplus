@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Point;
 import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -152,6 +154,12 @@ public class ViewUtils {
         }
         String str = paramString1.replace("<html>", "").replace("</html>", "").replace("<head></head>", "").replace("<body>", "").replace("<h1>", "<b>").replace("<h2>", "<b>").replace("<h3>", "<b>").replace("</h1>", "</b>").replace("</h2>", "</b>").replace("</h3>", "</b>").replace("<table", "<table width='100%'").replace("<tbody", "<tbody width='100%'").replace("<figure", "<div").replace("</figure>", "</div>").replace("<figcaption", "<div").replace("</figcaption>", "</div>").replace("<script type=\"text/javascript\">window.onload = function () {resizeNewsImage(\"news-image\", 500);}</script>", "").replace("<div class=\"images-common\">", "<div>").replace("<div class=\"images-container\">", "<div>").replace("<div class=\"images-richard\">", "<div>");
         return "<html style='background:#3a3a3a;text-align:left;margin:0 4px 0 4px;'><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><style>@font-face {\n    font-family: MyFont;\n    src: url(\"file:///android_asset/fonts/Roboto-Regular.ttf\")\n}h2 {color: #F4F4F4;line-height:26px;text-align:left;}blockquote {margin:0px;}body {color: #F4F4F4 !important;line-height:26px;font-family: MyFont;}body *:not(.mytitle) {color:#F4F4F4 !important;}tbody {color: #000000;line-height:26px}b:not(.mytitle) { line-height:26px}img, object, embed, iframe{width: 110% !important;margin:0 -16px 0 -16px;}strong{ line-height:26px}img + em {background:#222222;color:#ffffff;font-style: italic}i { text-align:left;color: #F4F4F4; line-height:26px}</style></head><style></style><body><div style='text-align:left;line-height:26px' >" + str + "<script type=\"text/javascript\">\n   function showImageArticle(url){       JSInterface.showImageArticle(url);\n   }   function showVideoArticle(url){       JSInterface.showVideoArticle(url);\n   }   function showThumb(elementId,src){        document.getElementById(elementId).src = src;    }   function getWebHtml(){        var html = document.getElementsByTagName('html')[0].innerHTML;        JSInterface.getWebHtml(html);   }   function showVideoArticle2(url){        JSInterface.showVideoArticle2(url);   }</script>\n</body></html>";
+    }
+
+    public static boolean shouldUseBigPlayer(Display display) {
+        Point displaySize = new Point();
+        display.getSize(displaySize);
+        return displaySize.x >= displaySize.y;
     }
 
 }

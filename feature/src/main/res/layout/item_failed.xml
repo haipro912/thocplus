@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="240dp"
@@ -12,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:src="@mipmap/ic_launcher"/>
+        android:src="@mipmap/ic_launcher" />
 
     <TextView
         android:id="@+id/tvLoadFail"
@@ -23,5 +22,5 @@
         android:layout_marginTop="@dimen/padding_normal"
         android:text="@string/failed_load"
         android:textColor="@color/textColorPrimary"
-        android:textSize="@dimen/text_size_title"/>
+        android:textSize="@dimen/text_size_title" />
 </RelativeLayout>

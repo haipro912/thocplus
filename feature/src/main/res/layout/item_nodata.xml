@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/rootView"
+<RelativeLayout android:id="@+id/rootView"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="240dp"
@@ -12,7 +11,7 @@
         android:id="@+id/imageView"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:src="@mipmap/ic_launcher"/>
+        android:src="@mipmap/ic_launcher" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -22,6 +21,6 @@
         android:layout_centerHorizontal="true"
         android:textSize="@dimen/text_size_title"
         android:textColor="@color/textColorPrimary"
-        android:text="@string/nodata_load"/>
+        android:text="@string/nodata_load" />
 
 </RelativeLayout>
