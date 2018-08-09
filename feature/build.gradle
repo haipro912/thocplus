@@ -44,7 +44,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-//    implementation project(':ChatLibrary')
+    implementation project(':chatlib')
 //    implementation project(':Stringee')
 
     //Logger
@@ -88,21 +88,8 @@ dependencies {
     // Base recyclerview
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.40'
 
-    // RxPermission
-//    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
-
-    // Stetho debug realm
-//    compile 'com.facebook.stetho:stetho:1.5.0'
-//    compile 'com.uphyca:stetho_realm:2.0.0'
-
     implementation 'com.github.pavlospt:roundedletterview:1.2'
 
-    implementation 'com.camnter.easyrecyclerview:easyrecyclerview:1.3'
-    implementation 'com.camnter.easyrecyclerviewsidebar:easyrecyclerviewsidebar:1.3'
-
-    implementation 'com.google.android.exoplayer:exoplayer:2.8.2'
-
-    compile 'fr.bmartel:jspeedtest:1.32.1'
     //Loading like facebook
     implementation 'com.facebook.shimmer:shimmer:0.3.0'
 
@@ -115,4 +102,18 @@ dependencies {
     //Toro
     implementation "im.ene.toro3:toro:3.5.2"
     implementation "im.ene.toro3:toro-ext-exoplayer:3.5.2"
+
+    implementation 'com.camnter.easyrecyclerview:easyrecyclerview:1.3'
+    implementation 'com.camnter.easyrecyclerviewsidebar:easyrecyclerviewsidebar:1.3'
+
+    implementation 'com.google.android.exoplayer:exoplayer:2.8.2'
+
+    implementation 'fr.bmartel:jspeedtest:1.32.1'
+
+    // RxPermission
+//    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
+
+    // Stetho debug realm
+//    compile 'com.facebook.stetho:stetho:1.5.0'
+//    compile 'com.uphyca:stetho_realm:2.0.0'
 }

@@ -8,11 +8,19 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 
+import com.vttm.mochaplus.feature.interfaces.NetworkConnectivityChangeListener;
+
 /**
  * @author namnh40
  *
  */
 public class NetworkUtils {
+    public static final int TYPE_WIFI = 1;
+    public static final int TYPE_MOBILE = 0;
+    public static final int TYPE_NOT_CONNECTED = 2;
+
+    private static NetworkConnectivityChangeListener mNetworkConnectivityChangeListeners;
+
     /**
      * Get the network info
      * @param context
@@ -116,5 +124,23 @@ public class NetworkUtils {
         } else {
             return false;
         }
+    }
+
+    public static int checkTypeConnection(Context mContext) {
+        ConnectivityManager cm = (ConnectivityManager) mContext
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (null != activeNetwork) {
+            if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI)
+                return TYPE_WIFI;
+            if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE)
+                return TYPE_MOBILE;
+        }
+        return TYPE_NOT_CONNECTED;
+    }
+
+    public static synchronized void addNetworkConnectivityChangeListener(
+            NetworkConnectivityChangeListener listener) {
+        mNetworkConnectivityChangeListeners = listener;
     }
 }

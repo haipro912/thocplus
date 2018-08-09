@@ -30,6 +30,16 @@ public final class AppConstants {
 
     public static final int NUM_SIZE = 20;
 
+    public static final class XMPP {
+        public static final String XMPP_RESOUCE = "@reeng/reeng";
+        public static final String XMPP_DOMAIN = "reeng";
+        public static final String XMPP_SMS = "sms";
+        public static final String XMPP_GROUP_RESOUCE = "@muc.reeng/reeng";
+        public static final String XMPP_OFFICAL_RESOUCE = "@offical.reeng/reeng";
+        public static final String XMPP_ROOM_RESOUCE = "@room.reeng/reeng";
+        public static final String XMPP_BROADCAST_RESOUCE = "@broadcast.reeng/reeng";
+    }
+
     public static final class FILE {
         public static final int BUFFER_SIZE_DEFAULT = 4096; // 4 Kb
         public static final long ONE_MEGABYTE = 1024 * 1024;

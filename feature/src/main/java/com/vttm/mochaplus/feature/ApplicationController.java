@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.vttm.mochaplus.feature.business.ContactBusiness;
+import com.vttm.mochaplus.feature.business.MessageBusiness;
 import com.vttm.mochaplus.feature.data.DataManager;
 import com.vttm.mochaplus.feature.di.component.ApplicationComponent;
 import com.vttm.mochaplus.feature.di.component.DaggerApplicationComponent;
@@ -18,6 +19,7 @@ public class ApplicationController extends Application {
 
     private PhoneNumberUtil phoneUtil;
     private ContactBusiness mContactBusiness;
+    private MessageBusiness mMessageBusiness;
     private ReloadDataThread mReloadDataThread;
 
     @Inject
@@ -120,6 +122,10 @@ public class ApplicationController extends Application {
 
     public ContactBusiness getContactBusiness() {
         return mContactBusiness;
+    }
+
+    public MessageBusiness getMessageBusiness() {
+        return mMessageBusiness;
     }
 
     public DataManager getDataManager() {

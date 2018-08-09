@@ -1,1 +1,1 @@
-include ':feature', ':app', ':base', ':instantapp', ':ChatLibrary', ':Stringee'
+include ':feature', ':app', ':base', ':instantapp', ':Stringee', ':chatlib'
