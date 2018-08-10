@@ -72,8 +72,10 @@ public class XMPPManager {
     public XMPPManager(ApplicationController app) {
         mApplication = app;
         mPref = app.getSharedPreferences(AppConstants.PREFERENCE.PREF_DIR_NAME, Context.MODE_PRIVATE);
-        configSmack();
+//        configSmack();
 //        mMessageRetryManager = MessageRetryManager.getInstance(app, this);
+
+        initConnectionAsAnonymous();
     }
 
     private void configSmack() {
@@ -88,8 +90,6 @@ public class XMPPManager {
                     .setSendPresence(false)
                     .setSocketFactory(SSLSocketFactory.getDefault())
                     .build();
-
-            initConnectionAsAnonymous();
 
           
         } catch (XmppStringprepException e) {
