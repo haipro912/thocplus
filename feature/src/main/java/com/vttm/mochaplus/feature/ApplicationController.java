@@ -1,6 +1,8 @@
 package com.vttm.mochaplus.feature;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.vttm.mochaplus.feature.business.ContactBusiness;
@@ -43,6 +45,12 @@ public class ApplicationController extends Application {
             applicationController = new ApplicationController();
         }
         return applicationController;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     @Override

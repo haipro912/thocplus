@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.text.TextUtils;
 
 import com.vttm.chatlib.filter.FromContainsFilter;
 import com.vttm.chatlib.packet.EventReceivedMessagePacket;
@@ -12,7 +11,6 @@ import com.vttm.chatlib.packet.GSMMessagePacket;
 import com.vttm.chatlib.packet.ReengMessagePacket;
 import com.vttm.chatlib.packet.ShareMusicMessagePacket;
 import com.vttm.chatlib.packet.VoiceMailGSMMessagePacket;
-import com.vttm.chatlib.utils.Log;
 import com.vttm.mochaplus.feature.ApplicationController;
 import com.vttm.mochaplus.feature.data.socket.xmpp.listener.GSMMessageListener;
 import com.vttm.mochaplus.feature.data.socket.xmpp.listener.PresenceListener;
@@ -29,9 +27,10 @@ import com.vttm.mochaplus.feature.utils.Config;
 import com.vttm.mochaplus.feature.utils.NetworkUtils;
 
 import org.jivesoftware.smack.AbstractXMPPConnection;
+import org.jivesoftware.smack.ConnectionConfiguration;
+import org.jivesoftware.smack.ReconnectionManager;
 import org.jivesoftware.smack.SmackConfiguration;
 import org.jivesoftware.smack.SmackException;
-import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.filter.AndFilter;
 import org.jivesoftware.smack.filter.StanzaFilter;
@@ -39,10 +38,13 @@ import org.jivesoftware.smack.filter.StanzaTypeFilter;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
+import org.jxmpp.jid.impl.JidCreate;
 import org.jxmpp.stringprep.XmppStringprepException;
 
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import javax.net.ssl.SSLSocketFactory;
 
 public class XMPPManager {
     private static final String TAG = XMPPManager.class.getSimpleName();
@@ -78,11 +80,18 @@ public class XMPPManager {
         try {
             SmackConfiguration.setDefaultReplyTimeout(Config.Smack.PACKET_REPLY_TIMEOUT);
             mConfig = XMPPTCPConnectionConfiguration.builder()
-                    .setXmppDomain(Config.DOMAIN_MSG)
+                    .setSecurityMode(ConnectionConfiguration.SecurityMode.required)
+                    .setXmppDomain(JidCreate.domainBareFrom(Config.Smack.RESOURCE))
                     .setHost(Config.DOMAIN_MSG)
                     .setPort(Config.PORT_MSG)
                     .setResource(Config.Smack.RESOURCE)
+                    .setSendPresence(false)
+                    .setSocketFactory(SSLSocketFactory.getDefault())
                     .build();
+
+            initConnectionAsAnonymous();
+
+          
         } catch (XmppStringprepException e) {
             AppLogger.e(TAG, e);
         }
@@ -102,6 +111,9 @@ public class XMPPManager {
             AppLogger.i(TAG, "!mConnection.isConnected()");
             try {
                 mConnection.connect();
+
+                // Enable automatic reconnection
+                ReconnectionManager.getInstanceFor(mConnection).enableAutomaticReconnection();
             } catch (XMPPException e) {
                 AppLogger.e(TAG, e);
             } catch (SmackException e) {
@@ -128,135 +140,135 @@ public class XMPPManager {
     }
 
     public void connectByCode(ApplicationController mContext, String mPhoneNumber, String password, String countryCode) throws XMPPException, IllegalStateException {
-        initConnectionAsAnonymous();
-        // add success packet filter to get token
-        addSASLListener(mContext);
-        // login
-        addAllListener(mContext);
-        try {
-            mConnection.login(mPhoneNumber, password);
-        } catch (SmackException e) {
-            AppLogger.e(TAG, e);
-        } catch (IOException e) {
-            AppLogger.e(TAG, e);
-        } catch (InterruptedException e) {
-            AppLogger.e(TAG, e);
-        }
-        mConnection.customLogin(mPhoneNumber, password, Config.Smack.RESOURCE, Connection.CODE_AUTH_NON_SASL, Config.REVISION, countryCode);
-        addConnectionListener();
-        sendPresenceAfterLogin(Connection.CODE_AUTH_NON_SASL, true);
-        // start ping
-        startPing();
-        // set roster
-        ApplicationController application = (ApplicationController) mContext.getApplicationContext();
-        application.loadDataAfterLogin();
-        DeviceHelper.checkToSendDeviceIdAfterLogin(application, mPhoneNumber);
+//        initConnectionAsAnonymous();
+//        // add success packet filter to get token
+//        addSASLListener(mContext);
+//        // login
+//        addAllListener(mContext);
+//        try {
+//            mConnection.iin(mPhoneNumber, password);
+//        } catch (SmackException e) {
+//            AppLogger.e(TAG, e);
+//        } catch (IOException e) {
+//            AppLogger.e(TAG, e);
+//        } catch (InterruptedException e) {
+//            AppLogger.e(TAG, e);
+//        }
+//        mConnection.customLogin(mPhoneNumber, password, Config.Smack.RESOURCE, Connection.CODE_AUTH_NON_SASL, Config.REVISION, countryCode);
+//        addConnectionListener();
+//        sendPresenceAfterLogin(Connection.CODE_AUTH_NON_SASL, true);
+//        // start ping
+//        startPing();
+//        // set roster
+//        ApplicationController application = (ApplicationController) mContext.getApplicationContext();
+//        application.loadDataAfterLogin();
+//        DeviceHelper.checkToSendDeviceIdAfterLogin(application, mPhoneNumber);
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public synchronized void connectByToken(ApplicationController ctx, String mPhoneNumber,
                                             String mToken, String countryCode) {
-        Log.f(TAG, "[VIETTEL] connect to server by token");
-//        ctx.logDebugContent("[VIETTEL] connect to server by token");
-        final long time = System.currentTimeMillis();
-        mApplication = ctx;
-        if (mConfig == null) {
-            configSmack();
-        }
-        if (mConfig == null || mApplication == null || TextUtils.isEmpty(mPhoneNumber) || TextUtils.isEmpty(mToken)) {
-            return;
-        }
-        String messageException = "default";
-//        String errorCode = Constants.LogKQI.StateKQI.ERROR_EXCEPTION.getValue();
-        try {
-            mConfig.setUserName(mPhoneNumber);
-            mConfig.setToken(mToken);
-            mConfig.setRevision(Config.REVISION);
-            mConfig.setCountryCode(countryCode);
-        }
-        catch (NullPointerException ex)
-        {
-            return;
-        }
-
-        if (mConnection == null) {
-            mConnection = new XMPPConnection(mConfig, mApplication);
-        }
-        if (mConnection.isAuthenticated()) {
-            Log.f(TAG, "[VIETTEL] reconnectByToken but already authenticated --> return now");
-//            ctx.logDebugContent("[VIETTEL] reconnectByToken but already authenticated --> return now");
-            notifyXMPPConnected();
-            return;
-        }
-        boolean loginSuccessful = false;
-        try {
-            // add success packet filter to get token
-            addSASLListener(mApplication);
-            // logint
-            addAllListener(mApplication);
-            mConnection.connect();
-            loginSuccessful = true;
-            Log.f(TAG, "login successful");
-//            long deltaTime = (System.currentTimeMillis() - time);
-//            ctx.logDebugContent("login successful take: " + deltaTime);
-//            LogKQIHelper.getInstance(mApplication).saveLogKQI(Constants.LogKQI.LOGIN_BY_TOKEN,
-//                    String.valueOf(deltaTime), String.valueOf(time), Constants.LogKQI.StateKQI.SUCCESS.getValue());
-            addConnectionListener();
-            sendPresenceAfterLogin(Connection.TOKEN_AUTH_NON_SASL, false);
-        } catch (IllegalStateException ie) {
-            Log.e(TAG, "Exception", ie);
-            messageException = "IllegalStateException";
-        } catch (XMPPException xe) {
-            Log.e(TAG, "Exception", xe);
-//            XMPPError xmppError = xe.getXMPPError();
-//            if (xmppError != null) {
-//                int code = xmppError.getCode();
-//                if (code == XMPPCode.E401_UNAUTHORIZED
-//                        || code == XMPPCode.E409_RESOURCE_CONFLICT) {
-//                    ReengAccountBusiness reengAccountBusiness = mApplication
-//                            .getReengAccountBusiness();
-//                    ReportHelper.reportLockAccount(mApplication,
-//                            reengAccountBusiness.getJidNumber(),
-//                            reengAccountBusiness.getToken(),
-//                            ctx.getString(XMPPCode.getResourceOfCode(code)));
-//                    reengAccountBusiness.lockAccount(mApplication, false);
-//                    // Client is locked  (toanvk2)
-//                    destroyXmpp();
-//                    checkAppForegroundAndGotoLogin();
-//                }
-//                messageException = "XMPPException : " + code;
-//                errorCode = String.valueOf(code);
-//            } else {
-//                messageException = "XMPPException xmppError == null";
-//            }
-        } catch (Exception e) {
-            messageException = "Exception" + e.getMessage();
-            Log.e(TAG, "Exception", e);
-        } finally {
-//            ContactBusiness contactBusiness = mApplication.getContactBusiness();
-//            if (!loginSuccessful) {
-//                destroyAnonymousConnection();
-//                notifyXMPPDisconneted();
-//                stopPing();
-//                if (Constants.VIP.getListNumber().contains(mPhoneNumber)) {
-//                    String cate = mApplication.getString(R.string.ga_category_vip) + mPhoneNumber.substring(6);
-//                    mApplication.trackingEvent(cate, messageException, TimeHelper.formatTimeInDay(System
-//                            .currentTimeMillis()));
-//                }
-//                Log.f(TAG, "loginFail: " + messageException);
-//                ctx.logDebugContent("connectByToken loginFail: " + messageException);
+//        Log.f(TAG, "[VIETTEL] connect to server by token");
+////        ctx.iDebugContent("[VIETTEL] connect to server by token");
+//        final long time = System.currentTimeMillis();
+//        mApplication = ctx;
+//        if (mConfig == null) {
+//            configSmack();
+//        }
+//        if (mConfig == null || mApplication == null || TextUtils.isEmpty(mPhoneNumber) || TextUtils.isEmpty(mToken)) {
+//            return;
+//        }
+//        String messageException = "default";
+////        String errorCode = Constants.iKQI.StateKQI.ERROR_EXCEPTION.getValue();
+//        try {
+//            mConfig.setUserName(mPhoneNumber);
+//            mConfig.setToken(mToken);
+//            mConfig.setRevision(Config.REVISION);
+//            mConfig.setCountryCode(countryCode);
+//        }
+//        catch (NullPointerException ex)
+//        {
+//            return;
+//        }
 //
-//                long deltaTime = (System.currentTimeMillis() - time);
-//                LogKQIHelper.getInstance(mApplication).saveLogKQI(Constants.LogKQI.LOGIN_BY_TOKEN,
-//                        String.valueOf(deltaTime), String.valueOf(time), errorCode);
-//            } else {
-//                notifyXMPPConnected();
-//                startPing();
-//                // login success get all contact, syncontact
-//                contactBusiness.queryPhoneNumberInfo();
-//                mApplication.getReengAccountBusiness().uploadDataIfNeeded();
-//            }
-        }
+//        if (mConnection == null) {
+//            mConnection = new XMPPConnection(mConfig, mApplication);
+//        }
+//        if (mConnection.isAuthenticated()) {
+//            Log.f(TAG, "[VIETTEL] reconnectByToken but already authenticated --> return now");
+////            ctx.iDebugContent("[VIETTEL] reconnectByToken but already authenticated --> return now");
+//            notifyXMPPConnected();
+//            return;
+//        }
+//        boolean loginSuccessful = false;
+//        try {
+//            // add success packet filter to get token
+//            addSASLListener(mApplication);
+//            // logint
+//            addAllListener(mApplication);
+//            mConnection.connect();
+//            loginSuccessful = true;
+//            Log.f(TAG, "login successful");
+////            long deltaTime = (System.currentTimeMillis() - time);
+////            ctx.iDebugContent("login successful take: " + deltaTime);
+////            LogKQIHelper.getInstance(mApplication).saveLogKQI(Constants.iKQI.iIN_BY_TOKEN,
+////                    String.valueOf(deltaTime), String.valueOf(time), Constants.iKQI.StateKQI.SUCCESS.getValue());
+//            addConnectionListener();
+//            sendPresenceAfterLogin(Connection.TOKEN_AUTH_NON_SASL, false);
+//        } catch (IllegalStateException ie) {
+//            Log.e(TAG, "Exception", ie);
+//            messageException = "IllegalStateException";
+//        } catch (XMPPException xe) {
+//            Log.e(TAG, "Exception", xe);
+////            XMPPError xmppError = xe.getXMPPError();
+////            if (xmppError != null) {
+////                int code = xmppError.getCode();
+////                if (code == XMPPCode.E401_UNAUTHORIZED
+////                        || code == XMPPCode.E409_RESOURCE_CONFLICT) {
+////                    ReengAccountBusiness reengAccountBusiness = mApplication
+////                            .getReengAccountBusiness();
+////                    ReportHelper.reportLockAccount(mApplication,
+////                            reengAccountBusiness.getJidNumber(),
+////                            reengAccountBusiness.getToken(),
+////                            ctx.getString(XMPPCode.getResourceOfCode(code)));
+////                    reengAccountBusiness.lockAccount(mApplication, false);
+////                    // Client is locked  (toanvk2)
+////                    destroyXmpp();
+////                    checkAppForegroundAndGotoLogin();
+////                }
+////                messageException = "XMPPException : " + code;
+////                errorCode = String.valueOf(code);
+////            } else {
+////                messageException = "XMPPException xmppError == null";
+////            }
+//        } catch (Exception e) {
+//            messageException = "Exception" + e.getMessage();
+//            Log.e(TAG, "Exception", e);
+//        } finally {
+////            ContactBusiness contactBusiness = mApplication.getContactBusiness();
+////            if (!loginSuccessful) {
+////                destroyAnonymousConnection();
+////                notifyXMPPDisconneted();
+////                stopPing();
+////                if (Constants.VIP.getListNumber().contains(mPhoneNumber)) {
+////                    String cate = mApplication.getString(R.string.ga_category_vip) + mPhoneNumber.substring(6);
+////                    mApplication.trackingEvent(cate, messageException, TimeHelper.formatTimeInDay(System
+////                            .currentTimeMillis()));
+////                }
+////                Log.f(TAG, "loginFail: " + messageException);
+////                ctx.iDebugContent("connectByToken loginFail: " + messageException);
+////
+////                long deltaTime = (System.currentTimeMillis() - time);
+////                LogKQIHelper.getInstance(mApplication).saveLogKQI(Constants.iKQI.iIN_BY_TOKEN,
+////                        String.valueOf(deltaTime), String.valueOf(time), errorCode);
+////            } else {
+////                notifyXMPPConnected();
+////                startPing();
+////                // login success get all contact, syncontact
+////                contactBusiness.queryPhoneNumberInfo();
+////                mApplication.getReengAccountBusiness().uploadDataIfNeeded();
+////            }
+//        }
     }
 
 

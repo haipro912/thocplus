@@ -6,8 +6,8 @@ public class Config {
 
     public static final String REVISION = "1";
 
-    public static final String DOMAIN_MSG = "msg.mocha.com.vn";
-    public static final int PORT_MSG = 5228;
+    public static final String DOMAIN_MSG = "125.212.226.16";
+    public static final int PORT_MSG = 5229;
 
     public static final String DOMAIN_VIDEO = "hl2.mocha.com.vn";
     public static final String CLIENT_TYPE = "Android";
