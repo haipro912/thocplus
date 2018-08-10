@@ -706,13 +706,13 @@ public class ReengMessagePacket extends Stanza{
         String str = "";
         if (phoneNumbers != null && phoneNumbers.size() > 0) {
             StringBuilder buf = new StringBuilder();
-            buf.append("<members>");
-            for (int i = 0; i < phoneNumbers.size(); i++) {
-                buf.append("<member>").append(StringUtils.escapeForXml(phoneNumbers.get(i)))
-                        .append("</member>");
-            }
-            buf.append(getExtensionsXML());
-            buf.append("</members>");
+//            buf.append("<members>");
+//            for (int i = 0; i < phoneNumbers.size(); i++) {
+//                buf.append("<member>").append(StringUtils.escapeForXml(phoneNumbers.get(i)))
+//                        .append("</member>");
+//            }
+//            buf.append(getExtensionsXML());
+//            buf.append("</members>");
             return buf.toString();
         }
         return str;
@@ -1070,280 +1070,280 @@ public class ReengMessagePacket extends Stanza{
     @Override
     public CharSequence toXML(String enclosingNamespace) {
         StringBuilder buf = new StringBuilder();
-        buf.append("<message");
-        if (getXmlns() != null) {
-            buf.append(" xmlns=\"").append(getXmlns()).append("\"");
-        }
-        if (language != null) {
-            buf.append(" xml:lang=\"").append(getLanguage()).append("\"");
-        }
-        if (getPacketID() != null) {
-            buf.append(" id=\"").append(getPacketID()).append("\"");
-        }
-        if (getTo() != null) {
-            buf.append(" to=\"").append(StringUtils.escapeForXml(getTo()))
-                    .append("\"");
-        }
-        if (getFrom() != null) {
-            buf.append(" from=\"").append(StringUtils.escapeForXml(getFrom()))
-                    .append("\"");
-        }
-        if (type != Type.normal) {
-            buf.append(" type=\"").append(type).append("\"");
-        } else if (typeString != null) {
-            buf.append(" type=\"").append(typeString).append("\"");
-        }
-        if (stickyState != -1) {
-            buf.append(" is_sticky=\"").append(stickyState).append("\"");
-        }
-        if (subType != SubType.normal) {
-            buf.append(" subtype=\"").append(subType).append("\"");
-        } else if (subTypeString != null) {
-            buf.append(" subtype=\"").append(subTypeString).append("\"");
-        }
-        if (!TextUtils.isEmpty(external)) {
-            buf.append(" external=\"").append(StringUtils.escapeForXml(external)).append("\"");
-        }
-        if (getSender() != null) {
-            buf.append(" member=\"").append(getSender()).append("\"");
-        }
-        if (senderName != null) {
-            buf.append(" name=\"").append(StringUtils.escapeForXml(senderName)).append("\"");
-        }
-        if(!TextUtils.isEmpty(lastAvatar)){
-            buf.append(" lastavatar=\"").append(StringUtils.escapeForXml(lastAvatar)).append("\"");
-        }
-        if (timeSend != -1L) {
-            buf.append(" timesend=\"").append(timeSend).append("\"");
-        }
-        //send lastseen
-        if(lastSeen !=-1){
-            buf.append(" lastseen=\"").append(lastSeen).append("\"");
-        }
-        if (!TextUtils.isEmpty(getAvnoNumber())) {
-            buf.append(" virtual=\"").append(getAvnoNumber()).append("\"");
-        }
-        // buf.append(" expired=\"").append(System.currentTimeMillis() + 10000).append("\"");    //TODO test expired
-        buf.append(">");
-        if (subject != null) {
-            buf.append("<subject>").append(StringUtils.escapeForXml(subject)).append("</subject>");
-        }
-        //add thread id
-        if (thread != null) {
-            buf.append("<thread>").append(thread).append("</thread>");
-        }
-        // Add the body in the default language
-        if (noStore) {
-            buf.append("<no_store/>");
-        }
-        /*if (groupClass != -1) {
-            buf.append("<gtype>").append(groupClass).append("</gtype>");
-        }*/
-        if (cState != -1) {
-            buf.append("<cstate>").append(cState).append("</cstate>");
-        }
-        if (body != null) {
-            buf.append("<body");
-            if (!TextUtils.isEmpty(largeEmo)) {
-                buf.append(" emoticon=\"").append(largeEmo).append("\"");
-            }
-            buf.append(">").append(StringUtils.escapeForXml(getBody()))
-                    .append("</body>");
-        }
-        if (!TextUtils.isEmpty(getPhoneNumbersToXML())) {
-            buf.append(getPhoneNumbersToXML());
-        }
-        if (avatarUrl != null) {
-            buf.append("<avatar>").append(StringUtils.escapeForXml(avatarUrl))
-                    .append("</avatar>");
-        }
-        //add contact element
-        if (tel != null && tel.length() > 0) {
-            buf.append("<tel>").append(StringUtils.escapeForXml(tel)).append("</tel>");
-        }
-        if (!TextUtils.isEmpty(name)) {
-            buf.append("<name>").append(StringUtils.escapeForXml(name)).append("</name>");
-        }
-        if (!TextUtils.isEmpty(officalName)) {
-            buf.append("<officalname>").append(StringUtils.escapeForXml(officalName)).append("</officalname>");
-        }
-        if (!TextUtils.isEmpty(fromName)) {
-            buf.append("<from_name>").append(StringUtils.escapeForXml(fromName)).append("</from_name>");
-        }
-        if (!TextUtils.isEmpty(toName)) {
-            buf.append("<to_name>").append(StringUtils.escapeForXml(toName)).append("</to_name>");
-        }
-        if (!TextUtils.isEmpty(nick)) {
-            buf.append("<nick>").append(StringUtils.escapeForXml(nick)).append("</nick>");
-        }
-        if (!TextUtils.isEmpty(toAvatar)) {
-            buf.append("<to_avatar>").append(StringUtils.escapeForXml(toAvatar)).append("</to_avatar>");
-        }
-        if (!TextUtils.isEmpty(fromAvatar)) {
-            buf.append("<from_avatar>").append(StringUtils.escapeForXml(fromAvatar)).append("</from_avatar>");
-        }
-        if (!TextUtils.isEmpty(appId)) {
-            buf.append("<app_id>").append(StringUtils.escapeForXml(appId)).append("</app_id>");
-        }
-        // add sharevideov2 message
-        if (videoUrl != null) {
-            buf.append("<sharevideov2>").append(StringUtils.escapeForXml(videoUrl)).append("/>");
-        }
-        if (videoThumb != null) {
-            buf.append("<thumb>").append(StringUtils.escapeForXml(videoThumb)).append("</thumb>");
-        }
-        if (mediaLink != null) {
-            buf.append("<media_link>").append(StringUtils.escapeForXml(mediaLink)).append("</media_link>");
-        }
-        // Add file message
-        if (fileType != FileType.normal) {
-            buf.append("<type>").append(fileType).append("</type");
-        }
-        if (fileId != null) {
-            buf.append("<id>").append(fileId).append("</id>");
-        }
-        // Add duration
-        if (duration > 0) {
-            buf.append("<duration>").append(String.valueOf(duration)).append("</duration>");
-        }
-        // Add size
-        if (size > 0) {
-            buf.append("<size>").append(String.valueOf(size)).append("</size>");
-        }
-        // add sticker voice
-        if (stickerId != -1) {
-            buf.append("<itemid>").append(String.valueOf(stickerId)).append("</itemid>");
-        }
-        if (stickerPacket != null) {
-            buf.append("<packageid>").append(stickerPacket).append("</packageid>");
-        }
-        // add share location
-        if (!TextUtils.isEmpty(lat)) {
-            buf.append("<lat>").append(lat).append("</lat>");
-        }
-        if (!TextUtils.isEmpty(lng)) {
-            buf.append("<lng>").append(lng).append("</lng>");
-        }
-        if (!TextUtils.isEmpty(amountMoney)) {
-            buf.append("<amount_money>").append(StringUtils.escapeForXml(amountMoney)).append("</amount_money>");
-        }
-        if (!TextUtils.isEmpty(unitMoney)) {
-            buf.append("<unit_money>").append(StringUtils.escapeForXml(unitMoney)).append("</unit_money>");
-        }
-        if (!TextUtils.isEmpty(timeTransferMoney)) {
-            buf.append("<time_transfer>").append(timeTransferMoney).append("</time_transfer>");
-        }
-        // event room
-        if (!TextUtils.isEmpty(eventRoomId)) {
-            buf.append("<star_id>").append(eventRoomId).append("</star_id>");
-        }
-        if (!TextUtils.isEmpty(eventRoomName)) {
-            buf.append("<star_name>").append(eventRoomName).append("</star_name>");
-        }
-        if (!TextUtils.isEmpty(eventRoomAvatar)) {
-            buf.append("<star_avatar>").append(eventRoomAvatar).append("</star_avatar>");
-        }
-        if (!TextUtils.isEmpty(serviceType)) {
-            buf.append("<servicetype>").append(eventRoomAvatar).append("</servicetype>");
-        }
-        if (!TextUtils.isEmpty(reply)) {
-            buf.append("<reply>").append(StringUtils.escapeForXml(reply)).append("</reply>");
-        }
-        // Add room
-        if (groupName != null) {
-            buf.append("<room").append(" name=\"").append(StringUtils.escapeForXml(groupName)).append("\"");
-            if (groupId != null && groupId.length() > 0) {
-                buf.append(" jid=\"").append(StringUtils.escapeForXml(groupId)).append("\"");
-            }
-            if (fromJid != null && fromJid.length() > 0) {
-                buf.append(" fromJid=\"").append(fromJid).append("\"");
-            }
-            buf.append("/>");
-        }
-        // Add members
-        if (members != null) {
-            for (int i = 0; i < members.size(); i++) {
-                buf.append(members.get(i));
-            }
-        }
-        // group private
-        if (groupPrivate != -1) {
-            buf.append("<keep_private value=\'").append(groupPrivate).append("\'/>");
-        }
-
-        if (!TextUtils.isEmpty(ratio)) {
-            buf.append("<ratio>").append(ratio).append("</ratio>");
-        }
-        // bankplus
-        if (!TextUtils.isEmpty(bPlusAmount)) {
-            buf.append("<bplus_amount>").append(StringUtils.escapeForXml(bPlusAmount)).append("</bplus_amount>");
-        }
-        if (!TextUtils.isEmpty(bPlusDesc)) {
-            buf.append("<bplus_desc>").append(StringUtils.escapeForXml(bPlusDesc)).append("</bplus_desc>");
-        }
-        if (!TextUtils.isEmpty(bPlusId)) {
-            buf.append("<bplus_id>").append(StringUtils.escapeForXml(bPlusId)).append("</bplus_id>");
-        }
-        if (!TextUtils.isEmpty(bPlusType)) {
-            buf.append("<bplus_type>").append(StringUtils.escapeForXml(bPlusType)).append("</bplus_type>");
-        }
-
-        //lixi
-        if (!TextUtils.isEmpty(amountLixi)) {
-            buf.append("<amount>").append(StringUtils.escapeForXml(amountLixi)).append("</amount>");
-        }
-        if (splitRandom != -1) {
-            buf.append("<randommoney>").append(splitRandom).append("</randommoney>");
-        }
-        if (!TextUtils.isEmpty(orderId)) {
-            buf.append("<orderid>").append(StringUtils.escapeForXml(orderId)).append("</orderid>");
-        }
-        if (!TextUtils.isEmpty(requestIdLixi)) {
-            buf.append("<requestid>").append(StringUtils.escapeForXml(requestIdLixi)).append("</requestid>");
-        }
-        if (!TextUtils.isEmpty(listMemberLixiStr)) {
-            buf.append("<members>").append(StringUtils.escapeForXml(listMemberLixiStr)).append("</members>");
-        }
-
-        if (!TextUtils.isEmpty(textTag)) {
-            buf.append("<tag><![CDATA[").append(textTag).append("]]></tag>");
-        }
-        if (keyConfig != null && !keyConfig.isEmpty()) {
-            for (String mKey : keyConfig) {
-                buf.append("<key>").append(mKey).append("</key>");
-            }
-        }
-        if (listAdvertise != null && !listAdvertise.isEmpty()) {
-            for (AdvertiseItem advertiseItem : listAdvertise) {
-                buf.append(advertiseItem.toXML());
-            }
-        }
-
-        if (pinMsgAction != -1) {
-            buf.append("<pin").append(" action=\"").append(pinMsgAction).append("\"");
-            if (pinType != -1) {
-                buf.append(" type=\"").append(pinType).append("\"");
-                buf.append(" target=\"").append(pinMsgTarget).append("\"");
-            }
-            if (!TextUtils.isEmpty(pinMsgTitle)) {
-                buf.append(" title=\"").append(StringUtils.escapeForXml(pinMsgTitle)).append("\"");
-            }
-            if (!TextUtils.isEmpty(pinMsgImg)) {
-                buf.append(" img=\"").append(StringUtils.escapeForXml(pinMsgImg)).append("\"");
-            }
-            buf.append("/>");
-        }
-
-        // Append the error subpacket if the message type is an error.
-        if (type == Type.error) {
-            StanzaError error = getError();
-            if (error != null) {
-                buf.append(error.toXML());
-            }
-        }
-        // Add packet extensions, if any are defined.
-        buf.append(getExtensionsXML());
-        buf.append("</message>");
+//        buf.append("<message");
+//        if (getXmlns() != null) {
+//            buf.append(" xmlns=\"").append(getXmlns()).append("\"");
+//        }
+//        if (language != null) {
+//            buf.append(" xml:lang=\"").append(getLanguage()).append("\"");
+//        }
+//        if (getPacketID() != null) {
+//            buf.append(" id=\"").append(getPacketID()).append("\"");
+//        }
+//        if (getTo() != null) {
+//            buf.append(" to=\"").append(StringUtils.escapeForXml(getTo()))
+//                    .append("\"");
+//        }
+//        if (getFrom() != null) {
+//            buf.append(" from=\"").append(StringUtils.escapeForXml(getFrom()))
+//                    .append("\"");
+//        }
+//        if (type != Type.normal) {
+//            buf.append(" type=\"").append(type).append("\"");
+//        } else if (typeString != null) {
+//            buf.append(" type=\"").append(typeString).append("\"");
+//        }
+//        if (stickyState != -1) {
+//            buf.append(" is_sticky=\"").append(stickyState).append("\"");
+//        }
+//        if (subType != SubType.normal) {
+//            buf.append(" subtype=\"").append(subType).append("\"");
+//        } else if (subTypeString != null) {
+//            buf.append(" subtype=\"").append(subTypeString).append("\"");
+//        }
+//        if (!TextUtils.isEmpty(external)) {
+//            buf.append(" external=\"").append(StringUtils.escapeForXml(external)).append("\"");
+//        }
+//        if (getSender() != null) {
+//            buf.append(" member=\"").append(getSender()).append("\"");
+//        }
+//        if (senderName != null) {
+//            buf.append(" name=\"").append(StringUtils.escapeForXml(senderName)).append("\"");
+//        }
+//        if(!TextUtils.isEmpty(lastAvatar)){
+//            buf.append(" lastavatar=\"").append(StringUtils.escapeForXml(lastAvatar)).append("\"");
+//        }
+//        if (timeSend != -1L) {
+//            buf.append(" timesend=\"").append(timeSend).append("\"");
+//        }
+//        //send lastseen
+//        if(lastSeen !=-1){
+//            buf.append(" lastseen=\"").append(lastSeen).append("\"");
+//        }
+//        if (!TextUtils.isEmpty(getAvnoNumber())) {
+//            buf.append(" virtual=\"").append(getAvnoNumber()).append("\"");
+//        }
+//        // buf.append(" expired=\"").append(System.currentTimeMillis() + 10000).append("\"");    //TODO test expired
+//        buf.append(">");
+//        if (subject != null) {
+//            buf.append("<subject>").append(StringUtils.escapeForXml(subject)).append("</subject>");
+//        }
+//        //add thread id
+//        if (thread != null) {
+//            buf.append("<thread>").append(thread).append("</thread>");
+//        }
+//        // Add the body in the default language
+//        if (noStore) {
+//            buf.append("<no_store/>");
+//        }
+//        /*if (groupClass != -1) {
+//            buf.append("<gtype>").append(groupClass).append("</gtype>");
+//        }*/
+//        if (cState != -1) {
+//            buf.append("<cstate>").append(cState).append("</cstate>");
+//        }
+//        if (body != null) {
+//            buf.append("<body");
+//            if (!TextUtils.isEmpty(largeEmo)) {
+//                buf.append(" emoticon=\"").append(largeEmo).append("\"");
+//            }
+//            buf.append(">").append(StringUtils.escapeForXml(getBody()))
+//                    .append("</body>");
+//        }
+//        if (!TextUtils.isEmpty(getPhoneNumbersToXML())) {
+//            buf.append(getPhoneNumbersToXML());
+//        }
+//        if (avatarUrl != null) {
+//            buf.append("<avatar>").append(StringUtils.escapeForXml(avatarUrl))
+//                    .append("</avatar>");
+//        }
+//        //add contact element
+//        if (tel != null && tel.length() > 0) {
+//            buf.append("<tel>").append(StringUtils.escapeForXml(tel)).append("</tel>");
+//        }
+//        if (!TextUtils.isEmpty(name)) {
+//            buf.append("<name>").append(StringUtils.escapeForXml(name)).append("</name>");
+//        }
+//        if (!TextUtils.isEmpty(officalName)) {
+//            buf.append("<officalname>").append(StringUtils.escapeForXml(officalName)).append("</officalname>");
+//        }
+//        if (!TextUtils.isEmpty(fromName)) {
+//            buf.append("<from_name>").append(StringUtils.escapeForXml(fromName)).append("</from_name>");
+//        }
+//        if (!TextUtils.isEmpty(toName)) {
+//            buf.append("<to_name>").append(StringUtils.escapeForXml(toName)).append("</to_name>");
+//        }
+//        if (!TextUtils.isEmpty(nick)) {
+//            buf.append("<nick>").append(StringUtils.escapeForXml(nick)).append("</nick>");
+//        }
+//        if (!TextUtils.isEmpty(toAvatar)) {
+//            buf.append("<to_avatar>").append(StringUtils.escapeForXml(toAvatar)).append("</to_avatar>");
+//        }
+//        if (!TextUtils.isEmpty(fromAvatar)) {
+//            buf.append("<from_avatar>").append(StringUtils.escapeForXml(fromAvatar)).append("</from_avatar>");
+//        }
+//        if (!TextUtils.isEmpty(appId)) {
+//            buf.append("<app_id>").append(StringUtils.escapeForXml(appId)).append("</app_id>");
+//        }
+//        // add sharevideov2 message
+//        if (videoUrl != null) {
+//            buf.append("<sharevideov2>").append(StringUtils.escapeForXml(videoUrl)).append("/>");
+//        }
+//        if (videoThumb != null) {
+//            buf.append("<thumb>").append(StringUtils.escapeForXml(videoThumb)).append("</thumb>");
+//        }
+//        if (mediaLink != null) {
+//            buf.append("<media_link>").append(StringUtils.escapeForXml(mediaLink)).append("</media_link>");
+//        }
+//        // Add file message
+//        if (fileType != FileType.normal) {
+//            buf.append("<type>").append(fileType).append("</type");
+//        }
+//        if (fileId != null) {
+//            buf.append("<id>").append(fileId).append("</id>");
+//        }
+//        // Add duration
+//        if (duration > 0) {
+//            buf.append("<duration>").append(String.valueOf(duration)).append("</duration>");
+//        }
+//        // Add size
+//        if (size > 0) {
+//            buf.append("<size>").append(String.valueOf(size)).append("</size>");
+//        }
+//        // add sticker voice
+//        if (stickerId != -1) {
+//            buf.append("<itemid>").append(String.valueOf(stickerId)).append("</itemid>");
+//        }
+//        if (stickerPacket != null) {
+//            buf.append("<packageid>").append(stickerPacket).append("</packageid>");
+//        }
+//        // add share location
+//        if (!TextUtils.isEmpty(lat)) {
+//            buf.append("<lat>").append(lat).append("</lat>");
+//        }
+//        if (!TextUtils.isEmpty(lng)) {
+//            buf.append("<lng>").append(lng).append("</lng>");
+//        }
+//        if (!TextUtils.isEmpty(amountMoney)) {
+//            buf.append("<amount_money>").append(StringUtils.escapeForXml(amountMoney)).append("</amount_money>");
+//        }
+//        if (!TextUtils.isEmpty(unitMoney)) {
+//            buf.append("<unit_money>").append(StringUtils.escapeForXml(unitMoney)).append("</unit_money>");
+//        }
+//        if (!TextUtils.isEmpty(timeTransferMoney)) {
+//            buf.append("<time_transfer>").append(timeTransferMoney).append("</time_transfer>");
+//        }
+//        // event room
+//        if (!TextUtils.isEmpty(eventRoomId)) {
+//            buf.append("<star_id>").append(eventRoomId).append("</star_id>");
+//        }
+//        if (!TextUtils.isEmpty(eventRoomName)) {
+//            buf.append("<star_name>").append(eventRoomName).append("</star_name>");
+//        }
+//        if (!TextUtils.isEmpty(eventRoomAvatar)) {
+//            buf.append("<star_avatar>").append(eventRoomAvatar).append("</star_avatar>");
+//        }
+//        if (!TextUtils.isEmpty(serviceType)) {
+//            buf.append("<servicetype>").append(eventRoomAvatar).append("</servicetype>");
+//        }
+//        if (!TextUtils.isEmpty(reply)) {
+//            buf.append("<reply>").append(StringUtils.escapeForXml(reply)).append("</reply>");
+//        }
+//        // Add room
+//        if (groupName != null) {
+//            buf.append("<room").append(" name=\"").append(StringUtils.escapeForXml(groupName)).append("\"");
+//            if (groupId != null && groupId.length() > 0) {
+//                buf.append(" jid=\"").append(StringUtils.escapeForXml(groupId)).append("\"");
+//            }
+//            if (fromJid != null && fromJid.length() > 0) {
+//                buf.append(" fromJid=\"").append(fromJid).append("\"");
+//            }
+//            buf.append("/>");
+//        }
+//        // Add members
+//        if (members != null) {
+//            for (int i = 0; i < members.size(); i++) {
+//                buf.append(members.get(i));
+//            }
+//        }
+//        // group private
+//        if (groupPrivate != -1) {
+//            buf.append("<keep_private value=\'").append(groupPrivate).append("\'/>");
+//        }
+//
+//        if (!TextUtils.isEmpty(ratio)) {
+//            buf.append("<ratio>").append(ratio).append("</ratio>");
+//        }
+//        // bankplus
+//        if (!TextUtils.isEmpty(bPlusAmount)) {
+//            buf.append("<bplus_amount>").append(StringUtils.escapeForXml(bPlusAmount)).append("</bplus_amount>");
+//        }
+//        if (!TextUtils.isEmpty(bPlusDesc)) {
+//            buf.append("<bplus_desc>").append(StringUtils.escapeForXml(bPlusDesc)).append("</bplus_desc>");
+//        }
+//        if (!TextUtils.isEmpty(bPlusId)) {
+//            buf.append("<bplus_id>").append(StringUtils.escapeForXml(bPlusId)).append("</bplus_id>");
+//        }
+//        if (!TextUtils.isEmpty(bPlusType)) {
+//            buf.append("<bplus_type>").append(StringUtils.escapeForXml(bPlusType)).append("</bplus_type>");
+//        }
+//
+//        //lixi
+//        if (!TextUtils.isEmpty(amountLixi)) {
+//            buf.append("<amount>").append(StringUtils.escapeForXml(amountLixi)).append("</amount>");
+//        }
+//        if (splitRandom != -1) {
+//            buf.append("<randommoney>").append(splitRandom).append("</randommoney>");
+//        }
+//        if (!TextUtils.isEmpty(orderId)) {
+//            buf.append("<orderid>").append(StringUtils.escapeForXml(orderId)).append("</orderid>");
+//        }
+//        if (!TextUtils.isEmpty(requestIdLixi)) {
+//            buf.append("<requestid>").append(StringUtils.escapeForXml(requestIdLixi)).append("</requestid>");
+//        }
+//        if (!TextUtils.isEmpty(listMemberLixiStr)) {
+//            buf.append("<members>").append(StringUtils.escapeForXml(listMemberLixiStr)).append("</members>");
+//        }
+//
+//        if (!TextUtils.isEmpty(textTag)) {
+//            buf.append("<tag><![CDATA[").append(textTag).append("]]></tag>");
+//        }
+//        if (keyConfig != null && !keyConfig.isEmpty()) {
+//            for (String mKey : keyConfig) {
+//                buf.append("<key>").append(mKey).append("</key>");
+//            }
+//        }
+//        if (listAdvertise != null && !listAdvertise.isEmpty()) {
+//            for (AdvertiseItem advertiseItem : listAdvertise) {
+//                buf.append(advertiseItem.toXML());
+//            }
+//        }
+//
+//        if (pinMsgAction != -1) {
+//            buf.append("<pin").append(" action=\"").append(pinMsgAction).append("\"");
+//            if (pinType != -1) {
+//                buf.append(" type=\"").append(pinType).append("\"");
+//                buf.append(" target=\"").append(pinMsgTarget).append("\"");
+//            }
+//            if (!TextUtils.isEmpty(pinMsgTitle)) {
+//                buf.append(" title=\"").append(StringUtils.escapeForXml(pinMsgTitle)).append("\"");
+//            }
+//            if (!TextUtils.isEmpty(pinMsgImg)) {
+//                buf.append(" img=\"").append(StringUtils.escapeForXml(pinMsgImg)).append("\"");
+//            }
+//            buf.append("/>");
+//        }
+//
+//        // Append the error subpacket if the message type is an error.
+//        if (type == Type.error) {
+//            StanzaError error = getError();
+//            if (error != null) {
+//                buf.append(error.toXML());
+//            }
+//        }
+//        // Add packet extensions, if any are defined.
+//        buf.append(getExtensionsXML());
+//        buf.append("</message>");
         return buf.toString();
     }
 

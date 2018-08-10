@@ -9,6 +9,8 @@ import io.realm.annotations.RealmNamingPolicy;
 public class ContactConstant extends RealmObject{
 
     public static final String CONTACT_NAME = "name";
+    public static final int PERMISSION_BIRTHDAY_ON = 1;// 00000001
+    public static final int PERMISSION_HIDE_STRANGER_HISTORY = 2;// 00000010
 
     @PrimaryKey
     public String number_id;

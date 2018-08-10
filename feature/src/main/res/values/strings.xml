@@ -66,4 +66,6 @@
     <string name="like">Like</string>
     <string name="comment">Comment</string>
     <string name="share">Share</string>
+
+    <string name="setting_select_sound_silent">Silent</string>
 </resources>

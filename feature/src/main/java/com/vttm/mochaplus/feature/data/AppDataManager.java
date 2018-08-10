@@ -30,6 +30,7 @@ import com.vttm.mochaplus.feature.data.db.DbHelper;
 import com.vttm.mochaplus.feature.data.db.datasource.exceptions.RepositoryException;
 import com.vttm.mochaplus.feature.data.db.model.CallHistoryConstant;
 import com.vttm.mochaplus.feature.data.db.model.ContactConstant;
+import com.vttm.mochaplus.feature.data.db.model.ReengAccountConstant;
 import com.vttm.mochaplus.feature.data.prefs.PreferencesHelper;
 import com.vttm.mochaplus.feature.di.ApplicationContext;
 
@@ -114,7 +115,32 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public List<ContactConstant> insertAll(List<ContactConstant> elementList) throws RepositoryException {
-        return mDbHelper.insertAll(elementList);
+    public List<ContactConstant> insertAllContact(List<ContactConstant> elementList) throws RepositoryException {
+        return mDbHelper.insertAllContact(elementList);
+    }
+
+    @Override
+    public ReengAccountConstant getAccount() {
+        return mDbHelper.getAccount();
+    }
+
+    @Override
+    public void updateAccount(ReengAccountConstant account) {
+        mDbHelper.updateAccount(account);
+    }
+
+    @Override
+    public void updateAccountToken(long reengAccountID, String token) {
+        mDbHelper.updateAccountToken(reengAccountID, token);
+    }
+
+    @Override
+    public ReengAccountConstant insertAccount(ReengAccountConstant element) throws RepositoryException {
+        return mDbHelper.insertAccount(element);
+    }
+
+    @Override
+    public void removeAccount(ReengAccountConstant element) {
+        mDbHelper.removeAccount(element);
     }
 }

@@ -1,9 +1,8 @@
 package com.vttm.chatlib.packet;
 
-import com.viettel.util.Log;
+import com.vttm.chatlib.utils.Log;
 
 import org.jivesoftware.smack.packet.Stanza;
-import org.jivesoftware.smack.util.StringUtils;
 
 public class VoiceMailGSMMessagePacket extends Stanza {
     private Type type = Type.chat;
@@ -80,49 +79,61 @@ public class VoiceMailGSMMessagePacket extends Stanza {
     @Override
     public CharSequence toXML(String enclosingNamespace) {
         StringBuilder buf = new StringBuilder();
-        buf.append("<message");
-        if (getXmlns() != null) {
-            buf.append(" xmlns=\"").append(getXmlns()).append("\"");
-        }
-        if (getPacketID() != null) {
-            buf.append(" id=\"").append(getPacketID()).append("\"");
-        }
-        if (getTo() != null) {
-            buf.append(" to=\"").append(StringUtils.escapeForXml(getTo()))
-                    .append("\"");
-        }
-        if (getFrom() != null) {
-            buf.append(" from=\"").append(StringUtils.escapeForXml(getFrom()))
-                    .append("\"");
-        }
-        if (type != null) {
-            buf.append(" type=\"").append(type).append("\"");
-        }
-        buf.append(">");
-        if (sent) {
-            buf.append("<x xmlns=\"").append(NAMESPACE)
-                    .append("\"><sent/></x>");
-        } else {
-            buf.append("<error");
-            if (errorCode > 0) {
-                buf.append(" code=\"").append(errorCode).append("\"");
-            }
-            if (errorType != null) {
-                buf.append(" type=\"").append(errorType).append("\"");
-            }
-            buf.append("/>");
-        }
-
-        if (voicemailId != null) {
-            buf.append("<id>").append(voicemailId).append("</id>");
-        }
-        if (length >= 0) {
-            buf.append("<length>").append(length).append("</length>");
-        }
-        // Add packet extensions, if any are defined.
-        buf.append(getExtensionsXML());
-        buf.append("</message>");
+//        buf.append("<message");
+//        if (getXmlns() != null) {
+//            buf.append(" xmlns=\"").append(getXmlns()).append("\"");
+//        }
+//        if (getPacketID() != null) {
+//            buf.append(" id=\"").append(getPacketID()).append("\"");
+//        }
+//        if (getTo() != null) {
+//            buf.append(" to=\"").append(StringUtils.escapeForXml(getTo()))
+//                    .append("\"");
+//        }
+//        if (getFrom() != null) {
+//            buf.append(" from=\"").append(StringUtils.escapeForXml(getFrom()))
+//                    .append("\"");
+//        }
+//        if (type != null) {
+//            buf.append(" type=\"").append(type).append("\"");
+//        }
+//        buf.append(">");
+//        if (sent) {
+//            buf.append("<x xmlns=\"").append(NAMESPACE)
+//                    .append("\"><sent/></x>");
+//        } else {
+//            buf.append("<error");
+//            if (errorCode > 0) {
+//                buf.append(" code=\"").append(errorCode).append("\"");
+//            }
+//            if (errorType != null) {
+//                buf.append(" type=\"").append(errorType).append("\"");
+//            }
+//            buf.append("/>");
+//        }
+//
+//        if (voicemailId != null) {
+//            buf.append("<id>").append(voicemailId).append("</id>");
+//        }
+//        if (length >= 0) {
+//            buf.append("<length>").append(length).append("</length>");
+//        }
+//        // Add packet extensions, if any are defined.
+//        buf.append(getExtensionsXML());
+//        buf.append("</message>");
         return buf.toString();
+    }
+
+    @Override
+    public String toString() {
+        return "VoiceMailGSMMessagePacket{" +
+                "type=" + type +
+                ", sent=" + sent +
+                ", errorCode=" + errorCode +
+                ", errorType='" + errorType + '\'' +
+                ", length=" + length +
+                ", voicemailId='" + voicemailId + '\'' +
+                '}';
     }
 
     public boolean equals(Object o) {

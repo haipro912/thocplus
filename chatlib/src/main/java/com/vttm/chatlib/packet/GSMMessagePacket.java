@@ -65,41 +65,41 @@ public class GSMMessagePacket extends Stanza {
     @Override
     public CharSequence toXML(String enclosingNamespace) {
         StringBuilder buf = new StringBuilder();
-        buf.append("<message");
-        if (getXmlns() != null) {
-            buf.append(" xmlns=\"").append(getXmlns()).append("\"");
-        }
-        if (getPacketID() != null) {
-            buf.append(" id=\"").append(getPacketID()).append("\"");
-        }
-        if (getTo() != null) {
-            buf.append(" to=\"").append(StringUtils.escapeForXml(getTo()))
-                    .append("\"");
-        }
-        if (getFrom() != null) {
-            buf.append(" from=\"").append(StringUtils.escapeForXml(getFrom()))
-                    .append("\"");
-        }
-        if (type != null) {
-            buf.append(" type=\"").append(type).append("\"");
-        }
-        buf.append(">");
-        if (sended) {
-            buf.append("<x xmlns=\"").append(NAME_SPACE)
-                    .append("\"><sended/></x>");
-        } else {
-            buf.append("<error");
-            if (errorCode > 0) {
-                buf.append(" code=\"").append(errorCode).append("\"");
-            }
-            if (errorType != null) {
-                buf.append(" type=\"").append(errorType).append("\"");
-            }
-            buf.append("/>");
-        }
-        // Add packet extensions, if any are defined.
-        buf.append(getExtensionsXML());
-        buf.append("</message>");
+//        buf.append("<message");
+//        if (getXmlns() != null) {
+//            buf.append(" xmlns=\"").append(getXmlns()).append("\"");
+//        }
+//        if (getPacketID() != null) {
+//            buf.append(" id=\"").append(getPacketID()).append("\"");
+//        }
+//        if (getTo() != null) {
+//            buf.append(" to=\"").append(StringUtils.escapeForXml(getTo()))
+//                    .append("\"");
+//        }
+//        if (getFrom() != null) {
+//            buf.append(" from=\"").append(StringUtils.escapeForXml(getFrom()))
+//                    .append("\"");
+//        }
+//        if (type != null) {
+//            buf.append(" type=\"").append(type).append("\"");
+//        }
+//        buf.append(">");
+//        if (sended) {
+//            buf.append("<x xmlns=\"").append(NAME_SPACE)
+//                    .append("\"><sended/></x>");
+//        } else {
+//            buf.append("<error");
+//            if (errorCode > 0) {
+//                buf.append(" code=\"").append(errorCode).append("\"");
+//            }
+//            if (errorType != null) {
+//                buf.append(" type=\"").append(errorType).append("\"");
+//            }
+//            buf.append("/>");
+//        }
+//        // Add packet extensions, if any are defined.
+//        buf.append(getExtensionsXML());
+//        buf.append("</message>");
         return buf.toString();
     }
 

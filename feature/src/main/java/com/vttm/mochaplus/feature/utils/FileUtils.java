@@ -249,4 +249,65 @@ public class FileUtils {
             }
         }
     }
+
+    public static void createNoMediaFile(Context context) {
+        String filePath = Config.Storage.REENG_STORAGE_FOLDER + "/";
+        File file = new File(filePath, AppConstants.FILE.NO_MEDIA_FILE_NAME);
+        if (!file.exists()) {
+            FileOutputStream noMediaOutStream = null;
+            try {
+                noMediaOutStream = new FileOutputStream(file);
+                noMediaOutStream.write(0);
+                noMediaOutStream.flush();
+            } catch (IOException e) {
+                Log.e(TAG, "Exception", e);
+            } finally {
+                try {
+                    if (noMediaOutStream != null) {
+                        noMediaOutStream.close();
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "Exception", e);
+                }
+            }
+            refreshGallery(context, file);
+        }
+
+        filePath = Config.Storage.REENG_STORAGE_FOLDER + Config.Storage.IMAGE_FOLDER + "/";
+        file = new File(filePath, AppConstants.FILE.NO_MEDIA_FILE_NAME);
+        if (!file.exists()) {
+            FileOutputStream noMediaOutStream = null;
+            try {
+                noMediaOutStream = new FileOutputStream(file);
+                noMediaOutStream.write(0);
+            } catch (IOException e) {
+                Log.e(TAG, "Exception", e);
+            } finally {
+                if (noMediaOutStream != null) {
+                    try {
+                        noMediaOutStream.close();
+                    } catch (IOException e) {
+                        Log.e(TAG, "IOException", e);
+                    }
+                }
+            }
+            refreshGallery(context, file);
+        }
+    }
+
+    public static void deleteNoMediaFile(Context context) {
+        String filePath = Config.Storage.REENG_STORAGE_FOLDER + "/";
+        File file = new File(filePath, AppConstants.FILE.NO_MEDIA_FILE_NAME);
+        if (file.exists()) {
+            file.delete();
+            refreshGallery(context, file);
+        }
+
+        filePath = Config.Storage.REENG_STORAGE_FOLDER + Config.Storage.IMAGE_FOLDER + "/";
+        file = new File(filePath, AppConstants.FILE.NO_MEDIA_FILE_NAME);
+        if (file.exists()) {
+            file.delete();
+            refreshGallery(context, file);
+        }
+    }
 }

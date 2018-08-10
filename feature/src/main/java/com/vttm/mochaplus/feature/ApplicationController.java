@@ -5,7 +5,10 @@ import android.app.Application;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.vttm.mochaplus.feature.business.ContactBusiness;
 import com.vttm.mochaplus.feature.business.MessageBusiness;
+import com.vttm.mochaplus.feature.business.ReengAccountBusiness;
+import com.vttm.mochaplus.feature.business.SettingBusiness;
 import com.vttm.mochaplus.feature.data.DataManager;
+import com.vttm.mochaplus.feature.data.socket.xmpp.XMPPManager;
 import com.vttm.mochaplus.feature.di.component.ApplicationComponent;
 import com.vttm.mochaplus.feature.di.component.DaggerApplicationComponent;
 import com.vttm.mochaplus.feature.di.module.ApplicationModule;
@@ -18,9 +21,13 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 public class ApplicationController extends Application {
 
     private PhoneNumberUtil phoneUtil;
-    private ContactBusiness mContactBusiness;
-    private MessageBusiness mMessageBusiness;
-    private ReloadDataThread mReloadDataThread;
+    private ContactBusiness contactBusiness;
+    private MessageBusiness messageBusiness;
+    private ReengAccountBusiness accountBusiness;
+    private SettingBusiness settingBusiness;
+    private ReloadDataThread reloadDataThread;
+
+    private XMPPManager xmppManager;
 
     @Inject
     DataManager mDataManager;
@@ -69,26 +76,44 @@ public class ApplicationController extends Application {
     }
 
     protected void createBusiness() {
+        if (xmppManager == null) {
+            xmppManager = new XMPPManager(this);
+        }
+
         if (phoneUtil == null) {
             phoneUtil = PhoneNumberUtil.getInstance();
         }
 
-        if (mContactBusiness == null) {
-            mContactBusiness = new ContactBusiness(this);
+        if (contactBusiness == null) {
+            contactBusiness = new ContactBusiness(this);
+        }
+
+        if (accountBusiness == null) {
+            accountBusiness = new ReengAccountBusiness(this);
+        }
+
+        if (messageBusiness == null) {
+            messageBusiness = new MessageBusiness(this);
+        }
+
+        if (settingBusiness == null) {
+            settingBusiness = new SettingBusiness(this);
         }
     }
 
     private void initBusiness()
     {
-        mContactBusiness.init();
+        contactBusiness.init();
+        accountBusiness.init();
+        messageBusiness.init();
     }
 
     private void initData() {
 //        if (!isDataReady()) {
-            mReloadDataThread = null;
-            mReloadDataThread = new ReloadDataThread();
-            mReloadDataThread.setPriority(Thread.MAX_PRIORITY);
-            mReloadDataThread.start();
+            reloadDataThread = null;
+            reloadDataThread = new ReloadDataThread();
+            reloadDataThread.setPriority(Thread.MAX_PRIORITY);
+            reloadDataThread.start();
 //        } else {
 //            // neu data da load xong thif check version code luon. khong thi cho khi load xong data
 ////            checkVersionCode();
@@ -100,15 +125,15 @@ public class ApplicationController extends Application {
         public void run() {
             initBusiness();
             boolean isNewAccount = false;
-            if (!isNewAccount && !mContactBusiness.isSyncContact()) {// account cu va contact chua sync
+            if (!isNewAccount && !contactBusiness.isSyncContact()) {// account cu va contact chua sync
                 // neu db contact da duoc insert roi thi
-                if (!mContactBusiness.isNewInsertDB()) {
-                    mContactBusiness.syncContact();
+                if (!contactBusiness.isNewInsertDB()) {
+                    contactBusiness.syncContact();
                 } else {
-                    mContactBusiness.setNewInsertDB(false);
+                    contactBusiness.setNewInsertDB(false);
                 }
             }
-            mReloadDataThread = null;
+            reloadDataThread = null;
         }
     }
 
@@ -121,11 +146,19 @@ public class ApplicationController extends Application {
     }
 
     public ContactBusiness getContactBusiness() {
-        return mContactBusiness;
+        return contactBusiness;
     }
 
     public MessageBusiness getMessageBusiness() {
-        return mMessageBusiness;
+        return messageBusiness;
+    }
+
+    public ReengAccountBusiness getReengAccountBusiness() {
+        return accountBusiness;
+    }
+
+    public XMPPManager getXmppManager() {
+        return xmppManager;
     }
 
     public DataManager getDataManager() {

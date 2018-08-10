@@ -1,8 +1,13 @@
 package com.vttm.mochaplus.feature.utils;
 
+import android.os.Environment;
+
 public class Config {
 
     public static final String REVISION = "1";
+
+    public static final String DOMAIN_MSG = "msg.mocha.com.vn";
+    public static final int PORT_MSG = 5228;
 
     public static final String DOMAIN_VIDEO = "hl2.mocha.com.vn";
     public static final String CLIENT_TYPE = "Android";
@@ -11,6 +16,25 @@ public class Config {
     public static final String RSA_KEY = "MIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgF3g82nB1ImzAwSN7JXeOC7wChDA4Nbzun" +
             "/2B60sB04LCxBt88yRQTK734ugqAJ9cnYYNjwYfzcoTmubiMygsdtoNf1HTmezAL+ppsJxZ" +
             "/TlfomXz6zUS2HxNUdNcgX0NdHpq5OR9713p6tiq5Z4TdYjja9P7FEG8p4xf8snDEjhAgMBAAE=";
+
+    public static final boolean PREF_DEF_SETUP_KEYBOARD_SEND = false;
+    public static final boolean PREF_DEF_SHOW_MEDIA = true;
+    public static final boolean PREF_DEF_REPLY_SMS = true;
+
+    public static final class Server {
+        public static final boolean SERVER_TEST = false;
+        public static final boolean FREE_15_DAYS = false;
+        public static final boolean FACEBOOK_TEST = false;
+        public static final String USER_FACEBOOK_TEST = "01685269957";
+        public static final boolean SEND_VIDEO_ENABLE = false;
+    }
+
+    public static final class Smack {
+        public static final int PACKET_REPLY_TIMEOUT = 40000;       //change from 300000 -> 30000 -> 20000
+        public static final int KEEP_ALIVE_INTERVAL = 40000;
+        public static final int PING_INTERVAL = 1 * 60 * 1000;      // 2 phut
+        public static final String RESOURCE = "reeng";
+    }
 
     public static final class Extras {
         public static final String DEFAULT_ENCODING = "UTF-8";
@@ -44,4 +68,25 @@ public class Config {
         public static final String REGEX_MOCHA_CHANNEL = "(https|https?)?(://)?(www.)?(m.)?(video.mocha.com.vn)?(.*?)(_cn\\d{3,}.html)$";
         public static final String REGEX_GET_ID_MOCHA_CHANNEL = "_cn(.*?).html";
     }
+
+    public static final class Storage {
+        public static final String REENG_STORAGE_FOLDER = Environment.getExternalStorageDirectory().getPath() +
+                "/Mocha";
+        public static final String GALLERY_MOCHA = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES).getPath() + "/Mocha";
+        public static final String FILE_DOCUMENT_MOCHA = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOWNLOADS).getPath() + "/Mocha";
+        public static final String IMAGE_FOLDER = "/Mocha Images";
+        public static final String DOWNLOAD_FOLDER = "/Downloads";
+        public static final String IMAGE_COMPRESSED_FOLDER = "/.cpthumbs";
+        public static final String VOICEMAIL_FOLDER = "/.Voicemails";
+        public static final String PROFILE_PATH = "/.Profile";
+        public static final String LIST_AVATAR_PATH = "/.Avatar/";
+        public static final String BACKGROUND_FOLDER = "/.Background/";
+        public static final String STICKER_FOLDER = "/.Sticker/";
+        public static final String CACHE_FOLDER = "/.Cache";
+        public static final String VIDEO_FOLDER = "/Mocha Videos";
+        public static final String GIF_FOLDER = "/.Gif";
+    }
+
 }

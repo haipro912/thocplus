@@ -3,6 +3,7 @@ package com.vttm.mochaplus.feature.data.db;
 import com.vttm.mochaplus.feature.data.db.datasource.exceptions.RepositoryException;
 import com.vttm.mochaplus.feature.data.db.model.CallHistoryConstant;
 import com.vttm.mochaplus.feature.data.db.model.ContactConstant;
+import com.vttm.mochaplus.feature.data.db.model.ReengAccountConstant;
 
 import java.util.List;
 
@@ -14,5 +15,13 @@ public interface DbHelper {
     List<ContactConstant> getListContact();
     List<CallHistoryConstant> getListCallHistory();
 
-    List<ContactConstant> insertAll(List<ContactConstant> elementList) throws RepositoryException;
+    List<ContactConstant> insertAllContact(List<ContactConstant> elementList) throws RepositoryException;
+
+
+    //Reeng Account Datasource
+    ReengAccountConstant getAccount();
+    void updateAccount(ReengAccountConstant account);
+    void updateAccountToken(long reengAccountID, String token);
+    ReengAccountConstant insertAccount(ReengAccountConstant element) throws RepositoryException;
+    void removeAccount(ReengAccountConstant element);
 }

@@ -145,7 +145,7 @@ public class ContactBusiness {
             listContact.add(contact);
         }
         try {
-            mApplication.getDataManager().insertAll(listContact);
+            mApplication.getDataManager().insertAllContact(listContact);
             setSyncContact(true);
         } catch (RepositoryException e) {
             e.printStackTrace();

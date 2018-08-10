@@ -1,6 +1,8 @@
 package com.vttm.mochaplus.feature.data.socket.xmpp.listener;
 
+import com.vttm.chatlib.packet.EventReceivedMessagePacket;
 import com.vttm.mochaplus.feature.ApplicationController;
+import com.vttm.mochaplus.feature.business.MessageBusiness;
 
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.StanzaListener;
@@ -15,8 +17,8 @@ public class RecevedSoloMessageListener implements StanzaListener {
 
     @Override
     public void processStanza(Stanza packet) throws SmackException.NotConnectedException, InterruptedException, SmackException.NotLoggedInException {
-//        EventReceivedMessage event = (EventReceivedMessage) packet;
-//        MessageBusiness messageBusiness = application.getMessageBusiness();
-//        messageBusiness.processReceivedPacket(application, event);
+        EventReceivedMessagePacket event = (EventReceivedMessagePacket) packet;
+        MessageBusiness messageBusiness = application.getMessageBusiness();
+        messageBusiness.processReceivedPacket(application, event);
     }
 }

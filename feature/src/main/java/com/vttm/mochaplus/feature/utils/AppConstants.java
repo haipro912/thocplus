@@ -41,9 +41,36 @@ public final class AppConstants {
     }
 
     public static final class FILE {
+        public static final String[] FILE_DOC_TYPES = {"application/msword", "application/vnd" +
+                ".openxmlformats-officedocument.wordprocessingml.document",
+                "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml" +
+                ".presentation",
+                "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "text/plain",
+                "application/pdf"};
+
+        public static final int VOICE_MIN_DURATION = 1;
+        public static final String JPEG_FILE_PREFIX = "IMG_";
+        public static final String VIDEO_FILE_PREFIX = "VID_";
+
+        public static final String JPEG_FILE_SUFFIX = ".jpg";
+        public static final String PNG_FILE_SUFFIX = ".png";
+        public static final String ZIP_FILE_SUFFIX = ".zip";
+        public static final String MP4_FILE_SUFFIX = ".mp4";
+        public static final String GP_FILE_SUFFIX = ".3gp";
+        public static final String VIDEO_PREFIX_NAME = "V_MOCHA_";
+        public static final String NO_MEDIA_FILE_NAME = ".nomedia";
+        // avatar
+        public static final int AVATAR_MAX_SIZE = 800; // pixel
         public static final int BUFFER_SIZE_DEFAULT = 4096; // 4 Kb
+        // max video recorder 30mb
+        public static final long VIDEO_MAX_SIZE = 25 * 1024 * 1024;
+        public static final long DOCUMENT_MAX_SIZE = 10 * 1024 * 1024;
+
         public static final long ONE_MEGABYTE = 1024 * 1024;
         public static final long ONE_KILOBYTE = 1024;
+
+        public static final short VIDEO_RECORD_MAX_DURATION = 15; //Giay
     }
 
     public static final int TAB_MAIN = 1;
@@ -60,9 +87,296 @@ public final class AppConstants {
         public static final String KEY_VIDEO_SELECT = "KEY_VIDEO_SELECT";
     }
 
+    public static final class FONT_SIZE {
+        public static final float SMALL_RATIO = 0.85f;
+        public static final float MEDIUM_RATIO = 1.0f;
+        public static final float LARGE_RATIO = 1.2f;
+        public static final int SMALL = 1;
+        public static final int MEDIUM = 2;
+        public static final int LARGE = 3;
+
+        public static final int LEVEL_0 = 1;
+        public static final int LEVEL_1 = 2;
+        public static final int LEVEL_1_5 = 3;
+        public static final int LEVEL_2 = 4;
+        public static final int LEVEL_2_5 = 5;
+        public static final int LEVEL_3 = 6;
+        public static final int LEVEL_4 = 7;
+
+        public static final int LEVEL_6 = 9;
+    }
+
     public static final class PREFERENCE {
         public static final String PREF_DIR_NAME = "com.viettel.reeng.app";
+        public static final String PREF_SPEAKER = "pref_speaker";
+        public static final String PREF_APP_VERSION = "pref_app_version";// luu version code cu
+        public static final String PREF_CLIENT_INFO_CODE_VERSION = "PREF_CLIENT_INFO_CODE_VERSION";
+        public static final String PREF_CLIENT_INFO_DEVICE_LANGUAGE = "PREF_CLIENT_INFO_DEVICE_LANGUAGE";
+        public static final String PREF_NO_NOTIF_LIST_ID = "pref_no_notif_list_id";
+        public static final String PREF_CONTACT_LIST_REMOVE_FAIL = "pref_contact_list_remove_fail";
+        public static final String PREF_AVATAR_FILE_CAPTURE = "avatar_capture";
+        public static final String PREF_IMAGE_FILE_CAPTURE = "image_capture";
+        public static final String PREF_AVATAR_FILE_CROP = "avatar_crop";
+        public static final String PREF_AVATAR_GROUP_FILE_CROP = "avatar_group_crop";
+        public static final String PREF_IMAGE_FILE_CROP = "image_crop";
+        public static final String PREF_AVATAR_FILE_FACEBOOK = "avatar_facebook";
+        public static final String PREF_AVATAR_FILE_GROUP = "avatar_group_";
+        public static final String PREF_CHAT_IMAGE_PATH = "pref_chat_image_path";
+        public static final String PREF_AVATAR_GROUP_IMAGE_PATH = "pref_avatar_group_image_path";
+        public static final String PREF_STRANGER_SHOW_ALERTS = "pref_stranger_show_alerts";
+        public static final String PREF_GET_LIST_BLOCK = "pref_get_list_block";
+        //for module setting
+        public static final String PREF_SETTING_VIBRATE = "pref_vibrate";//true
+        public static final String PREF_SETTING_RINGTONE = "pref_ringtone";//true
+        public static final String PREF_SETTING_MSG_IN_POPUP = "pref_msg_in_popup";//hien thi msg tren popup; true
+        public static final String PREF_SETTING_ENABLE_SEEN = "pref_enable_seen";//true
+        public static final String PREF_SETTING_ENABLE_UNLOCK = "pref_enable_unlock";//true
+        public static final String PREF_SETTING_NOTIFY_NEW_FRIEND = "pref_setting_notify_new_friend"; //true
+        public static final String PREF_SETTING_IMAGE_HD = "pref_setting_image_hd"; //false
+        public static final String PREF_SETTING_OFF_MUSIC_IN_ROOM = "pref_setting_off_music"; //false
+        public static final String PREF_SETTING_SYSTEM_SOUND = "pref_setting_system_sound";
+        public static final String PREF_SETTING_NOTIFICATION_SOUND = "pref_setting_notification_sound";
+        public static final String PREF_SETTING_NOTIFICATION_SOUND_DEFAULT = "pref_setting_notification_sound_default";
+        public static final String PREF_SETTING_AUTO_SMSOUT = "pref_setting_auto_smsout";
+        public static final String PREF_SETTING_RECEIVE_SMSOUT = "pref_setting_receive_smsout";
+        public static final String PREF_SETTING_BIRTHDAY_REMINDER = "pref_birthday_reminder";//true
+        public static final String PREF_SETTING_FONT_SIZE = "pref_setting_font_size";
+        public static final String PREF_SETTING_FLOATING_BUTTON = "pref_setting_floating_button";
+
+        // for prevate setting
+        public static final String PREF_SETTING_PREVIEW_MSG = "pref_preview_msg";//xem trc noi dung tin nhan: true
+        //
+        public static final String PREF_DOMAIN_FILE = "pref_domain_file";
+        public static final String PREF_DOMAIN_MSG = "pref_domain_message";
+        public static final String PREF_DOMAIN_ON_MEDIA = "pref_domain_on_media";
+        public static final String PREF_DOMAIN_IMAGE = "pref_domain_image";
+        //
+        public static final String PREF_AUTO_PLAY_STICKER = "PREF_AUTO_PLAY_STICKER";
+        public static final String PREF_SHOW_MEDIA = "PREF_SHOW_MEDIA";
+        public static final String PREF_REPLY_SMS = "PREF_REPLY_SMS";
+        // keybroad
+        public static final String PREF_KEYBOARD_HEIGHT = "pref_keyboard_height";
+        public static final String PREF_KEYBOARD_OFFSET_HEIGHT = "pref_keyboard_offset_height";
+        public static final String PREF_TAPLET_LANGSCAPE_KEYBOARD_OFFSET_HEIGHT =
+                "pref_taplet_langscape_keyboard_offset_height";
+        // music business
+        public static final String PREF_RECEIVE_MUSIC_DIFFERENCE_TIME = "pref_receive_music_difference_time";
+        public static final String PREF_SEND_MUSIC_LAST_THREAD_ID = "pref_send_music_last_thread_id";
+        //niem vui lan toa
+        public static final String PREF_SHOW_BUZZ_COUNT = "pref_show_buzz_count";
+        //sticker store
+        public static final String PREF_SENT_DEVICE_ID = "PREF_SENT_DEVICE_ID";
         public static final String PREF_PUBLIC_RSA_KEY = "PREF_PUBLIC_RSA_KEY";
+        public static final String PREF_STICKER_NEW_FROM_SERVER = "new_stickers_from_server_v2";
+        //More apps response
+        public static final String PREF_MOREAPP_RESPONSE = "PREF_RESPONSE_MOREAPPS";
+        //game list response
+        public static final String PREF_LISTGAME_RESPONSE = "PREF_LISTGAME_RESPONSE";
+        //default back ground
+        public static final String PREF_DEFAULT_BACKGROUND_PATH = "PREF_DEFAULT_BG_PATH";
+        public static final String PREF_APPLY_BACKGROUND_ALL = "PREF_APPLY_BACKGROUND_ALL";
+        //language translate
+        public static final String PREF_LANGUAGE_TRANSLATE_SELECTED = "PREF_LANGUAGE_TRANSLATE_SELECTED";
+        public static final String PREF_CONFIG_BANNER_CONTENT = "PREF_CONFIG_BANNER_CONTENT_V2";
+        public static final String PREF_CONFIG_BANNER_CALL = "PREF_CONFIG_BANNER_CALL";
+        //pref onmedia
+        public static final String PREF_ONMEDIA_CHAT_WITH_STRANGER = "PREF_ONMEDIA_CHAT_WITH_STRANGER";
+        public static final String PREF_ONMEDIA_NOTIFY_NEW_FEED = "PREF_ONMEDIA_NOTIFY_NEW_FEED";
+        public static final String PREF_ONMEDIA_SECURE_WEB = "PREF_ONMEDIA_SECURE_WEB";
+        public static final String PREF_ONMEDIA_SHARE_FACEBOOK = "PREF_ONMEDIA_SHARE_FACEBOOK";
+        public static final String PREF_ONMEDIA_LAST_TIME_SHOW_HOROSCOPE = "PREF_ONMEDIA_LAST_TIME_SHOW_HOROSCOPE";
+        //last tab
+        public static final String PREF_HOME_LAST_TAB = "PREF_HOME_LAST_TAB";
+        public static final String PREF_LOCK_SPAM_ROOM_CHAT = "PREF_LOCK_SPAM_ROOM_CHAT";
+        //
+        public static final String PREF_DOMAIN_DOMAIN_FILE_TEST = "PREF_DOMAIN_DOMAIN_FILE";
+        public static final String PREF_DOMAIN_DOMAIN_MSG_TEST = "PREF_DOMAIN_DOMAIN_MSG";
+        public static final String PREF_DOMAIN_DOMAIN_ONMEDIA_TEST = "PREF_DOMAIN_DOMAIN_ONMEDIA";
+        public static final String PREF_SETTING_SETUP_KEYBOARD_SEND = "PREF_SETTING_SETUP_KEYBOARD_SEND";//default true
+        public static final String PREF_SETTING_LANGUAGE_MOCHA = "PREF_SETTING_LANGUAGE_MOCHA";//default true
+        public static final String PREF_MOCHA_USER_VIP_INFO = "PREF_MOCHA_USER_VIP_INFO";//default 0
+        public static final String PREF_MOCHA_USER_CBNV = "PREF_MOCHA_USER_CBNV";//default false
+        public static final String PREF_MOCHA_ENABLE_CALL = "PREF_MOCHA_ENABLE_CALL";//default -1
+        public static final String PREF_MOCHA_ENABLE_SMS_IN = "PREF_MOCHA_ENABLE_SMS_IN";//default -1
+        public static final String PREF_MOCHA_ENABLE_SSL = "PREF_MOCHA_ENABLE_SSL";//default -1
+        public static final String PREF_KEENG_USER_ID = "PREF_KEENG_USER_ID";
+        public static final String PREF_MOCHA_ENABLE_AVNO = "PREF_MOCHA_ENABLE_AVNO";
+        public static final String PREF_MOCHA_ENABLE_TAB_CALL = "PREF_MOCHA_ENABLE_TAB_CALL";
+
+        public static final String PREF_LAST_SHOW_ALERT_TAB_HOT = "PREF_LAST_SHOW_ALERT_TAB_HOT";
+        public static final String PREF_HAD_SHOW_ALERT_TAB_HOT_TODAY = "PREF_HAD_SHOW_ALERT_TAB_HOT_TODAY";
+        public static final String PREF_HAD_NOTIFY_TAB_HOT = "PREF_HAD_NOTIFY_TAB_HOT";
+
+        public static final String PREF_LAST_SHOW_ALERT_TAB_VIDEO = "PREF_LAST_SHOW_ALERT_TAB_VIDEO";
+//        public static final String PREF_LAST_SHOW_ALERT_POPUP_REGISTER_VIP = "PREF_LAST_SHOW_ALERT_POPUP_REGISTER_VIP";
+
+        public static final String PREF_LAST_SHOW_ALERT_AB_DISCOVER = "PREF_LAST_SHOW_ALERT_AB_DISCOVER";
+        //app lock
+        public static final String PREF_SETTING_LOCK_APP_ENABLE = "PREF_SETTING_LOCK_APP_ENABLE";
+        public static final String PREF_SETTING_LOCK_APP_TIME = "PREF_SETTING_LOCK_APP_TIME";
+        public static final String PREF_SETTING_LOCK_APP_PASS_ENCRYPTED = "PREF_SETTING_LOCK_APP_PASS_ENCRYPTED";
+        public static final String PREF_SETTING_LOCK_APP_STATE_LOCKED = "PREF_SETTING_LOCK_APP_STATE_LOCKED";
+        public static final String PREF_AROUND_LOCATION = "PREF_AROUND_LOCATION";
+
+        public static final String PREF_INAPP_LAST_SHOW_POPUP = "PREF_INAPP_LAST_SHOW_POPUP";
+        public static final String PREF_INAPP_LAST_FAKE_OA = "PREF_INAPP_LAST_FAKE_OA";
+
+        public static final String PREF_SAVE_SEARCH_USER = "PREF_SAVE_SEARCH_USER";
+        public static final String PREF_LUCKEY_WHEEL_LAST_SPIN = "PREF_LUCKEY_WHEEL_LAST_SPIN";
+        public static final String PREF_LUCKEY_WHEEL_LAST_TIME_CLICK = "PREF_LUCKEY_WHEEL_LAST_TIME_CLICK";
+        public static final String PREF_LUCKEY_WHEEL_LAST_LOTTPOINT = "PREF_LUCKEY_WHEEL_LAST_LOTTPOINT";
+        public static final String PREF_ITEM_DEEPLINK_LAST_TIME_CLICK = "PREF_ITEM_DEEPLINK_LAST_TIME_CLICK";
+        public static final String PREF_LAST_TIME_SHOW_DIALOG_WEB = "PREF_LAST_TIME_SHOW_DIALOG_WEB";
+        public static final String PREF_COUNT_SHOW_DIALOG_WEB = "PREF_COUNT_SHOW_DIALOG_WEB";
+        public static final String PREF_LIST_GAME_LAST_TIME_CLICK = "PREF_LIST_GAME_LAST_TIME_CLICK";
+
+        public static final String PREF_CALL_OUT_ENABLE_STATE = "PREF_CALL_OUT_ENABLE_STATE";
+        public static final String PREF_MY_STRANGER_LOCATION = "PREF_MY_STRANGER_LOCATION";
+        public static final String PREF_LAST_UPDATE_STRANGER_LOCATION = "PREF_LAST_UPDATE_STRANGER_LOCATION";
+
+        public static final String PREF_LIST_TOP_VIDEO = "PREF_LIST_TOP_VIDEO";
+        public static final String PREF_CALL_HISTORY_BANNER_LAST_TIME_CLICK =
+                "PREF_CALL_HISTORY_BANNER_LAST_TIME_CLICK";
+        public static final String PREF_CONFIDE_LAST_TIME_CLICK = "PREF_CONFIDE_LAST_TIME_CLICK";
+        public static final String PREF_QRCODE_URL = "QRCODE_URL";
+
+        public static final String PREF_LAST_TIME_UPLOAD_LOG = "PREF_LAST_TIME_UPLOAD_LOG";
+        public static final String PREF_ENABLE_UPLOAD_LOG = "PREF_ENABLE_UPLOAD_LOG";
+
+        public static final String PREF_LIST_STICKY_BANNER = "LIST_STICKY_BANNER";
+        public static final String PREF_LAST_TIME_UPLOAD_LOCATION = "PREF_LAST_TIME_UPLOAD_LOCATION";
+        public static final String PREF_LAST_TIME_GET_LIST_GROUP = "PREF_LAST_TIME_GET_LIST_GROUP";
+        public static final String PREF_LIST_ADS_VIDEO_CATEGORY = "PREF_LIST_ADS_VIDEO_CATEGORY";
+
+        /**
+         * config content
+         */
+        public static final class CONFIG {
+            public static final String TIMESTAMP_GET_CONFIG = "pref_timestamp_get_config_4";
+            public static final String SMS2_NOTE_AVAILABLE = "smsout2.note.available"; //key o ban moi
+            public static final String SMSOUT_PREFIX_AVAILABLE = "smsout.to.prefix";
+            // domain keeng --> ko dung domain lay tu api config nua
+            public static final String PREF_DOMAIN_SERVICE_KEENG = "domain.service.keeng";
+            public static final String PREF_DOMAIN_MEDIA2_KEENG = "domain.media2.keeng";
+            public static final String PREF_DOMAIN_IMAGE_KEENG = "domain.image.keeng";
+            // domain keeng tu ban tin success xmpp
+            public static final String PREF_DOMAIN_SERVICE_KEENG_V2 = "domain.service.keeng_v2";
+            public static final String PREF_DOMAIN_MEDIA2_KEENG_V2 = "domain.media2.keeng_v2";
+            public static final String PREF_DOMAIN_IMAGE_KEENG_V2 = "domain.image.keeng_v2";
+            // config game
+            public static final String TIMESTAMP_GET_LIST_STICKER = "TIMESTAMP_GET_LIST_STICKER";
+            public static final String DEFAULT_STATUS_NOT_MOCHA = "default.status.notmocha";
+            public static final String NVLT_ENABLE = "nvlt.enable";
+            // version app
+            public static final String VERSION_CODE_APP = "version.code.app";
+            public static final String VERSION_NAME_APP = "version.name.app";
+            public static final String PING_INTERVAL = "ping.interval";
+
+            //value default
+            public static final String VERSION_CODE_DEFAULT = "0";
+
+            public static final String PREF_FORCE_GET_CONFIG_NOT_DONE = "PREF_FORCE_GET_CONFIG_NOT_DONE";
+            public static final String PREF_FORCE_GET_STICKER_NOT_DONE = "PREF_FORCE_GET_STICKER_NOT_DONE";
+
+            //url api keeng service
+            public static final String PREF_URL_SERVICE_GET_SONG = "SERVICE_GET_SONG";
+            public static final String PREF_URL_SERVICE_GET_TOP_SONG = "SERVICE_GET_TOP_SONG";
+            public static final String PREF_URL_SERVICE_GET_FEEDS_KEENG = "SERVICE_GET_FEEDS_KEENG";
+            public static final String PREF_URL_SERVICE_SEARCH_SONG = "SERVICE_SEARCH_SONG";
+            public static final String PREF_URL_SERVICE_GET_ALBUM = "SERVICE_GET_ALBUM";
+            public static final String PREF_URL_SERVICE_GET_SONG_UPLOAD = "SERVICE_GET_SONG_UPLOAD";
+            public static final String PREF_URL_MEDIA2_SEARCH_SUGGESTION = "MEDIA2_SEARCH_SUGGESTION";
+            public static final String PREF_URL_MEDIA_UPLOAD_SONG = "MEDIA_UPLOAD_SONG";
+            //
+            public static final String IMAGE_PROFILE_MAX_SIZE = "imageprofile.max.size";
+            // crbt
+            public static final String PREF_CRBT_ENABLE = "crbt.enable";
+            public static final String PREF_CRBT_PRICE = "crbt.price";
+            public static final String PREF_KEENG_PACKAGE = "android.keeng.package.name";
+            //onmedia
+            public static final String CONFIG_ONMEDIA_ON = "onmedia.on";
+
+            public static final String REGISTER_VIP_BANNER = "register.vip.banner.v2";
+            public static final String REGISTER_VIP_BUTTON = "register.vip.button.v2";
+            public static final String REGISTER_VIP_CONFIRM = "register.vip.confirm.v2";
+            public static final String REGISTER_VIP_CMD = "register.vip.cmd";
+            public static final String REGISTER_VIP_CMD_CANCEL = "register.vip.cmdcancel";
+            public static final String UNREGISTER_VIP_CONFIRM = "unregister.vip.confirm";
+//            public static final String REGISTER_VIP_RECONFIRM = "register.vip.reconfirm";
+//            public static final String REGISTER_VIP_WC_CONFIRM = "register.vip.wc.confirm";
+
+            public static final String INAPP_ENABLE = "inapp.enable";
+            public static final String LUCKY_WHEEL_ENABLE = "lucky.wheel.enable";
+            public static final String QR_SCAN_ENABLE = "qr.scan.enable";
+            public static final String GUEST_BOOK_ENABLE = "mocha.memory.on";
+            public static final String CALL_OUT_LABEL = "call.out.label";
+            public static final String LISTGAME_ENABLE = "listgame.enable";
+            public static final String BANNER_CALL_HISTORY = "banner.callhistory";
+            public static final String DISCOVERY_ENABLE = "discovery.enable";
+            public static final String STRANGER_LOCATION_TIMEOUT = "stranger.location.update";
+            public static final String BACKGROND_DEFAULT = "background.default";
+            public static final String MORE_ITEM_DEEPLINK = "more.item.deeplink";
+            public static final String SHAKE_GAME_ON = "shake.game.on";
+            public static final String LIXI_ENABLE = "lixi.enable";
+            public static final String SONTUNG83_ENABLE = "sontung83.enable";
+            public static final String AVNO_PAYMENT_WAPSITE = "avno.payment.wapsite";
+            public static final String VIDEO_UPLOAD_USER = "video.upload.user";
+            public static final String VIDEO_UPLOAD_PASS = "video.upload.pass";
+            public static final String TAB_VIDEO_ENABLE = "mocha.video.enable";
+            public static final String SPOINT_ENABLE = "spoint.enable";
+            public static final String BANKPLUS_ENABLE = "bankplus.enable";
+            public static final String WATCH_VIDEO_TOGETHER_ENABLE = "mocha.watchtogether.enable";
+            public static final String TAB_STRANGER_ENABLE = "home.stranger.enable";
+            public static final String SUGGEST_VIDEO_ENABLE = "suggest.video.enable";
+            public static final String FIREBASE_WAKEUP_ENABLE = "firebase.wakeup.enable";
+            public static final String GET_LINK_LOCATION = "getlink.location";
+            public static final String WHITELIST_DEVICE = "whitelist.device";
+        }
+    }
+
+    public static final class PREF_DEFAULT {
+        public static final String URL_SERVICE_GET_SONG_DEFAULT = "/KeengWSRestful/ws/common/getSong";
+        public static final String URL_SERVICE_GET_TOP_SONG_DEFAULT = "/KeengWSRestful/ws/internal/mocha/getSongMocha";
+        public static final String URL_SERVICE_GET_FEEDS_KEENG_DEFAULT = "/KeengWSRestful/ws/social/user/feed";
+        public static final String URL_SERVICE_SEARCH_SONG_DEFAULT = "/KeengWSRestful/ws/common/search";
+        public static final String URL_SERVICE_GET_ALBUM_DEFAULT = "/KeengWSRestful/ws/common/getAlbum";
+        public static final String URL_SERVICE_GET_SONG_UPLOAD_DEFAULT = "/KeengWSRestful/ws/internal/mocha/getSongUpload";
+        public static final String URL_MEDIA2_SEARCH_SUGGESTION_DEFAULT = "/solr/mbartists/select/";
+        public static final String URL_MEDIA_UPLOAD_SONG_DEFAULT = "http://vip.medias4.cdn.keeng.vn:8089/uploadv4.php";
+        public static final String URL_BANNER_CALL_HISROTY = "assets://banner/banner_call_history.jpg";
+        //for module setting
+        public static final boolean PREF_DEF_VIBRATE = true;
+        public static final boolean PREF_DEF_RINGTONE = true;
+        public static final boolean PREF_DEF_MSG_IN_POPUP = false;// default disable quick reply
+        public static final boolean PREF_DEF_ENABLE_SEEN = true;
+        public static final boolean PREF_DEF_ENABLE_UNLOCK = true;
+        public static final boolean PREF_DEF_NOTIFY_NEW_FRIEND = true;
+        public static final boolean PREF_DEF_IMAGE_HD = false;
+        public static final boolean PREF_DEF_PLAYMUSIC_IN_ROOM = false;
+        public static final boolean PREF_DEF_BIRTHDAY_REMINDER = true;
+
+        // for prevate setting
+        public static final boolean PREF_DEF_PREVIEW_MSG = true;
+        // keyboard
+        public static final int KEYBOARD_HEIGHT_DEFAULT = 233; // dp
+        public static final int CHAT_BAR_HEIGHT_DEFAULT = 44; // dp
+        public static final int SLIDE_MENU_MARGIN = 66;//dp
+
+        //onmedia
+        public static final boolean PREF_DEF_ONMEDIA_CHAT_WITH_STRANGER = true;
+        public static final boolean PREF_DEF_ONMEDIA_NOTIFY_NEW_FEED = true;
+        public static final boolean PREF_DEF_ONMEDIA_SECURE_WEB = true;
+        //max images can upload
+        public static final String PREF_IMAGE_PROFILE_MAX_SIZE = "20";
+        //crbt
+        public static final String PREF_DEF_CRBT_ENABLE = "0";
+        public static final String PREF_DEF_CRBT_PRICE = "1000 VND";
+        public static final String PREF_DEF_KEENG_PACKAGE = "com.vttm.keeng";
+        //upload video
+        public static final String PREF_DEF_VIDEO_UPLOAD_USER = "974802c5178ab63eba02d8035ad3f6ab";
+        public static final String PREF_DEF_VIDEO_UPLOAD_PASS = "974802c5178ab63eba02d8035ad3f6ab";
+
+
     }
 
     public static final class CONTACT {

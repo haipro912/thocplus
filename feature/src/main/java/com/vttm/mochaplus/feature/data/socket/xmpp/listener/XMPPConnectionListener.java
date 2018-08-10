@@ -1,7 +1,6 @@
 package com.vttm.mochaplus.feature.data.socket.xmpp.listener;
 
 import com.vttm.mochaplus.feature.ApplicationController;
-import com.vttm.mochaplus.feature.business.ReengAccountBusiness;
 import com.vttm.mochaplus.feature.data.socket.xmpp.XMPPManager;
 import com.vttm.mochaplus.feature.interfaces.NetworkConnectivityChangeListener;
 import com.vttm.mochaplus.feature.utils.AppLogger;
@@ -10,7 +9,6 @@ import com.vttm.mochaplus.feature.utils.NetworkUtils;
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.packet.StreamError;
 
 /**
  * Created by TSB on 7/27/2014.
@@ -56,21 +54,21 @@ public class XMPPConnectionListener implements ConnectionListener, NetworkConnec
     public void connectionClosedOnError(Exception e) {
         AppLogger.e(TAG, "connectionClosedOnError", e); //loi mang
         if (e instanceof XMPPException) {
-            XMPPException xmppEx = (XMPPException) e;
-            StreamError error = xmppEx.getStreamError();
-            // Make sure the error is not null
-            if (error != null) {
-                String reason = error.getCode();
-                if ("conflict".equals(reason)) {
-//                    co may khac dang nhap vao tai khoan nay
-                    ReengAccountBusiness reengAccountBusiness = mContext.getReengAccountBusiness();
-                    ReportHelper.reportLockAccount(mContext, reengAccountBusiness.getJidNumber(),
-                            reengAccountBusiness.getToken(), "conflict account");
-                    mContext.removeCountNotificationIcon();
-                    manualDisconnect();
-                    return;
-                }
-            }
+//            XMPPException xmppEx = (XMPPException) e;
+//            StreamError error = xmppEx.getStreamError();
+//            // Make sure the error is not null
+//            if (error != null) {
+//                String reason = error.getCode();
+//                if ("conflict".equals(reason)) {
+////                    co may khac dang nhap vao tai khoan nay
+//                    ReengAccountBusiness reengAccountBusiness = mContext.getReengAccountBusiness();
+//                    ReportHelper.reportLockAccount(mContext, reengAccountBusiness.getJidNumber(),
+//                            reengAccountBusiness.getToken(), "conflict account");
+//                    mContext.removeCountNotificationIcon();
+//                    manualDisconnect();
+//                    return;
+//                }
+//            }
         }
         manualDisconnect();
         //thu nghiem ko reconnect luc nay nua
@@ -80,15 +78,15 @@ public class XMPPConnectionListener implements ConnectionListener, NetworkConnec
     }
 
     private void loginByToken() {
-        if (IMService.isReady()) {
-            IMService.getInstance().connectByToken();
-        } else {
-            AppLogger.i(TAG, "IMService not ready -> start service");
-//            mContext.startService(new Intent(mContext.getApplicationContext(), IMService.class));
-
-            ApplicationController applicationController = (ApplicationController) mContext.getApplicationContext();
-            applicationController.startIMService();
-        }
+//        if (IMService.isReady()) {
+//            IMService.getInstance().connectByToken();
+//        } else {
+//            AppLogger.i(TAG, "IMService not ready -> start service");
+////            mContext.startService(new Intent(mContext.getApplicationContext(), IMService.class));
+//
+//            ApplicationController applicationController = (ApplicationController) mContext.getApplicationContext();
+//            applicationController.startIMService();
+//        }
     }
 
     @Override

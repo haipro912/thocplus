@@ -1,5 +1,6 @@
 package com.vttm.mochaplus.feature.data.socket.xmpp.listener;
 
+import com.vttm.chatlib.packet.VoiceMailGSMMessagePacket;
 import com.vttm.mochaplus.feature.ApplicationController;
 import com.vttm.mochaplus.feature.business.MessageBusiness;
 
@@ -19,7 +20,7 @@ public class VoicemailGSMResponseMessageListener implements StanzaListener {
     @Override
     public void processStanza(Stanza packet) throws SmackException.NotConnectedException, InterruptedException, SmackException.NotLoggedInException {
 //        Log.i(TAG, "" + packet.toXML());
-//        VoicemailGSMResponseMessage message = (VoicemailGSMResponseMessage) packet;
-//        mMessageBusiness.processGsmResponse(message);
+        VoiceMailGSMMessagePacket message = (VoiceMailGSMMessagePacket) packet;
+        mMessageBusiness.processGsmResponse(message);
     }
 }
