@@ -8,34 +8,24 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.google.i18n.phonenumbers.Phonenumber;
-import com.vttm.chatlib.utils.ConvertHelper;
 import com.vttm.mochaplus.feature.ApplicationController;
 import com.vttm.mochaplus.feature.data.DataManager;
-import com.vttm.mochaplus.feature.data.db.datasource.CallHistoryDataSource;
-import com.vttm.mochaplus.feature.data.db.datasource.ContactDataSource;
-import com.vttm.mochaplus.feature.data.db.datasource.ReengAccountDataSource;
 import com.vttm.mochaplus.feature.data.db.datasource.exceptions.RepositoryException;
 import com.vttm.mochaplus.feature.data.db.model.ContactConstant;
 import com.vttm.mochaplus.feature.data.db.utils.DbUtils;
-import com.vttm.mochaplus.feature.data.socket.xmpp.XMPPManager;
 import com.vttm.mochaplus.feature.data.socket.xmpp.listener.interfaces.VipInfoChangeListener;
 import com.vttm.mochaplus.feature.helper.PermissionHelper;
 import com.vttm.mochaplus.feature.helper.PhoneNumberHelper;
 import com.vttm.mochaplus.feature.helper.TimeHelper;
 import com.vttm.mochaplus.feature.helper.encrypt.RSAEncrypt;
-import com.vttm.mochaplus.feature.model.ImageProfile;
 import com.vttm.mochaplus.feature.model.ReengAccount;
 import com.vttm.mochaplus.feature.utils.AppConstants;
 import com.vttm.mochaplus.feature.utils.AppLogger;
 import com.vttm.mochaplus.feature.utils.Config;
 
-import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.packet.IQ;
 import org.jivesoftware.smack.packet.Presence;
-import org.json.JSONObject;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -209,12 +199,12 @@ public class ReengAccountBusiness {
     }
 
     public void initAccountFromDatabase() {
-        mCurrentAccount = DbUtils.clone(dataManager.getAccount());
-        // co tai khoan ma truong region code null
-        if (mCurrentAccount != null && TextUtils.isEmpty(mCurrentAccount.getRegionCode())) {
-            mCurrentAccount.setRegionCode("VN");// mac dinh vn
-            updateReengAccount(mCurrentAccount);// cap nhat db
-        }
+//        mCurrentAccount = DbUtils.clone(dataManager.getAccount());
+//        // co tai khoan ma truong region code null
+//        if (mCurrentAccount != null && TextUtils.isEmpty(mCurrentAccount.getRegionCode())) {
+//            mCurrentAccount.setRegionCode("VN");// mac dinh vn
+//            updateReengAccount(mCurrentAccount);// cap nhat db
+//        }
     }
 
     //get user number lay so de dang nhap
@@ -379,7 +369,7 @@ public class ReengAccountBusiness {
     }
 
     /**
-     * get country code user login
+     * get countryCode code user login
      *
      * @return
      */

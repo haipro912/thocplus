@@ -6,11 +6,9 @@ public class Config {
 
     public static final String REVISION = "1";
 
-    public static final String DOMAIN_MSG = "125.212.226.16";
-    public static final int PORT_MSG = 5229;
-
     public static final String DOMAIN_VIDEO = "hl2.mocha.com.vn";
     public static final String CLIENT_TYPE = "Android";
+    public static final String COUNTRY_CODE = "VN";
 
     public static final String KEY = "CQPkng4R1wL@CZT29YDE94A$*";
     public static final String RSA_KEY = "MIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgF3g82nB1ImzAwSN7JXeOC7wChDA4Nbzun" +
@@ -33,7 +31,14 @@ public class Config {
         public static final int PACKET_REPLY_TIMEOUT = 40000;       //change from 300000 -> 30000 -> 20000
         public static final int KEEP_ALIVE_INTERVAL = 40000;
         public static final int PING_INTERVAL = 1 * 60 * 1000;      // 2 phut
+
+        public static final String DOMAIN_MSG = "171.255.193.155";
+        public static final int PORT_MSG = 5225;
         public static final String RESOURCE = "reeng";
+
+//        public static final String DOMAIN_MSG = "125.235.13.148";
+//        public static final int PORT_MSG = 5222;
+//        public static final String RESOURCE = "localhost";
     }
 
     public static final class Extras {

@@ -60,7 +60,7 @@ public class GeoLocationProvider extends ExtensionElementProvider<GeoLocation> {
                 case "building":
                     builder.setBuilding(parser.nextText());
                     break;
-                case "country":
+                case "countryCode":
                     builder.setCountry(parser.nextText());
                     break;
                 case "countrycode":

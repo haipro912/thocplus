@@ -1,10 +1,11 @@
 package com.vttm.mochaplus.feature.mvp.video.detail;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,7 +15,6 @@ import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.vttm.mochaplus.feature.R;
 import com.vttm.mochaplus.feature.data.api.response.VideoDetailResponse;
@@ -22,26 +22,30 @@ import com.vttm.mochaplus.feature.data.api.response.VideoResponse;
 import com.vttm.mochaplus.feature.interfaces.AbsInterface;
 import com.vttm.mochaplus.feature.model.VideoModel;
 import com.vttm.mochaplus.feature.mvp.base.BaseFragment;
+import com.vttm.mochaplus.feature.mvp.video.detail.utils.SnapTopLinearSmoothScroller;
 import com.vttm.mochaplus.feature.utils.AppConstants;
-import com.vttm.mochaplus.feature.widget.CustomLoadMoreView;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-public class VideoDetailFragment extends BaseFragment implements AbsInterface.OnItemListener, SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener, IVideoDetailView {
-    private RecyclerView recyclerView;
+import im.ene.toro.PlayerSelector;
+import im.ene.toro.ToroPlayer;
+import im.ene.toro.widget.Container;
+import io.reactivex.Observable;
 
+public class VideoDetailFragment extends BaseFragment implements AbsInterface.OnItemListener, IVideoDetailView {
+    private Container container;
+    private RecyclerView.LayoutManager layoutManager;
     private VideoDetailAdapter adapter;
-    private LinearLayoutManager layoutManager;
-    private View notDataView, errorView;
     private ImageView btnBack;
-    private View root;
     private ShimmerFrameLayout shimmerFrameLayout;
     private ArrayList<VideoModel> datas = new ArrayList<>();
     private String lastId = "";
     private int dataSize;
     private VideoModel currentVideo;
+    private PlayerSelector selector;
 
     @Inject
     IVideoDetailPresenter<IVideoDetailView> presenter;
@@ -65,40 +69,40 @@ public class VideoDetailFragment extends BaseFragment implements AbsInterface.On
 
     @Override
     protected void setUp(View view) {
-        root = view.findViewById(R.id.root);
         shimmerFrameLayout = view.findViewById(R.id.shimmer_view_container);
         btnBack = view.findViewById(R.id.btnBack);
 
-        layout_refresh = view.findViewById(R.id.refresh);
-        recyclerView = view.findViewById(R.id.recycler_view);
-
-        layout_refresh.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
-        layout_refresh.setOnRefreshListener(this);
-        layout_refresh.setEnabled(false);
-
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getBaseActivity());
-        recyclerView.setLayoutManager(layoutManager);
-
-        adapter = new VideoDetailAdapter(getBaseActivity(), R.layout.item_video, datas, this);
-        adapter.setLoadMoreView(new CustomLoadMoreView());
-        adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
-        recyclerView.setAdapter(adapter);
-
-        notDataView = getBaseActivity().getLayoutInflater().inflate(R.layout.item_nodata, (ViewGroup) recyclerView.getParent(), false);
-        notDataView.setOnClickListener(new View.OnClickListener() {
+        layoutManager = new LinearLayoutManager(getContext()) {
             @Override
-            public void onClick(View v) {
-                onRefresh();
+            public void smoothScrollToPosition(RecyclerView view, RecyclerView.State state, int position) {
+                LinearSmoothScroller linearSmoothScroller =
+                        new SnapTopLinearSmoothScroller(view.getContext());
+                linearSmoothScroller.setTargetPosition(position);
+                super.startSmoothScroll(linearSmoothScroller);
+            }
+        };
+
+        container = view.findViewById(R.id.recycler_view);
+        container.setLayoutManager(layoutManager);
+        adapter = new VideoDetailAdapter(datas);
+        container.setAdapter(adapter);
+        container.setCacheManager(adapter);
+
+        adapter.setOnCompleteCallback(new VideoDetailAdapter.OnCompleteCallback() {
+            @SuppressLint("CheckResult")
+            @Override
+            void onCompleted(ToroPlayer player) {
+                int position = adapter.findNextPlayerPosition(player.getPlayerOrder());
+                //noinspection Convert2MethodRef,ResultOfMethodCallIgnored
+                Observable.just(container)
+                        .delay(250, TimeUnit.MILLISECONDS)
+                        .filter(c -> c != null)
+                        .subscribe(rv -> rv.smoothScrollToPosition(position));
             }
         });
-        errorView = getBaseActivity().getLayoutInflater().inflate(R.layout.item_failed, (ViewGroup) recyclerView.getParent(), false);
-        errorView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onRefresh();
-            }
-        });
+
+//        // Backup active selector.
+        selector = container.getPlayerSelector();
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,7 +129,7 @@ public class VideoDetailFragment extends BaseFragment implements AbsInterface.On
             else if(datas.size() == 1)
             {
                 //Load video lien quan
-                recyclerView.postDelayed(new Runnable() {
+                container.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         currentPage = 0;
@@ -144,7 +148,7 @@ public class VideoDetailFragment extends BaseFragment implements AbsInterface.On
             {
                 shimmerFrameLayout.startShimmer();
                 shimmerFrameLayout.setVisibility(View.VISIBLE);
-                root.setVisibility(View.GONE);
+                container.setVisibility(View.GONE);
             }
             presenter.loadVideoDetail(currentVideo.getLink());
         }
@@ -184,17 +188,17 @@ public class VideoDetailFragment extends BaseFragment implements AbsInterface.On
 
         datas.clear();
         datas.add(currentVideo);
-        adapter.setNewData(datas);
+        adapter.notifyDataSetChanged();
 
         if(shimmerFrameLayout != null)
         {
             shimmerFrameLayout.stopShimmer();
             shimmerFrameLayout.setVisibility(View.GONE);
-            root.setVisibility(View.VISIBLE);
+            container.setVisibility(View.VISIBLE);
         }
 
         //Load video lien quan
-        recyclerView.postDelayed(new Runnable() {
+        container.postDelayed(new Runnable() {
             @Override
             public void run() {
                 currentPage = 0;
@@ -212,7 +216,7 @@ public class VideoDetailFragment extends BaseFragment implements AbsInterface.On
             dataSize = response.getResult().size();
 
             if (dataSize == 0) {
-                adapter.loadMoreEnd();
+                //K co du lieu
             } else {
                 ArrayList<VideoModel> temp = new ArrayList<>();
                 for(int i = 0; i < response.getResult().size(); i++)
@@ -224,17 +228,15 @@ public class VideoDetailFragment extends BaseFragment implements AbsInterface.On
                     }
                 }
 
-                adapter.addData(temp);
-                adapter.loadMoreComplete();
-
-                if(currentPage == 0)
-                    adapter.setOnLoadMoreListener(this, recyclerView);
+                int index = datas.size();
+                datas.addAll(temp);
+                adapter.notifyItemInserted(index);
             }
         }
         else
         {
             if (currentPage > 0) {
-                adapter.loadMoreFail();
+                //load more fail
             }
         }
     }
@@ -247,23 +249,5 @@ public class VideoDetailFragment extends BaseFragment implements AbsInterface.On
     @Override
     public void onItemMoreClick(int pos) {
 
-    }
-
-    @Override
-    public void onRefresh() {
-//        currentPage = 0;
-//        loadData();
-    }
-
-    @Override
-    public void onLoadMoreRequested() {
-        recyclerView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                currentPage += dataSize;
-                loadVideoRelate();
-            }
-
-        }, 1000);
     }
 }

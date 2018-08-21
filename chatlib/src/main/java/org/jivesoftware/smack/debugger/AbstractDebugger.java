@@ -16,10 +16,6 @@
  */
 package org.jivesoftware.smack.debugger;
 
-import java.io.Reader;
-import java.io.Writer;
-import java.util.logging.Logger;
-
 import org.jivesoftware.smack.AbstractConnectionListener;
 import org.jivesoftware.smack.AbstractXMPPConnection;
 import org.jivesoftware.smack.ConnectionListener;
@@ -31,8 +27,11 @@ import org.jivesoftware.smack.util.ObservableReader;
 import org.jivesoftware.smack.util.ObservableWriter;
 import org.jivesoftware.smack.util.ReaderListener;
 import org.jivesoftware.smack.util.WriterListener;
-
 import org.jxmpp.jid.EntityFullJid;
+
+import java.io.Reader;
+import java.io.Writer;
+import java.util.logging.Logger;
 
 public abstract class AbstractDebugger extends SmackDebugger {
 
@@ -56,7 +55,7 @@ public abstract class AbstractDebugger extends SmackDebugger {
         readerListener = new ReaderListener() {
             @Override
             public void read(String str) {
-                log("RECV (" + connection.getConnectionCounter() + "): " + str);
+                log("SMACK RECV (" + connection.getConnectionCounter() + "): " + str);
             }
         };
         this.reader.addReaderListener(readerListener);
@@ -66,7 +65,7 @@ public abstract class AbstractDebugger extends SmackDebugger {
         writerListener = new WriterListener() {
             @Override
             public void write(String str) {
-                log("SENT (" + connection.getConnectionCounter() + "): " + str);
+                log("SMACK SENT (" + connection.getConnectionCounter() + "): " + str);
             }
         };
         this.writer.addWriterListener(writerListener);
@@ -74,12 +73,12 @@ public abstract class AbstractDebugger extends SmackDebugger {
         connListener = new AbstractConnectionListener() {
             @Override
             public void connected(XMPPConnection connection) {
-                log("XMPPConnection connected ("
+                log("SMACK XMPPConnection connected ("
                                 + connection + ")");
             }
             @Override
             public void authenticated(XMPPConnection connection, boolean resumed) {
-                String logString = "XMPPConnection authenticated (" + connection + ")";
+                String logString = "SMACK XMPPConnection authenticated (" + connection + ")";
                 if (resumed) {
                     logString += " and resumed";
                 }
@@ -88,7 +87,7 @@ public abstract class AbstractDebugger extends SmackDebugger {
             @Override
             public void connectionClosed() {
                 log(
-                       "XMPPConnection closed (" +
+                       "SMACK XMPPConnection closed (" +
                         connection +
                         ")");
             }
@@ -96,7 +95,7 @@ public abstract class AbstractDebugger extends SmackDebugger {
             @Override
             public void connectionClosedOnError(Exception e) {
                 log(
-                        "XMPPConnection closed due to an exception (" +
+                        "SMACK XMPPConnection closed due to an exception (" +
                         connection +
                         ")", e);
             }
@@ -106,14 +105,14 @@ public abstract class AbstractDebugger extends SmackDebugger {
             @Override
             public void reconnectionFailed(Exception e) {
                 log(
-                        "Reconnection failed due to an exception (" +
+                        "SMACK Reconnection failed due to an exception (" +
                         connection +
                         ")", e);
             }
             @Override
             public void reconnectingIn(int seconds) {
                 log(
-                        "XMPPConnection (" +
+                        "SMACK XMPPConnection (" +
                         connection +
                         ") will reconnect in " + seconds);
             }
@@ -171,7 +170,7 @@ public abstract class AbstractDebugger extends SmackDebugger {
     @Override
     public void onIncomingStreamElement(TopLevelStreamElement streamElement) {
         if (printInterpreted) {
-            log("RCV PKT (" + connection.getConnectionCounter() + "): " + streamElement.toXML(null));
+            log("SMACK RCV PKT (" + connection.getConnectionCounter() + "): " + streamElement.toXML(null));
         }
     }
 

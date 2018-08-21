@@ -28,23 +28,24 @@ import com.vttm.mochaplus.feature.utils.NetworkUtils;
 
 import org.jivesoftware.smack.AbstractXMPPConnection;
 import org.jivesoftware.smack.ConnectionConfiguration;
-import org.jivesoftware.smack.ReconnectionManager;
 import org.jivesoftware.smack.SmackConfiguration;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.android.AndroidSmackInitializer;
 import org.jivesoftware.smack.filter.AndFilter;
 import org.jivesoftware.smack.filter.StanzaFilter;
 import org.jivesoftware.smack.filter.StanzaTypeFilter;
 import org.jivesoftware.smack.packet.Presence;
+import com.vttm.chatlib.sasl.NonSASLAuthInfo;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jxmpp.jid.impl.JidCreate;
 import org.jxmpp.stringprep.XmppStringprepException;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import javax.net.ssl.SSLSocketFactory;
 
 public class XMPPManager {
     private static final String TAG = XMPPManager.class.getSimpleName();
@@ -72,32 +73,41 @@ public class XMPPManager {
     public XMPPManager(ApplicationController app) {
         mApplication = app;
         mPref = app.getSharedPreferences(AppConstants.PREFERENCE.PREF_DIR_NAME, Context.MODE_PRIVATE);
-//        configSmack();
+        configSmack();
 //        mMessageRetryManager = MessageRetryManager.getInstance(app, this);
-
-        initConnectionAsAnonymous();
     }
 
     private void configSmack() {
         try {
+            InetAddress addr = InetAddress.getByName(Config.Smack.DOMAIN_MSG);
+
+            new AndroidSmackInitializer().initialize();
             SmackConfiguration.setDefaultReplyTimeout(Config.Smack.PACKET_REPLY_TIMEOUT);
             mConfig = XMPPTCPConnectionConfiguration.builder()
-                    .setSecurityMode(ConnectionConfiguration.SecurityMode.required)
+                    .setSecurityMode(ConnectionConfiguration.SecurityMode.disabled)
                     .setXmppDomain(JidCreate.domainBareFrom(Config.Smack.RESOURCE))
-                    .setHost(Config.DOMAIN_MSG)
-                    .setPort(Config.PORT_MSG)
+                    .setHostAddress(addr)
+                    .setHost(Config.Smack.DOMAIN_MSG)
+                    .setPort(Config.Smack.PORT_MSG)
                     .setResource(Config.Smack.RESOURCE)
+                    .setClientType(Config.CLIENT_TYPE)
+                    .setRevision(Config.REVISION)
+                    .setCountryCode("VN")
                     .setSendPresence(false)
-                    .setSocketFactory(SSLSocketFactory.getDefault())
+//                    .setSocketFactory(SSLSocketFactory.getDefault())
+//                    .setUsernameAndPassword("user06", "user06")
+                    .enableDefaultDebugger()
                     .build();
+        }
+        catch (UnknownHostException e) {
 
-          
-        } catch (XmppStringprepException e) {
+        }
+        catch (XmppStringprepException e) {
             AppLogger.e(TAG, e);
         }
     }
 
-    private void initConnectionAsAnonymous() {
+    private void initConnectionAsAnonymous() throws InterruptedException, XMPPException, SmackException, IOException {
         AppLogger.i(TAG, "initConnectionAsAnonymous");
         if (mConnection == null) {
             AppLogger.i(TAG, "mConnection == null");
@@ -109,20 +119,7 @@ public class XMPPManager {
         }
         if (!mConnection.isConnected()) {
             AppLogger.i(TAG, "!mConnection.isConnected()");
-            try {
-                mConnection.connect();
-
-                // Enable automatic reconnection
-                ReconnectionManager.getInstanceFor(mConnection).enableAutomaticReconnection();
-            } catch (XMPPException e) {
-                AppLogger.e(TAG, e);
-            } catch (SmackException e) {
-                AppLogger.e(TAG, e);
-            } catch (IOException e) {
-                AppLogger.e(TAG, e);
-            } catch (InterruptedException e) {
-                AppLogger.e(TAG, e);
-            }
+            mConnection.connect();
         }
     }
 
@@ -139,23 +136,16 @@ public class XMPPManager {
         return mConnection.isConnected();
     }
 
-    public void connectByCode(ApplicationController mContext, String mPhoneNumber, String password, String countryCode) throws XMPPException, IllegalStateException {
-//        initConnectionAsAnonymous();
-//        // add success packet filter to get token
-//        addSASLListener(mContext);
-//        // login
-//        addAllListener(mContext);
-//        try {
-//            mConnection.iin(mPhoneNumber, password);
-//        } catch (SmackException e) {
-//            AppLogger.e(TAG, e);
-//        } catch (IOException e) {
-//            AppLogger.e(TAG, e);
-//        } catch (InterruptedException e) {
-//            AppLogger.e(TAG, e);
-//        }
-//        mConnection.customLogin(mPhoneNumber, password, Config.Smack.RESOURCE, Connection.CODE_AUTH_NON_SASL, Config.REVISION, countryCode);
-//        addConnectionListener();
+    public void connectByCode(ApplicationController mContext, String mPhoneNumber, String password, String countryCode) throws XMPPException, IllegalStateException, InterruptedException, IOException, SmackException {
+        initConnectionAsAnonymous();
+        // add success packet filter to get token
+        addSASLListener(mContext);
+        // login
+        addAllListener(mContext);
+
+        mConnection.login(mPhoneNumber, password, AbstractXMPPConnection.CODE_AUTH_NON_SASL);
+
+        addConnectionListener();
 //        sendPresenceAfterLogin(Connection.CODE_AUTH_NON_SASL, true);
 //        // start ping
 //        startPing();
@@ -281,8 +271,7 @@ public class XMPPManager {
      */
     private void addConnectionListener() {
         if (isConnected()) {
-            xmppConnectionListener = new XMPPConnectionListener(mApplication,
-                    mConnection, this);
+            xmppConnectionListener = new XMPPConnectionListener(mApplication, mConnection, this);
             mConnection.addConnectionListener(xmppConnectionListener);
             NetworkUtils.addNetworkConnectivityChangeListener(xmppConnectionListener);
         }
@@ -361,6 +350,12 @@ public class XMPPManager {
         }
     }
 
+    private void addSASLListener(ApplicationController mContext) {
+        StanzaFilter saslFilter = new AndFilter(new StanzaTypeFilter(NonSASLAuthInfo.class));
+        successNonSASLListener = new SuccessNonSASLListener(mContext);
+        mConnection.addSyncStanzaListener(successNonSASLListener, saslFilter);
+    }
+
     public void removeConnectionListener() {
         if (mConnection != null) {
             if (xmppConnectionListener != null) {
@@ -401,5 +396,24 @@ public class XMPPManager {
 
     public void manualDisconnect() {
 
+    }
+
+    public static synchronized void notifyXMPPDisconneted() {
+        mConnectionState = AppConstants.CONNECTION_STATE.NOT_CONNECT;
+        if (mXmppConnectivityChangeListeners == null)
+            return;
+        for (XMPPConnectivityChangeListener listener : mXmppConnectivityChangeListeners) {
+            if (listener != null) {
+                listener.onXMPPDisconnected();
+            }
+        }
+    }
+
+    public void setTokenForConfig(String token) {
+        mConfig.setToken(token);
+    }
+
+    public static int getConnectionState() {
+        return mConnectionState;
     }
 }

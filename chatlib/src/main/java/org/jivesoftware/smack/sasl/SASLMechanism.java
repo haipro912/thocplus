@@ -16,12 +16,6 @@
  */
 package org.jivesoftware.smack.sasl;
 
-import java.text.Normalizer;
-import java.text.Normalizer.Form;
-
-import javax.net.ssl.SSLSession;
-import javax.security.auth.callback.CallbackHandler;
-
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.SmackException.NotConnectedException;
@@ -30,9 +24,14 @@ import org.jivesoftware.smack.sasl.packet.SaslStreamElements.AuthMechanism;
 import org.jivesoftware.smack.sasl.packet.SaslStreamElements.Response;
 import org.jivesoftware.smack.util.StringUtils;
 import org.jivesoftware.smack.util.stringencoder.Base64;
-
 import org.jxmpp.jid.DomainBareJid;
 import org.jxmpp.jid.EntityBareJid;
+
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
+
+import javax.net.ssl.SSLSession;
+import javax.security.auth.callback.CallbackHandler;
 
 /**
  * Base class for SASL mechanisms.
@@ -87,6 +86,12 @@ public abstract class SASLMechanism implements Comparable<SASLMechanism> {
      */
     protected String password;
     protected String host;
+
+    //HaiKE them
+    protected String client_type;
+    protected String revision;
+    protected String countryCode;
+
 
     /**
      * The used SSL/TLS session (if any).
@@ -150,6 +155,11 @@ public abstract class SASLMechanism implements Comparable<SASLMechanism> {
         this.host = host;
         this.serviceName = serviceName;
         this.password = password;
+
+        this.client_type = connectionConfiguration.getCLientType();
+        this.revision = connectionConfiguration.getRevision();
+        this.countryCode = connectionConfiguration.getCountryCode();
+
         this.authorizationId = authzid;
         this.sslSession = sslSession;
         assert (authorizationId == null || authzidSupported());
@@ -180,6 +190,11 @@ public abstract class SASLMechanism implements Comparable<SASLMechanism> {
                     throws SmackException, NotConnectedException, InterruptedException {
         this.host = host;
         this.serviceName = serviceName;
+
+        this.client_type = connectionConfiguration.getCLientType();
+        this.revision = connectionConfiguration.getRevision();
+        this.countryCode = connectionConfiguration.getCountryCode();
+
         this.authorizationId = authzid;
         this.sslSession = sslSession;
         assert (authorizationId == null || authzidSupported());

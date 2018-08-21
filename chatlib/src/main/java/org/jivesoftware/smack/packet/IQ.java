@@ -17,11 +17,12 @@
 
 package org.jivesoftware.smack.packet;
 
-import java.util.List;
-import java.util.Locale;
+import android.text.TextUtils;
 
 import org.jivesoftware.smack.util.Objects;
 import org.jivesoftware.smack.util.XmlStringBuilder;
+
+import java.util.Locale;
 
 /**
  * The base IQ (Info/Query) packet. IQ packets are used to get and set information
@@ -50,6 +51,8 @@ public abstract class IQ extends Stanza {
     private final String childElementNamespace;
 
     private Type type = Type.get;
+
+    private String mechanismMethod;
 
     public IQ(IQ iq) {
         super(iq);
@@ -89,6 +92,14 @@ public abstract class IQ extends Stanza {
         this.type = Objects.requireNonNull(type, "type must not be null");
     }
 
+    public String getMechanismMethod() {
+        return mechanismMethod;
+    }
+
+    public void setMechanismMethod(String mechanismMethod) {
+        this.mechanismMethod = mechanismMethod;
+    }
+
     /**
      * Return true if this IQ is a request IQ, i.e. an IQ of type {@link Type#get} or {@link Type#set}.
      *
@@ -121,6 +132,7 @@ public abstract class IQ extends Stanza {
             sb.append(") [");
             logCommonAttributes(sb);
             sb.append("type=").append(type).append(',');
+            sb.append("authentype=").append(mechanismMethod).append(',');
             sb.append(']');
             return sb.toString();
     }
@@ -130,12 +142,18 @@ public abstract class IQ extends Stanza {
         XmlStringBuilder buf = new XmlStringBuilder(enclosingNamespace);
         buf.halfOpenElement(IQ_ELEMENT);
         addCommonAttributes(buf, enclosingNamespace);
+
+        if (!TextUtils.isEmpty(mechanismMethod)) {
+            buf.attribute("authentype", mechanismMethod);
+        }
+
         if (type == null) {
             buf.attribute("type", "get");
         }
         else {
             buf.attribute("type", type.toString());
         }
+
         buf.rightAngleBracket();
         buf.append(getChildElementXML(enclosingNamespace));
         buf.closeElement(IQ_ELEMENT);
@@ -171,18 +189,17 @@ public abstract class IQ extends Stanza {
             IQChildElementXmlStringBuilder iqChildElement = getIQChildElementBuilder(new IQChildElementXmlStringBuilder(this));
             if (iqChildElement != null) {
                 xml.append(iqChildElement);
-
-                List<ExtensionElement> extensionsXml = getExtensions();
-                if (iqChildElement.isEmptyElement) {
-                    if (extensionsXml.isEmpty()) {
-                         xml.closeEmptyElement();
-                         return xml;
-                    } else {
-                        xml.rightAngleBracket();
-                    }
-                }
-                xml.append(extensionsXml);
-                xml.closeElement(iqChildElement.element);
+//                List<ExtensionElement> extensionsXml = getExtensions();
+//                if (iqChildElement.isEmptyElement) {
+//                    if (extensionsXml.isEmpty()) {
+//                         xml.closeEmptyElement();
+//                         return xml;
+//                    } else {
+//                        xml.rightAngleBracket();
+//                    }
+//                }
+//                xml.append(extensionsXml);
+//                xml.closeElement(iqChildElement.element);
             }
         }
         return xml;
@@ -382,7 +399,7 @@ public abstract class IQ extends Stanza {
 
         private IQChildElementXmlStringBuilder(String element, String namespace) {
             super("");
-            prelude(element, namespace);
+//            prelude(element, namespace);
             this.element = element;
         }
 

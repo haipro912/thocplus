@@ -9,6 +9,7 @@ import android.text.Html;
 import android.text.Spannable;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -477,5 +478,18 @@ public class TextUtils {
         {
             return "";
         }
+    }
+
+    public static long parserLongFromString(String input, long defaultValue) {
+        if (android.text.TextUtils.isEmpty(input)) {
+            return defaultValue;
+        }
+        long value = defaultValue;
+        try {
+            value = Long.valueOf(input);
+        } catch (NumberFormatException e) {
+            Log.e(TAG, "NumberFormatException", e);
+        }
+        return value;
     }
 }

@@ -17,6 +17,17 @@
 
 package org.jivesoftware.smack;
 
+import org.jivesoftware.smack.SmackException.NoResponseException;
+import org.jivesoftware.smack.XMPPException.XMPPErrorException;
+import org.jivesoftware.smack.packet.Mechanisms;
+import org.jivesoftware.smack.sasl.SASLErrorException;
+import org.jivesoftware.smack.sasl.SASLMechanism;
+import org.jivesoftware.smack.sasl.core.ScramSha1PlusMechanism;
+import org.jivesoftware.smack.sasl.packet.SaslStreamElements.SASLFailure;
+import org.jivesoftware.smack.sasl.packet.SaslStreamElements.Success;
+import org.jxmpp.jid.DomainBareJid;
+import org.jxmpp.jid.EntityBareJid;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,18 +41,6 @@ import java.util.logging.Logger;
 
 import javax.net.ssl.SSLSession;
 import javax.security.auth.callback.CallbackHandler;
-
-import org.jivesoftware.smack.SmackException.NoResponseException;
-import org.jivesoftware.smack.XMPPException.XMPPErrorException;
-import org.jivesoftware.smack.packet.Mechanisms;
-import org.jivesoftware.smack.sasl.SASLErrorException;
-import org.jivesoftware.smack.sasl.SASLMechanism;
-import org.jivesoftware.smack.sasl.core.ScramSha1PlusMechanism;
-import org.jivesoftware.smack.sasl.packet.SaslStreamElements.SASLFailure;
-import org.jivesoftware.smack.sasl.packet.SaslStreamElements.Success;
-
-import org.jxmpp.jid.DomainBareJid;
-import org.jxmpp.jid.EntityBareJid;
 
 /**
  * <p>This class is responsible authenticating the user using SASL, binding the resource
@@ -331,25 +330,34 @@ public final class SASLAuthentication {
         // Iterate in SASL Priority order over registered mechanisms
         while (it.hasNext()) {
             SASLMechanism mechanism = it.next();
+            //Fix server mocha dung cai nay
             String mechanismName = mechanism.getName();
-            synchronized (BLACKLISTED_MECHANISMS) {
-                if (BLACKLISTED_MECHANISMS.contains(mechanismName)) {
+
+//            if(mechanismName.equals(SASLMechanism.DIGESTMD5))
+//            {
+                synchronized (BLACKLISTED_MECHANISMS) {
+                    if (BLACKLISTED_MECHANISMS.contains(mechanismName)) {
+                        continue;
+                    }
+                }
+                if (!configuration.isEnabledSaslMechanism(mechanismName)) {
                     continue;
                 }
-            }
-            if (!configuration.isEnabledSaslMechanism(mechanismName)) {
-                continue;
-            }
-            if (authzid != null) {
-                if (!mechanism.authzidSupported()) {
-                    LOGGER.fine("Skipping " + mechanism + " because authzid is required by not supported by this SASL mechanism");
-                    continue;
+                if (authzid != null) {
+                    if (!mechanism.authzidSupported()) {
+                        LOGGER.fine("Skipping " + mechanism + " because authzid is required by not supported by this SASL mechanism");
+                        continue;
+                    }
                 }
-            }
-            if (serverMechanisms.contains(mechanismName)) {
-                // Create a new instance of the SASLMechanism for every authentication attempt.
-                return mechanism.instanceForAuthentication(connection, configuration);
-            }
+                if (serverMechanisms.contains(mechanismName)) {
+                    // Create a new instance of the SASLMechanism for every authentication attempt.
+                    return mechanism.instanceForAuthentication(connection, configuration);
+                }
+//            }
+//            else
+//            {
+//                continue;
+//            }
         }
 
         synchronized (BLACKLISTED_MECHANISMS) {

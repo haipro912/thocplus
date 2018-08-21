@@ -10,7 +10,7 @@ import com.bumptech.glide.manager.SupportRequestManagerFragment;
 import com.vttm.mochaplus.feature.mvp.base.BaseActivity;
 import com.vttm.mochaplus.feature.mvp.main.IMainView;
 import com.vttm.mochaplus.feature.mvp.main.MainFragment;
-import com.vttm.mochaplus.feature.mvp.video.detail.MoreVideosFragment;
+import com.vttm.mochaplus.feature.mvp.video.detail.VideoDetailFragment;
 import com.vttm.mochaplus.feature.utils.AppConstants;
 import com.vttm.mochaplus.feature.utils.AppLogger;
 import com.vttm.mochaplus.feature.utils.ToastUtils;
@@ -57,7 +57,7 @@ public class MainActivity extends BaseActivity  implements IMainView{
                 currentFragment = MainFragment.newInstance();
                 break;
             case AppConstants.TAB_VIDEO_DETAIL:
-                currentFragment = MoreVideosFragment.newInstance(bundle);
+                currentFragment = VideoDetailFragment.newInstance(bundle);
                 break;
         }
 

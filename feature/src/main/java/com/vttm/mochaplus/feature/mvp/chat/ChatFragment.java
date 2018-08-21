@@ -39,7 +39,7 @@ public class ChatFragment extends BaseFragment {
         ImageView imvImage = view.findViewById(R.id.imvImage);
 //        ImageLoader.setImage(getBaseActivity(), "", imvImage);
 
-        new SpeedTestTask().execute();
+//        new SpeedTestTask().execute();
     }
 
     public class SpeedTestTask extends AsyncTask<Void, Void, String> {

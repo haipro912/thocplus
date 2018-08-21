@@ -27,10 +27,10 @@
             android:layout_marginTop="8dp">
 
             <EditText
-                android:id="@+id/input_email"
+                android:id="@+id/input_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Email"
+                android:hint="Số điện thoại"
                 android:inputType="textEmailAddress" />
         </android.support.design.widget.TextInputLayout>
 
@@ -45,7 +45,7 @@
                 android:id="@+id/input_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"
+                android:hint="Mật khẩu"
                 android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
 
@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:gravity="center"
-            android:text="No account yet? Create one"
+            android:text="Lấy mật khẩu đăng nhập. Click here!"
             android:textSize="16dip" />
 
     </LinearLayout>

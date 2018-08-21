@@ -17,6 +17,20 @@
 
 package org.jivesoftware.smack;
 
+import org.jivesoftware.smack.debugger.SmackDebuggerFactory;
+import org.jivesoftware.smack.proxy.ProxyInfo;
+import org.jivesoftware.smack.sasl.SASLMechanism;
+import org.jivesoftware.smack.sasl.core.SASLAnonymous;
+import org.jivesoftware.smack.util.CollectionUtil;
+import org.jivesoftware.smack.util.Objects;
+import org.jivesoftware.smack.util.StringUtils;
+import org.jxmpp.jid.DomainBareJid;
+import org.jxmpp.jid.EntityBareJid;
+import org.jxmpp.jid.impl.JidCreate;
+import org.jxmpp.jid.parts.Resourcepart;
+import org.jxmpp.stringprep.XmppStringprepException;
+import org.minidns.dnsname.DnsName;
+
 import java.net.InetAddress;
 import java.security.KeyStore;
 import java.util.Arrays;
@@ -30,21 +44,6 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 import javax.security.auth.callback.CallbackHandler;
-
-import org.jivesoftware.smack.debugger.SmackDebuggerFactory;
-import org.jivesoftware.smack.proxy.ProxyInfo;
-import org.jivesoftware.smack.sasl.SASLMechanism;
-import org.jivesoftware.smack.sasl.core.SASLAnonymous;
-import org.jivesoftware.smack.util.CollectionUtil;
-import org.jivesoftware.smack.util.Objects;
-import org.jivesoftware.smack.util.StringUtils;
-
-import org.jxmpp.jid.DomainBareJid;
-import org.jxmpp.jid.EntityBareJid;
-import org.jxmpp.jid.impl.JidCreate;
-import org.jxmpp.jid.parts.Resourcepart;
-import org.jxmpp.stringprep.XmppStringprepException;
-import org.minidns.dnsname.DnsName;
 
 /**
  * Configuration to use while establishing the connection to the server.
@@ -86,8 +85,12 @@ public abstract class ConnectionConfiguration {
     private final SocketFactory socketFactory;
 
     private final CharSequence username;
-    private final String password;
+    private String password;
     private final Resourcepart resource;
+
+    private final String client_type;
+    private final String revision;
+    private final String country;
 
     /**
      * The optional SASL authorization identity (see RFC 6120 § 6.3.8).
@@ -130,6 +133,10 @@ public abstract class ConnectionConfiguration {
         username = builder.username;
         password = builder.password;
         callbackHandler = builder.callbackHandler;
+
+        client_type = builder.client_type;
+        revision = builder.revision;
+        country = builder.countryCode;
 
         // Resource can be null, this means that the server must provide one
         resource = builder.resource;
@@ -227,6 +234,11 @@ public abstract class ConnectionConfiguration {
      */
     public String getKeystoreType() {
         return keystoreType;
+    }
+
+    public void setToken(String token)
+    {
+        password = token;
     }
 
     /**
@@ -411,6 +423,18 @@ public abstract class ConnectionConfiguration {
         return resource;
     }
 
+    public String getCLientType() {
+        return client_type;
+    }
+
+    public String getRevision() {
+        return revision;
+    }
+
+    public String getCountryCode() {
+        return country;
+    }
+
     /**
      * Returns the optional XMPP address to be requested as the SASL authorization identity.
      *
@@ -514,6 +538,11 @@ public abstract class ConnectionConfiguration {
         private Set<String> enabledSaslMechanisms;
         private X509TrustManager customX509TrustManager;
 
+        //HaiKE them
+        private String client_type;
+        private String revision;
+        private String countryCode;
+
         protected Builder() {
             if (SmackConfiguration.DEBUG) {
                 enableDefaultDebugger();
@@ -534,6 +563,15 @@ public abstract class ConnectionConfiguration {
         public B setUsernameAndPassword(CharSequence username, String password) {
             this.username = username;
             this.password = password;
+            return getThis();
+        }
+
+        public B setLoginInfo(String username, String password, Resourcepart resource, String revision,String countryCode) {
+            this.username = username;
+            this.password = password;
+            this.resource = resource;
+            this.revision=revision;
+            this.countryCode = countryCode;
             return getThis();
         }
 
@@ -559,6 +597,25 @@ public abstract class ConnectionConfiguration {
             this.xmppServiceDomain = xmppDomain;
             return getThis();
         }
+
+
+        public B setClientType(String clientType) {
+            this.client_type = clientType;
+            return getThis();
+        }
+
+        public B setRevision(String revision) {
+            this.revision = revision;
+            return getThis();
+        }
+
+
+        public B setCountryCode(String countryCode) {
+            this.countryCode = countryCode;
+            return getThis();
+        }
+
+
 
         /**
          * Set the XMPP domain. The XMPP domain is what follows after the '@' sign in XMPP addresses (JIDs).

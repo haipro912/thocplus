@@ -223,7 +223,7 @@ public final class GeoLocation implements Serializable, ExtensionElement {
         xml.optElement("area", area);
         xml.optElement("bearing", bearing);
         xml.optElement("building", building);
-        xml.optElement("country", country);
+        xml.optElement("countryCode", country);
         xml.optElement("countrycode", countryCode);
         xml.optElement("datum", datum);
         xml.optElement("description", description);

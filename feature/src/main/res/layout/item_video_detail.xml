@@ -5,10 +5,10 @@
     android:id="@+id/fb_item_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/padding_normal"
-    android:theme="@style/Theme.AppCompat"
     app:cardCornerRadius="0dp"
-    app:cardElevation="1dp">
+    app:cardElevation="1dp"
+    app:cardBackgroundColor="@android:color/black"
+    android:layout_marginTop="@dimen/padding_normal">
 
     <LinearLayout
         android:id="@+id/fb_item_base"
@@ -16,74 +16,74 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <FrameLayout
+        <View android:id="@+id/viewPadding"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"/>
+
+        <RelativeLayout
             android:id="@+id/fb_item_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:padding="4dp">
+            android:padding="@dimen/padding10">
 
             <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/fb_user_icon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:id="@+id/imvChannel"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_gravity="center_vertical"
-                android:padding="4dp"
-                android:scaleType="fitCenter"
+                android:scaleType="centerCrop"
                 tools:src="@mipmap/ic_launcher" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginStart="40dp"
-                android:orientation="vertical"
-                android:padding="4dp">
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/padding10"
+                android:layout_toRightOf="@id/imvChannel"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/fb_user_name"
+                    android:id="@+id/tvChannel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textSize="@dimen/text_size_title"
+                    android:textColor="@android:color/white"
                     android:textStyle="bold"
                     tools:text="@string/app_name" />
 
                 <TextView
-                    android:id="@+id/fb_user_profile"
+                    android:id="@+id/tvChannelDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    tools:text="the simple, the best" />
+                    android:textSize="@dimen/text_size_title"
+                    android:textColor="@android:color/white"
+                    android:visibility="gone"
+                    tools:text="@string/app_name" />
             </LinearLayout>
-        </FrameLayout>
+        </RelativeLayout>
 
         <FrameLayout
-            android:id="@+id/fb_item_middle"
+            android:id="@+id/layout_player"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <com.google.android.exoplayer2.ui.PlayerView
-                android:id="@+id/fb_video_player"
+                android:id="@+id/playerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="231dp"
                 android:visibility="gone"
                 app:resize_mode="fixed_height"
                 app:surface_type="texture_view"
-                app:use_controller="true">
+                app:use_controller="true"/>
 
-                <TextView
-                    android:id="@+id/player_state"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top|end"
-                    android:layout_margin="4dp"
-                    android:background="#80000000"
-                    android:maxLines="1"
-                    android:padding="4dp"
-                    android:textAllCaps="true"
-                    android:textColor="#FFFF00" />
-            </com.google.android.exoplayer2.ui.PlayerView>
+            <ImageView
+                android:id="@+id/imvCover"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:src="@color/color_animation"
+                android:scaleType="fitXY" />
         </FrameLayout>
 
         <LinearLayout
@@ -92,7 +92,8 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:minHeight="40dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="visible">
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/fb_button_like"
@@ -103,7 +104,8 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:text="@string/like"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+                android:textSize="@dimen/text_size_title"
+                android:textColor="@color/material_color_grey_500"/>
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/fb_button_comment"
@@ -114,7 +116,8 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:text="@string/comment"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+                android:textSize="@dimen/text_size_title"
+                android:textColor="@color/material_color_grey_500" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/fb_button_share"
@@ -125,7 +128,8 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:text="@string/share"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+                android:textSize="@dimen/text_size_title"
+                android:textColor="@color/material_color_grey_500" />
         </LinearLayout>
     </LinearLayout>
 
@@ -134,5 +138,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#cc000000" />
-
 </android.support.v7.widget.CardView>

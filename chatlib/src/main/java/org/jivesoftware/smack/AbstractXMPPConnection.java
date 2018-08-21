@@ -16,31 +16,7 @@
  */
 package org.jivesoftware.smack;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.vttm.chatlib.NonSASLAuthentication;
 
 import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
 import org.jivesoftware.smack.SmackConfiguration.UnknownIqRequestReplyMode;
@@ -87,7 +63,6 @@ import org.jivesoftware.smack.util.PacketParserUtils;
 import org.jivesoftware.smack.util.ParserUtils;
 import org.jivesoftware.smack.util.StringUtils;
 import org.jivesoftware.smack.util.dns.HostAddress;
-
 import org.jxmpp.jid.DomainBareJid;
 import org.jxmpp.jid.EntityFullJid;
 import org.jxmpp.jid.Jid;
@@ -95,6 +70,32 @@ import org.jxmpp.jid.parts.Resourcepart;
 import org.jxmpp.util.XmppStringUtils;
 import org.minidns.dnsname.DnsName;
 import org.xmlpull.v1.XmlPullParser;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -131,7 +132,8 @@ import org.xmlpull.v1.XmlPullParser;
  */
 public abstract class AbstractXMPPConnection implements XMPPConnection {
     private static final Logger LOGGER = Logger.getLogger(AbstractXMPPConnection.class.getName());
-
+    public static final String TOKEN_AUTH_NON_SASL = "token";
+    public static final String CODE_AUTH_NON_SASL = "code";
     /**
      * Counter to uniquely identify connections that are created.
      */
@@ -248,6 +250,7 @@ public abstract class AbstractXMPPConnection implements XMPPConnection {
      * The SASLAuthentication manager that is responsible for authenticating with the server.
      */
     protected final SASLAuthentication saslAuthentication;
+    protected final NonSASLAuthentication nonSASLAuthentication;
 
     /**
      * A number to uniquely identify connections that are created. This is distinct from the
@@ -330,6 +333,7 @@ public abstract class AbstractXMPPConnection implements XMPPConnection {
      */
     protected AbstractXMPPConnection(ConnectionConfiguration configuration) {
         saslAuthentication = new SASLAuthentication(this, configuration);
+        nonSASLAuthentication = new NonSASLAuthentication(this, configuration);
         config = configuration;
         SmackDebuggerFactory debuggerFactory = configuration.getDebuggerFactory();
         if (debuggerFactory != null) {
@@ -471,7 +475,7 @@ public abstract class AbstractXMPPConnection implements XMPPConnection {
         CharSequence username = usedUsername != null ? usedUsername : config.getUsername();
         String password = usedPassword != null ? usedPassword : config.getPassword();
         Resourcepart resource = usedResource != null ? usedResource : config.getResource();
-        login(username, password, resource);
+        login(username, password, resource, AbstractXMPPConnection.CODE_AUTH_NON_SASL);
     }
 
     /**
@@ -486,9 +490,9 @@ public abstract class AbstractXMPPConnection implements XMPPConnection {
      * @throws InterruptedException
      * @see #login
      */
-    public synchronized void login(CharSequence username, String password) throws XMPPException, SmackException,
+    public synchronized void login(CharSequence username, String password, String mechanismMethod) throws XMPPException, SmackException,
                     IOException, InterruptedException {
-        login(username, password, config.getResource());
+        login(username, password, config.getResource(), mechanismMethod);
     }
 
     /**
@@ -504,7 +508,7 @@ public abstract class AbstractXMPPConnection implements XMPPConnection {
      * @throws InterruptedException
      * @see #login
      */
-    public synchronized void login(CharSequence username, String password, Resourcepart resource) throws XMPPException,
+    public synchronized void login(CharSequence username, String password, Resourcepart resource, String mechanismMethod) throws XMPPException,
                     SmackException, IOException, InterruptedException {
         if (!config.allowNullOrEmptyUsername) {
             StringUtils.requireNotNullOrEmpty(username, "Username must not be null or empty");
@@ -514,10 +518,10 @@ public abstract class AbstractXMPPConnection implements XMPPConnection {
         usedUsername = username != null ? username.toString() : null;
         usedPassword = password;
         usedResource = resource;
-        loginInternal(usedUsername, usedPassword, usedResource);
+        loginInternal(usedUsername, usedPassword, usedResource, mechanismMethod);
     }
 
-    protected abstract void loginInternal(String username, String password, Resourcepart resource)
+    protected abstract void loginInternal(String username, String password, Resourcepart resource, String mechanismMethod)
                     throws XMPPException, SmackException, IOException, InterruptedException;
 
     @Override
@@ -712,6 +716,10 @@ public abstract class AbstractXMPPConnection implements XMPPConnection {
      */
     protected SASLAuthentication getSASLAuthentication() {
         return saslAuthentication;
+    }
+
+    protected NonSASLAuthentication getNonSASLAuthentication() {
+        return nonSASLAuthentication;
     }
 
     /**

@@ -31,6 +31,7 @@ dependencies {
     api "org.jxmpp:jxmpp-core:0.6.3"
     api "org.jxmpp:jxmpp-jid:0.6.3"
     api "org.minidns:minidns-core:0.3.2"
+    api "org.minidns:minidns-android21:0.3.2"
 }
 
 configurations {

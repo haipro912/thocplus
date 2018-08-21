@@ -40,6 +40,12 @@ public final class AppConstants {
         public static final String XMPP_BROADCAST_RESOUCE = "@broadcast.reeng/reeng";
     }
 
+    public static final class CONNECTION_STATE {
+        public static final int NOT_CONNECT = -1;
+        public static final int CONNECTING = 1;
+        public static final int CONNECTED = 2;
+    }
+
     public static final class FILE {
         public static final String[] FILE_DOC_TYPES = {"application/msword", "application/vnd" +
                 ".openxmlformats-officedocument.wordprocessingml.document",

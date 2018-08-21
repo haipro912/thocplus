@@ -58,9 +58,15 @@
 
     </com.facebook.shimmer.ShimmerFrameLayout>
 
-    <include
-        layout="@layout/fragment_base"
-        android:visibility="gone" />
+    <!--<include-->
+        <!--layout="@layout/fragment_base"-->
+        <!--android:visibility="gone" />-->
+
+    <im.ene.toro.widget.Container
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/btnBack"

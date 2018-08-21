@@ -24,12 +24,6 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import im.ene.toro.media.PlaybackInfo;
-
-import static com.vttm.mochaplus.feature.mvp.video.detail.MoreVideosFragment.ARG_EXTRA_BASE_FB_VIDEO;
-import static com.vttm.mochaplus.feature.mvp.video.detail.MoreVideosFragment.ARG_EXTRA_BASE_ORDER;
-import static com.vttm.mochaplus.feature.mvp.video.detail.MoreVideosFragment.ARG_EXTRA_PLAYBACK_INFO;
-
 public class VideoFragment extends BaseFragment implements AbsInterface.OnItemListener, SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener, IVideoView {
     private View loadingView;
     private RecyclerView recyclerView;
@@ -178,10 +172,7 @@ public class VideoFragment extends BaseFragment implements AbsInterface.OnItemLi
         if(getBaseActivity() != null && getBaseActivity() instanceof MainActivity)
         {
             Bundle bundle = new Bundle();
-//            bundle.putSerializable(AppConstants.KEY_BUNDLE.KEY_VIDEO_SELECT, datas.get(pos));
-            bundle.putInt(ARG_EXTRA_BASE_ORDER, 0);
-            bundle.putParcelable(ARG_EXTRA_BASE_FB_VIDEO, datas.get(pos));
-            bundle.putParcelable(ARG_EXTRA_PLAYBACK_INFO, new PlaybackInfo());
+            bundle.putSerializable(AppConstants.KEY_BUNDLE.KEY_VIDEO_SELECT, datas.get(pos));
             ((MainActivity)getBaseActivity()).showFragment(AppConstants.TAB_VIDEO_DETAIL, bundle);
         }
     }

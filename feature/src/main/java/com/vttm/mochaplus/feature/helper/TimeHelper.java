@@ -565,4 +565,23 @@ public class TimeHelper {
         NumberFormat formatter = new DecimalFormat("#00");
         return formatter.format(d);
     }
+
+
+    public static String formatTimeLocked(long time, Resources res) {
+        int timeLock = (int) (time / 1000);
+        int hourLock = timeLock / 3600;
+        int minuteLock = (timeLock / 60) - (hourLock * 60);
+        int secondLock = timeLock - (hourLock * 3600) - (minuteLock * 60);
+        if (hourLock == 0) {
+            if (minuteLock == 0) {
+                if (secondLock == 0)
+                    secondLock = 1;
+                return res.getString(R.string.login_locked) + " " + secondLock + " s";
+            } else {
+                return res.getString(R.string.login_locked) + " " + minuteLock + ":" + secondLock + " s";
+            }
+        } else {
+            return res.getString(R.string.login_locked) + " " + hourLock + ":" + minuteLock + " m";
+        }
+    }
 }

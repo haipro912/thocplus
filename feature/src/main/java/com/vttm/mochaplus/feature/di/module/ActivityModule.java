@@ -26,6 +26,9 @@ import com.vttm.mochaplus.feature.mvp.call.ICallView;
 import com.vttm.mochaplus.feature.mvp.contact.ContactPresenter;
 import com.vttm.mochaplus.feature.mvp.contact.IContactPresenter;
 import com.vttm.mochaplus.feature.mvp.contact.IContactView;
+import com.vttm.mochaplus.feature.mvp.login.ILoginPresenter;
+import com.vttm.mochaplus.feature.mvp.login.ILoginView;
+import com.vttm.mochaplus.feature.mvp.login.LoginPresenter;
 import com.vttm.mochaplus.feature.mvp.main.IMainPresenter;
 import com.vttm.mochaplus.feature.mvp.main.IMainView;
 import com.vttm.mochaplus.feature.mvp.main.MainPresenter;
@@ -82,6 +85,12 @@ public class ActivityModule {
     @Provides
     @PerActivity
     IMainPresenter<IMainView> provideMainPresenter(MainPresenter<IMainView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @PerActivity
+    ILoginPresenter<ILoginView> provideLoginPresenter(LoginPresenter<ILoginView> presenter) {
         return presenter;
     }
 

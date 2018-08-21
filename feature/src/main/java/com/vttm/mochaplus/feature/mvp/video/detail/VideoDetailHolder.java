@@ -28,12 +28,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.vttm.mochaplus.feature.R;
 import com.vttm.mochaplus.feature.helper.image.ImageLoader;
 import com.vttm.mochaplus.feature.model.VideoModel;
-
-import java.util.List;
+import com.vttm.mochaplus.feature.utils.ViewUtils;
 
 import im.ene.toro.ToroPlayer;
 import im.ene.toro.ToroUtil;
@@ -41,9 +41,6 @@ import im.ene.toro.exoplayer.ExoPlayerViewHelper;
 import im.ene.toro.exoplayer.Playable;
 import im.ene.toro.media.PlaybackInfo;
 import im.ene.toro.widget.Container;
-
-import static java.lang.String.format;
-import static java.util.Locale.getDefault;
 
 /**
  * @author eneim | 6/18/17.
@@ -58,47 +55,56 @@ public class VideoDetailHolder extends RecyclerView.ViewHolder implements ToroPl
     private Uri mediaUri;
     private EventListener eventListener;
     private ViewPropertyAnimator onPlayAnimator;
-    private  ViewPropertyAnimator onPauseAnimator;
+    private ViewPropertyAnimator onPauseAnimator;
     private int animatorDuration = 300;
 
-    ImageView userIcon;
-    TextView userName;
-    TextView userProfile;
-    FrameLayout container;
+    ImageView imvChannel;
+    TextView tvChannel;
+    TextView tvChannelDate;
+    ImageView imvCover;
+    FrameLayout layout_player;
     PlayerView playerView;
-    TextView state;
     View overLay;
+    View viewPadding;
 
     public VideoDetailHolder(View itemView) {
         super(itemView);
 
-        userIcon = itemView.findViewById(R.id.fb_user_icon);
-        userName = itemView.findViewById(R.id.fb_user_name);
-        userProfile = itemView.findViewById(R.id.fb_user_profile);
-        container = itemView.findViewById(R.id.fb_item_middle);
-        playerView = itemView.findViewById(R.id.fb_video_player);
-        state = itemView.findViewById(R.id.player_state);
+        imvChannel = itemView.findViewById(R.id.imvChannel);
+        tvChannel = itemView.findViewById(R.id.tvChannel);
+        tvChannelDate = itemView.findViewById(R.id.tvChannelDate);
+        layout_player = itemView.findViewById(R.id.layout_player);
+        playerView = itemView.findViewById(R.id.playerView);
         overLay = itemView.findViewById(R.id.over_lay);
+        viewPadding = itemView.findViewById(R.id.viewPadding);
+        imvCover = itemView.findViewById(R.id.imvCover);
 
         playerView.setVisibility(View.VISIBLE);
         playerView.setUseController(false);
     }
 
-    private Playable.EventListener listener = new Playable.DefaultEventListener() {
-        @Override
-        public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-            super.onPlayerStateChanged(playWhenReady, playbackState);
-            state.setText(format(getDefault(), "STATE: %d・PWR: %s", playbackState, playWhenReady));
-        }
-    };
-
     @SuppressWarnings("SameParameterValue")
-    void bind(MoreVideosAdapter adapter, VideoModel item, List<Object> payloads) {
+    void bind(VideoDetailAdapter adapter, VideoModel item, int pos) {
         if (item != null) {
-            userName.setText(item.getChannels().get(0).getName());
-            ImageLoader.setImage(itemView.getContext(), item.getImagePath(), userIcon);
             mediaUri = Uri.parse(item.getOriginalPath());
-//            userProfile.setText(format("%s・%s", getRelativeTimeSpanString(item.timeStamp), url.name()));
+
+            tvChannel.setText(item.getChannels().get(0).getName());
+            ImageLoader.setImage(itemView.getContext(), item.getChannels().get(0).getUrlAvatar(), imvChannel);
+            ImageLoader.setImage(itemView.getContext(), item.getImagePath(), imvCover);
+
+            float ratio = Float.parseFloat(item.getAspecRatio());
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) playerView.getLayoutParams();
+            params.height = (int) (ViewUtils.getScreenWidth(layout_player.getContext()) / ratio);
+
+            FrameLayout.LayoutParams params1 = (FrameLayout.LayoutParams) imvCover.getLayoutParams();
+            params1.height = params.height;
+
+            if(pos != 0)
+                viewPadding.setVisibility(View.GONE);
+            else
+                viewPadding.setVisibility(View.VISIBLE);
+
+            imvCover.setVisibility(View.VISIBLE);
         }
     }
 
@@ -119,8 +125,15 @@ public class VideoDetailHolder extends RecyclerView.ViewHolder implements ToroPl
         if (mediaUri == null) throw new IllegalStateException("mediaUri is null.");
         if (helper == null) {
             helper = new ExoPlayerViewHelper(this, mediaUri);
-            helper.addEventListener(listener);
             helper.addPlayerEventListener(eventListener);
+            helper.addEventListener(new Playable.DefaultEventListener() {
+
+                @Override
+                public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                    if(playbackState == Player.STATE_BUFFERING)
+                        imvCover.setVisibility(View.GONE);
+                }
+            });
         }
         helper.initialize(container, playbackInfo);
     }
@@ -166,7 +179,6 @@ public class VideoDetailHolder extends RecyclerView.ViewHolder implements ToroPl
         onPauseAnimator = null;
 
         if (helper != null) {
-            helper.removeEventListener(listener);
             helper.removePlayerEventListener(eventListener);
             helper.release();
             helper = null;

@@ -16,9 +16,12 @@
 package com.vttm.mochaplus.feature.data.api;
 
 import android.app.Application;
+import android.os.Build;
 import android.text.TextUtils;
 
+import com.vttm.mochaplus.feature.BuildConfig;
 import com.vttm.mochaplus.feature.data.api.request.BaseRequest;
+import com.vttm.mochaplus.feature.data.api.request.GenOtpRequest;
 import com.vttm.mochaplus.feature.data.api.request.VideoDetailRequest;
 import com.vttm.mochaplus.feature.data.api.request.VideoRelateRequest;
 import com.vttm.mochaplus.feature.data.api.request.VideoRequest;
@@ -29,6 +32,7 @@ import com.vttm.mochaplus.feature.data.api.restful.ApiCallback;
 import com.vttm.mochaplus.feature.data.api.restful.WSRestful;
 import com.vttm.mochaplus.feature.data.api.service.ApiService;
 import com.vttm.mochaplus.feature.helper.HttpHelper;
+import com.vttm.mochaplus.feature.utils.Config;
 
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -151,6 +155,22 @@ public class AppApiHelper implements ApiHelper {
         WSRestful restful = new WSRestful(context);
         ApiService apiClient = restful.getInstance();
         apiClient.getVideoRelate(data).enqueue(callBack);
+    }
+
+    @Override
+    public void genOTP(GenOtpRequest request, ApiCallback<String> callBack) {
+        Map<String, String> data = new HashMap<>();
+        data.put("username", request.getUsername());
+        data.put("countryCode", request.getCountryCode());
+        data.put("platform", Config.CLIENT_TYPE);
+        data.put("os_version", Build.VERSION.RELEASE);
+        data.put("device", Build.MANUFACTURER + "-" + Build.BRAND + "-" + Build.MODEL);
+        data.put("revision", Config.REVISION);
+        data.put("version", BuildConfig.VERSION_NAME);
+
+        WSRestful restful = new WSRestful(context);
+        ApiService apiClient = restful.getInstance();
+        apiClient.genOTP(data).enqueue(callBack);
     }
 }
 

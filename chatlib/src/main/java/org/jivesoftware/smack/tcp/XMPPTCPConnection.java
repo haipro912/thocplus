@@ -16,64 +16,13 @@
  */
 package org.jivesoftware.smack.tcp;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.lang.reflect.Constructor;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.security.KeyManagementException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.Provider;
-import java.security.SecureRandom;
-import java.security.Security;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.net.SocketFactory;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import javax.security.auth.callback.Callback;
-import javax.security.auth.callback.CallbackHandler;
-import javax.security.auth.callback.PasswordCallback;
+import com.vttm.chatlib.utils.Log;
 
 import org.jivesoftware.smack.AbstractConnectionListener;
 import org.jivesoftware.smack.AbstractXMPPConnection;
-import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionConfiguration.DnssecMode;
 import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
+import com.vttm.chatlib.MochaXMPPException;
 import org.jivesoftware.smack.SmackConfiguration;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.SmackException.AlreadyConnectedException;
@@ -133,13 +82,66 @@ import org.jivesoftware.smack.util.XmlStringBuilder;
 import org.jivesoftware.smack.util.dns.HostAddress;
 import org.jivesoftware.smack.util.dns.SmackDaneProvider;
 import org.jivesoftware.smack.util.dns.SmackDaneVerifier;
-
 import org.jxmpp.jid.impl.JidCreate;
 import org.jxmpp.jid.parts.Resourcepart;
 import org.jxmpp.stringprep.XmppStringprepException;
 import org.jxmpp.util.XmppStringUtils;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.lang.reflect.Constructor;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.Provider;
+import java.security.SecureRandom;
+import java.security.Security;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.net.SocketFactory;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import javax.security.auth.callback.Callback;
+import javax.security.auth.callback.CallbackHandler;
+import javax.security.auth.callback.PasswordCallback;
 
 /**
  * Creates a socket connection to an XMPP server. This is the default connection
@@ -381,11 +383,16 @@ public class XMPPTCPConnection extends AbstractXMPPConnection {
     }
 
     @Override
-    protected synchronized void loginInternal(String username, String password, Resourcepart resource) throws XMPPException,
+    protected synchronized void loginInternal(String username, String password, Resourcepart resource, String mechanismMethod) throws XMPPException,
                     SmackException, IOException, InterruptedException {
         // Authenticate using SASL
         SSLSession sslSession = secureSocket != null ? secureSocket.getSession() : null;
-        saslAuthentication.authenticate(username, password, config.getAuthzid(), sslSession);
+
+//        saslAuthentication.authenticate(username, password, config.getAuthzid(), sslSession);
+
+        IQ response = nonSASLAuthentication.authenticate(username, password, resource.toString(),
+                mechanismMethod, config.getRevision(), config.getCountryCode());
+
 
         // If compression is enabled then request the server to use stream compression. XEP-170
         // recommends to perform stream compression before resource binding.
@@ -628,7 +635,7 @@ public class XMPPTCPConnection extends AbstractXMPPConnection {
      * @throws SmackException if the server fails to respond back or if there is anther error.
      * @throws IOException
      */
-    private void initConnection() throws IOException {
+    private void initConnection() throws IOException, XMPPException {
         boolean isFirstInitialization = packetReader == null || packetWriter == null;
         compressionHandler = null;
 
@@ -644,6 +651,8 @@ public class XMPPTCPConnection extends AbstractXMPPConnection {
         // Start the reader thread. The startup() method will block until we
         // get an opening stream packet back from server
         packetReader.init();
+
+        packetReader.startup();
     }
 
     private void initReaderAndWriter() throws IOException {
@@ -898,10 +907,12 @@ public class XMPPTCPConnection extends AbstractXMPPConnection {
         initConnection();
 
         // TLS handled will be successful either if TLS was established, or if it was not mandatory.
-        tlsHandled.checkIfSuccessOrWaitOrThrow();
+        //Việc xử lý TLS sẽ thành công nếu TLS được thành lập, hoặc nếu nó không bắt buộc. HaiKE comment
+//        tlsHandled.checkIfSuccessOrWaitOrThrow();
 
         // Wait with SASL auth until the SASL mechanisms have been received
-        saslFeatureReceived.checkIfSuccessOrWaitOrThrow();
+        //Chờ với SASL auth cho đến khi các cơ chế SASL đã được nhận HaiKE comment
+//        saslFeatureReceived.checkIfSuccessOrWaitOrThrow();
     }
 
     /**
@@ -995,6 +1006,7 @@ public class XMPPTCPConnection extends AbstractXMPPConnection {
         XmlPullParser parser;
 
         private volatile boolean done;
+        private Semaphore connectionSemaphore;
 
         /**
          * Initializes the reader in order to be used. The reader is initialized during the
@@ -1010,6 +1022,38 @@ public class XMPPTCPConnection extends AbstractXMPPConnection {
                 }
             }, "Smack Reader (" + getConnectionCounter() + ")");
          }
+
+        public void startup() throws XMPPException {
+            connectionSemaphore = new Semaphore(1);
+            // Wait for stream tag before returing. We'll wait a couple of seconds
+            // before
+            // giving up and throwing an error.
+            try {
+                connectionSemaphore.acquire();
+
+                // A waiting thread may be woken up before the wait time or a notify
+                // (although this is a rare thing). Therefore, we continue waiting
+                // until either a connectionID has been set (and hence a notify was
+                // made) or the total wait time has elapsed.
+                int waitTime = SmackConfiguration.getDefaultReplyTimeout();
+                connectionSemaphore.tryAcquire(1 * waitTime, TimeUnit.MILLISECONDS);
+            } catch (InterruptedException ie) {
+                // Ignore.
+                Log.e("Smack PacketReader", "Exception", ie);
+            }
+            if (streamId == null) {
+                throw new MochaXMPPException("java.io.IOException");
+            }
+//            else {
+//                connectionID = connectionID;
+//            }
+        }
+
+        private void releaseConnectionIDLock() {
+            Log.i("Smack PacketReader", "releaseConnectionIDLock");
+            if (connectionSemaphore == null) return; //avoid crash
+            connectionSemaphore.release();
+        }
 
         /**
          * Shuts the stanza reader down. This method simply sets the 'done' flag to true.
@@ -1043,6 +1087,13 @@ public class XMPPTCPConnection extends AbstractXMPPConnection {
                             // We found an opening stream.
                             if ("jabber:client".equals(parser.getNamespace(null))) {
                                 streamId = parser.getAttributeValue("", "id");
+                                if (!"1.0".equals(parser.getAttributeValue("", "version"))) {
+                                    // Notify that a stream has been opened
+                                    // if the server is not XMPP 1.0 compliant
+                                    // otherwise make the notification after TLS has been
+                                    // negotiated or if TLS is not supported
+                                    releaseConnectionIDLock();
+                                }
                                 String reportedServerDomain = parser.getAttributeValue("", "from");
                                 assert (config.getXMPPServiceDomain().equals(reportedServerDomain));
                             }
@@ -1090,14 +1141,15 @@ public class XMPPTCPConnection extends AbstractXMPPConnection {
                                 // SASL authentication has failed. The server may close the connection
                                 // depending on the number of retries
                                 final SASLFailure failure = PacketParserUtils.parseSASLFailure(parser);
-                                getSASLAuthentication().authenticationFailed(failure);
+//                                getSASLAuthentication().authenticationFailed(failure);
+                                getNonSASLAuthentication().authenticationFailed(failure);
                                 break;
                             }
                             break;
                         case Challenge.ELEMENT:
                             // The server is challenging the SASL authentication made by the client
                             String challengeData = parser.nextText();
-                            getSASLAuthentication().challengeReceived(challengeData);
+//                            getSASLAuthentication().challengeReceived(challengeData);
                             break;
                         case Success.ELEMENT:
                             Success success = new Success(parser.nextText());
@@ -1106,7 +1158,8 @@ public class XMPPTCPConnection extends AbstractXMPPConnection {
                             openStream();
                             // The SASL authentication with the server was successful. The next step
                             // will be to bind the resource
-                            getSASLAuthentication().authenticated(success);
+//                            getSASLAuthentication().authenticated(success);
+                            getNonSASLAuthentication().authenticated(success);
                             break;
                         case Compressed.ELEMENT:
                             // Server confirmed that it's possible to use stream compression. Start

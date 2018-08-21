@@ -6,6 +6,7 @@ import android.support.multidex.MultiDex;
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.vttm.mochaplus.feature.business.ContactBusiness;
+import com.vttm.mochaplus.feature.business.LoginBusiness;
 import com.vttm.mochaplus.feature.business.MessageBusiness;
 import com.vttm.mochaplus.feature.business.ReengAccountBusiness;
 import com.vttm.mochaplus.feature.business.SettingBusiness;
@@ -27,6 +28,7 @@ public class ApplicationController extends Application {
     private MessageBusiness messageBusiness;
     private ReengAccountBusiness accountBusiness;
     private SettingBusiness settingBusiness;
+    private LoginBusiness loginBusiness;
     private ReloadDataThread reloadDataThread;
 
     private XMPPManager xmppManager;
@@ -107,6 +109,10 @@ public class ApplicationController extends Application {
         if (settingBusiness == null) {
             settingBusiness = new SettingBusiness(this);
         }
+
+        if (loginBusiness == null) {
+            loginBusiness = new LoginBusiness(this);
+        }
     }
 
     private void initBusiness()
@@ -159,6 +165,10 @@ public class ApplicationController extends Application {
 
     public MessageBusiness getMessageBusiness() {
         return messageBusiness;
+    }
+
+    public LoginBusiness getLoginBusiness() {
+        return loginBusiness;
     }
 
     public ReengAccountBusiness getReengAccountBusiness() {

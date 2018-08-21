@@ -49,6 +49,15 @@
     <string name="e666_not_support_function">This function is not supported</string>
     <string name="e667_device_not_support_function">This device is not supported</string>
     <string name="e668_file_not_found">File not found</string>
+    <string name="error_unidentify">Unknown error</string>
+    <string name="error_internet_disconnect">No internet connection</string>
+    <string name="error_time_out">Connection timeout</string>
+    <string name="e_call__1">Call session failed.</string>
+    <string name="e_call_401">Sorry, your balance is insufficient to make this call.</string>
+    <string name="e_call_404">Phone number is not supported</string>
+
+    <string name="login_locked">This function is blocked in</string>
+    <string name="login_fail_and_retry">Activation code is not correct, please re-enter!</string>
 
     <string name="msg_title_email">Mocha: Feedback</string>
     <string name="add_email_support" translatable="false">mocha@viettel.com.vn</string>

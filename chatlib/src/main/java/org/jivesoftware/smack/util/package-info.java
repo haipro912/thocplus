@@ -16,6 +16,6 @@
  */
 
 /**
- * Smack util classes.
+ * TODO describe me.
  */
 package org.jivesoftware.smack.util;

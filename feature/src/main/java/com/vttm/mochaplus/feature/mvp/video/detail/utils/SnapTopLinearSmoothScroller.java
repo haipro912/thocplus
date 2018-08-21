@@ -26,15 +26,17 @@ import android.util.DisplayMetrics;
 
 public class SnapTopLinearSmoothScroller extends LinearSmoothScroller {
 
-  public SnapTopLinearSmoothScroller(Context context) {
-    super(context);
-  }
+    public SnapTopLinearSmoothScroller(Context context) {
+        super(context);
+    }
 
-  @Override protected int getVerticalSnapPreference() {
-    return SNAP_TO_START;
-  }
+    @Override
+    protected int getVerticalSnapPreference() {
+        return SNAP_TO_START;
+    }
 
-  @Override protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
-    return super.calculateSpeedPerPixel(displayMetrics) * 5.f;  // Speed up
-  }
+    @Override
+    protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+        return super.calculateSpeedPerPixel(displayMetrics) * 5.f;  // Speed up
+    }
 }

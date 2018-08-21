@@ -16,17 +16,8 @@
  */
 package org.jivesoftware.smack.util;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.vttm.chatlib.sasl.NonSASLAuthInfo;
+import com.vttm.chatlib.utils.ConvertHelper;
 
 import org.jivesoftware.smack.SmackConfiguration;
 import org.jivesoftware.smack.compress.packet.Compress;
@@ -47,11 +38,22 @@ import org.jivesoftware.smack.provider.ExtensionElementProvider;
 import org.jivesoftware.smack.provider.IQProvider;
 import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.sasl.packet.SaslStreamElements.SASLFailure;
-
 import org.jxmpp.jid.Jid;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Utility class that helps to parse packets. Any parsing packets method that must be shared
@@ -610,6 +612,9 @@ public class PacketParserUtils {
                     break;
                 // Otherwise, see if there is a registered provider for
                 // this element name and namespace.
+                case "auth_info":
+                    iqPacket = parseNonSASLSuccess(parser);
+                    break;
                 default:
                     IQProvider<IQ> provider = ProviderManager.getIQProvider(elementName, namespace);
                     if (provider != null) {
@@ -1000,5 +1005,50 @@ public class PacketParserUtils {
                     throws Exception {
         ExtensionElement packetExtension = parseExtensionElement(elementName, namespace, parser);
         collection.add(packetExtension);
+    }
+
+
+
+    //Custom Mocha HaiKE
+    private static IQ parseNonSASLSuccess(XmlPullParser parser) throws Exception {
+        NonSASLAuthInfo authentication = new NonSASLAuthInfo();
+        boolean done = false;
+        while (!done) {
+            int eventType = parser.next();
+            if (eventType == XmlPullParser.START_TAG) {
+                if (parser.getName().equals("token")) {
+                    authentication.setToken(parser.nextText());
+                } else if (parser.getName().equals("domain_file")) {
+                    authentication.setDomainFile(parser.nextText());
+                } else if (parser.getName().equals("domain_msg")) {
+                    authentication.setDomainMessage(parser.nextText());
+                } else if (parser.getName().equals("domain_on_media")) {
+                    authentication.setDomainOnMedia(parser.nextText());
+                } else if (parser.getName().equals("public_key")) {
+                    authentication.setPublicRSAKey(parser.nextText());
+                } else if (parser.getName().equals("kservice")) {
+                    authentication.setDomainServiceKeeng(parser.nextText());
+                } else if (parser.getName().equals("kmedia")) {
+                    authentication.setDomainMedia2Keeng(parser.nextText());
+                } else if (parser.getName().equals("kimage")) {
+                    authentication.setDomainImageKeeng(parser.nextText());
+                } else if (parser.getName().equals("vip")) {
+                    authentication.setVipInfo(ConvertHelper.parserIntFromString(parser.nextText(), -1));
+                } else if (parser.getName().equals("cbnv")) {
+                    authentication.setCBNV(ConvertHelper.parserIntFromString(parser.nextText(), -1));
+                } else if (parser.getName().equals("call")) {
+                    authentication.setCall(ConvertHelper.parserIntFromString(parser.nextText(), -1));
+                } else if (parser.getName().equals("ssl")) {
+                    authentication.setSSL(ConvertHelper.parserIntFromString(parser.nextText(), -1));
+                } else if (parser.getName().equals("smsin")) {
+                    authentication.setSmsIn(ConvertHelper.parserIntFromString(parser.nextText(), -1));
+                }
+            } else if (eventType == XmlPullParser.END_TAG) {
+                if (parser.getName().equals("auth_info")) {
+                    done = true;
+                }
+            }
+        }
+        return authentication;
     }
 }

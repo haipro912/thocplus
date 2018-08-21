@@ -5,6 +5,7 @@ import com.vttm.mochaplus.feature.di.PerActivity;
 import com.vttm.mochaplus.feature.di.module.ActivityModule;
 import com.vttm.mochaplus.feature.mvp.call.CallFragment;
 import com.vttm.mochaplus.feature.mvp.contact.ContactFragment;
+import com.vttm.mochaplus.feature.mvp.login.LoginActivity;
 import com.vttm.mochaplus.feature.mvp.video.detail.VideoDetailFragment;
 import com.vttm.mochaplus.feature.mvp.video.home.VideoFragment;
 import com.vttm.mochaplus.feature.mvp.video.main.TabVideoFragment;
@@ -20,6 +21,7 @@ import dagger.Component;
 public interface ActivityComponent {
 
     void inject(MainActivity activity);
+    void inject(LoginActivity activity);
 
     void inject(ContactFragment contactFragment);
     void inject(TabVideoFragment contactFragment);

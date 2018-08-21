@@ -20,6 +20,7 @@ import android.content.Context;
 import com.vttm.mochaplus.feature.data.api.ApiHeader;
 import com.vttm.mochaplus.feature.data.api.ApiHelper;
 import com.vttm.mochaplus.feature.data.api.request.BaseRequest;
+import com.vttm.mochaplus.feature.data.api.request.GenOtpRequest;
 import com.vttm.mochaplus.feature.data.api.request.VideoDetailRequest;
 import com.vttm.mochaplus.feature.data.api.request.VideoRelateRequest;
 import com.vttm.mochaplus.feature.data.api.request.VideoRequest;
@@ -77,6 +78,11 @@ public class AppDataManager implements DataManager {
     @Override
     public void getVideoRelate(VideoRelateRequest request, ApiCallback<VideoResponse> callBack) {
         mApiHelper.getVideoRelate(request, callBack);
+    }
+
+    @Override
+    public void genOTP(GenOtpRequest request, ApiCallback<String> callBack) {
+        mApiHelper.genOTP(request, callBack);
     }
 
     @Override

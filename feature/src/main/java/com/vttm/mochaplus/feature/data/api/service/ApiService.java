@@ -7,7 +7,10 @@ import com.vttm.mochaplus.feature.data.api.response.VideoResponse;
 import java.util.Map;
 
 import retrofit2.Call;
+import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.QueryMap;
 
 public interface ApiService {
@@ -23,4 +26,9 @@ public interface ApiService {
 
     @GET(ApiEndPoint.GET_VIDEO_RELATE)
     Call<VideoResponse> getVideoRelate(@QueryMap(encoded=true) Map<String, String> options);
+
+
+    @FormUrlEncoded
+    @POST(ApiEndPoint.GEN_OTP)
+    Call<String> genOTP(@FieldMap(encoded=true) Map<String, String> options);
 }

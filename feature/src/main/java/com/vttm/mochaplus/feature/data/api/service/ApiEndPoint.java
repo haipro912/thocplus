@@ -22,13 +22,15 @@ package com.vttm.mochaplus.feature.data.api.service;
 public final class ApiEndPoint {
 
 //    public static final String ENDPOINT_BASE_URL = "http://api.tinngan.vn/Tinngan.svc/";//BuildConfig.BASE_URL;
-    public static final String ENDPOINT_BASE_URL = "http://hlvip2.mocha.com.vn:8080/";
+    public static final String ENDPOINT_BASE_URL = "http://hlvip.mocha.com.vn";
     public static final String ENDPOINT_KEENG_URL = "http://vip.service.keeng.vn:8080/KeengWSRestful/ws/";
 
     public static final String GET_VIDEO_CATEGORY = "onMediaBackendBiz/onmedia/video/getCategory";
     public static final String GET_VIDEO_LIST = "onMediaBackendBiz/onmedia/video/getListVideoByCate/v1";
     public static final String GET_VIDEO_DETAIL = "onMediaBackendBiz/onmedia/video/getVideoDetail";
     public static final String GET_VIDEO_RELATE = "onMediaBackendBiz/onmedia/video/search/v1";
+
+    public static final String GEN_OTP = "user/setUserInfo/v3";
 
 
     private ApiEndPoint() {
