@@ -182,6 +182,7 @@ public class ReengAccountBusiness {
         mCurrentAccount.setRegionCode(regionCode);
         mCurrentAccount.setActive(false);
         mCurrentAccount.setPermission(1);//00000001//show historyStranger, show birthday,
+        mCurrentAccount.setName("Sukkie Phuong");
         initCountryCode();
         isReady = true;
         try {
@@ -199,12 +200,12 @@ public class ReengAccountBusiness {
     }
 
     public void initAccountFromDatabase() {
-//        mCurrentAccount = DbUtils.clone(dataManager.getAccount());
-//        // co tai khoan ma truong region code null
-//        if (mCurrentAccount != null && TextUtils.isEmpty(mCurrentAccount.getRegionCode())) {
-//            mCurrentAccount.setRegionCode("VN");// mac dinh vn
-//            updateReengAccount(mCurrentAccount);// cap nhat db
-//        }
+        mCurrentAccount = DbUtils.clone(dataManager.getAccount());
+        // co tai khoan ma truong region code null
+        if (mCurrentAccount != null && TextUtils.isEmpty(mCurrentAccount.getRegionCode())) {
+            mCurrentAccount.setRegionCode("VN");// mac dinh vn
+            updateReengAccount(mCurrentAccount);// cap nhat db
+        }
     }
 
     //get user number lay so de dang nhap

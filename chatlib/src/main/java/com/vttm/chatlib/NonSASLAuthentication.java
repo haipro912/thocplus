@@ -107,9 +107,9 @@ public class NonSASLAuthentication {
             }
         }
 
-        if (!authenticationSuccessful) {
-            throw SmackException.NoResponseException.newWith(connection, "successful SASL authentication");
-        }
+//        if (!authenticationSuccessful) {
+//            throw SmackException.NoResponseException.newWith(connection, "successful SASL authentication");
+//        }
 
         // We're done with the collector, so explicitly cancel it.
         collector.cancel();

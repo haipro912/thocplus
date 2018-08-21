@@ -1,12 +1,19 @@
 package com.vttm.mochaplus.feature;
 
+import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 
 import com.bumptech.glide.manager.SupportRequestManagerFragment;
+import com.vttm.chatlib.utils.Log;
+import com.vttm.mochaplus.feature.business.MessageBusiness;
+import com.vttm.mochaplus.feature.helper.NavigateActivityHelper;
+import com.vttm.mochaplus.feature.helper.PermissionHelper;
 import com.vttm.mochaplus.feature.mvp.base.BaseActivity;
 import com.vttm.mochaplus.feature.mvp.main.IMainView;
 import com.vttm.mochaplus.feature.mvp.main.MainFragment;
@@ -15,12 +22,17 @@ import com.vttm.mochaplus.feature.utils.AppConstants;
 import com.vttm.mochaplus.feature.utils.AppLogger;
 import com.vttm.mochaplus.feature.utils.ToastUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends BaseActivity  implements IMainView{
 
     public final String TAG = getClass().getSimpleName();
     private static final int COUNT_DONW = 2000;
     private boolean isTouchTwoTimes = false;
-//    private RxPermissions rxPermissions;
+
+    private ApplicationController mApplication;
+    private MessageBusiness mMessageBusiness;
 
 
     // Used to load the 'native-lib' library on application startup.
@@ -40,9 +52,46 @@ public class MainActivity extends BaseActivity  implements IMainView{
 
     @Override
     protected void setUp() {
-//        rxPermissions = new RxPermissions(this);
-//        requestPermission();
         showFragment(AppConstants.TAB_MAIN, null);
+
+        initBusiness();
+
+        checkDataAndDisplayWhenStart(getIntent());
+    }
+
+    private void initBusiness() {
+        mApplication = (ApplicationController) getApplicationContext();
+        mMessageBusiness = mApplication.getMessageBusiness();
+    }
+
+
+    private void checkDataAndDisplayWhenStart(Intent intent) {
+        if (mApplication.getReengAccountBusiness() == null) {
+            Log.f(TAG, "checkDataAndDisplayWhenStart business = null ???");
+        } else if (!mApplication.getReengAccountBusiness().isValidAccount() ||
+                TextUtils.isEmpty(mApplication.getReengAccountBusiness().getUserName())) {
+            Log.i(TAG, " not valid acc || not valid name --> gotoLogin");
+            NavigateActivityHelper.navigateToLoginActivity(MainActivity.this, true);
+        } else {
+            Log.i(TAG, " valid getDataFromIntent");
+            if (intent != null) {
+//                processDataFromIntent(intent);
+            }
+            // kiem tra quyen storage voi contact , neu ko cho phep thi ko cho dung app
+            List<String> array = new ArrayList<>();
+            if (PermissionHelper.declinedPermission(this, Manifest.permission.WRITE_CONTACTS)) {
+                array.add(Manifest.permission.WRITE_CONTACTS);
+            }
+            if (PermissionHelper.declinedPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                array.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
+            if (!array.isEmpty()) {
+                String[] permissions = new String[array.size()];
+                permissions = array.toArray(permissions);
+                PermissionHelper.requestPermissions(MainActivity.this, permissions, AppConstants.PERMISSION
+                        .PERMISSION_REQUEST_ALL);
+            }
+        }
     }
 
     @Override

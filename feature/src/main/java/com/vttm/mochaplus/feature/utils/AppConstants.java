@@ -88,6 +88,23 @@ public final class AppConstants {
         public static final int TAB_VERIFY = 2;
     }
 
+    public static final class PERMISSION {
+        public static final int PERMISSION_REQUEST_ALL = 1;
+        public static final int PERMISSION_REQUEST_LOCATION = 2;
+        public static final int PERMISSION_REQUEST_RECORD_AUDIO = 3;
+        public static final int PERMISSION_REQUEST_TAKE_PHOTO = 4;
+        public static final int PERMISSION_REQUEST_TAKE_VIDEO = 5;
+        public static final int PERMISSION_REQUEST_EDIT_CONTACT = 6;
+        public static final int PERMISSION_REQUEST_SAVE_CONTACT = 7;
+        public static final int PERMISSION_REQUEST_DELETE_CONTACT = 8;
+        public static final int PERMISSION_REQUEST_WRITE_STORAGE = 9;
+        public static final int PERMISSION_REQUEST_WRITE_CONTACT = 10;
+        public static final int PERMISSION_REQUEST_TAKE_PHOTO_GROUP_AVATAR = 14;
+        public static final int PERMISSION_REQUEST_GALLERY = 15;
+        public static final int PERMISSION_REQUEST_FILE = 16;
+        public static final int PERMISSION_REQUEST_FILE_DOWNLOAD = 17;
+    }
+
     public static final class KEY_BUNDLE {
         public static final String KEY_CATEGORY_ID = "KEY_CATEGORY_ID";
         public static final String KEY_VIDEO_SELECT = "KEY_VIDEO_SELECT";

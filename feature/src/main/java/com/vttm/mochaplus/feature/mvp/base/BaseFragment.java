@@ -189,7 +189,7 @@ public abstract class BaseFragment extends Fragment implements MvpView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(NetworkEvent event) {
         notifyNetworkChange(event.isOnline());
-        EventBus.getDefault().cancelEventDelivery(event);
+//        EventBus.getDefault().cancelEventDelivery(event);
     }
 
     protected void notifyNetworkChange(boolean flag)

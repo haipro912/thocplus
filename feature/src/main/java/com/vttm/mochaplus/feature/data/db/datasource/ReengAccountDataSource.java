@@ -27,9 +27,12 @@ public class ReengAccountDataSource implements BaseDataSource<ReengAccountConsta
 
     @Override
     public ReengAccountConstant insert(ReengAccountConstant element) throws RepositoryException {
+        removeAll();
+
         getRealm().beginTransaction();
         ReengAccountConstant returnedCarDb;
         try {
+            element.setId(1);
             returnedCarDb = getRealm().copyToRealm(element);
             getRealm().commitTransaction();
         } catch (Exception e) {
@@ -85,7 +88,7 @@ public class ReengAccountDataSource implements BaseDataSource<ReengAccountConsta
 
     public void update(ReengAccountConstant account) {
         ReengAccountConstant object = getRealm().where(ReengAccountConstant.class)
-                .equalTo(ReengAccountConstant.ID, account.getId())
+                .equalTo(ReengAccountConstant.ID, 1)
                 .findFirst();
         getRealm().beginTransaction();
         if (object == null) {

@@ -44,8 +44,7 @@ public class LoginBusiness {
         XMPPResponseCode mXMPPResponseCode = new XMPPResponseCode();
         try {
             if (createAccount) {
-                mApplicationController.getReengAccountBusiness().
-                        createReengAccountBeforeLogin(mApplication, numberJid, regionCode);
+                mApplicationController.getReengAccountBusiness().createReengAccountBeforeLogin(mApplication, numberJid, regionCode);
             }
             mXMPPManager.connectByCode(mApplicationController, numberJid, password, regionCode);
             mXMPPResponseCode.setCode(XMPPCode.E200_OK);

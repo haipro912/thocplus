@@ -593,18 +593,18 @@ public abstract class AbstractXMPPConnection implements XMPPConnection {
         // name we are now logged-in as.
         // If DEBUG was set to true AFTER the connection was created the debugger
         // will be null
-        if (debugger != null) {
-            debugger.userHasLogged(user);
-        }
-        callConnectionAuthenticatedListener(resumed);
+//        if (debugger != null) {
+//            debugger.userHasLogged(user);
+//        }
+//        callConnectionAuthenticatedListener(resumed);
 
         // Set presence to online. It is important that this is done after
         // callConnectionAuthenticatedListener(), as this call will also
         // eventually load the roster. And we should load the roster before we
         // send the initial presence.
-        if (config.isSendPresence() && !resumed) {
-            sendStanza(new Presence(Presence.Type.available));
-        }
+//        if (config.isSendPresence() && !resumed) {
+//            sendStanza(new Presence(Presence.Type.available));
+//        }
     }
 
     @Override
