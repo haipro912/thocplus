@@ -12,6 +12,7 @@ import com.vttm.mochaplus.feature.ApplicationController;
 import com.vttm.mochaplus.feature.data.DataManager;
 import com.vttm.mochaplus.feature.data.db.datasource.exceptions.RepositoryException;
 import com.vttm.mochaplus.feature.data.db.model.ContactConstant;
+import com.vttm.mochaplus.feature.data.db.model.ReengAccountConstant;
 import com.vttm.mochaplus.feature.data.db.utils.DbUtils;
 import com.vttm.mochaplus.feature.data.socket.xmpp.listener.interfaces.VipInfoChangeListener;
 import com.vttm.mochaplus.feature.helper.PermissionHelper;
@@ -200,11 +201,15 @@ public class ReengAccountBusiness {
     }
 
     public void initAccountFromDatabase() {
-        mCurrentAccount = DbUtils.clone(dataManager.getAccount());
-        // co tai khoan ma truong region code null
-        if (mCurrentAccount != null && TextUtils.isEmpty(mCurrentAccount.getRegionCode())) {
-            mCurrentAccount.setRegionCode("VN");// mac dinh vn
-            updateReengAccount(mCurrentAccount);// cap nhat db
+        ReengAccountConstant accountConstant = dataManager.getAccount();
+        if(accountConstant != null)
+        {
+            mCurrentAccount = DbUtils.clone(accountConstant);
+            // co tai khoan ma truong region code null
+            if (mCurrentAccount != null && TextUtils.isEmpty(mCurrentAccount.getRegionCode())) {
+                mCurrentAccount.setRegionCode("VN");// mac dinh vn
+                updateReengAccount(mCurrentAccount);// cap nhat db
+            }
         }
     }
 

@@ -17,15 +17,14 @@
 
 package org.jivesoftware.smack.packet;
 
-import java.util.Locale;
-
 import org.jivesoftware.smack.packet.id.StanzaIdUtil;
 import org.jivesoftware.smack.util.Objects;
 import org.jivesoftware.smack.util.StringUtils;
 import org.jivesoftware.smack.util.TypedCloneable;
 import org.jivesoftware.smack.util.XmlStringBuilder;
-
 import org.jxmpp.jid.Jid;
+
+import java.util.Locale;
 
 /**
  * Represents XMPP presence packets. Every presence stanza has a type, which is one of
@@ -66,6 +65,9 @@ public final class Presence extends Stanza implements TypedCloneable<Presence> {
 
     private Type type = Type.available;
     private String status = null;
+
+    private SubType subType = SubType.normal;
+    private String state = null;
 
     /**
      * The priority of the presence. The magic value {@link Integer#MIN_VALUE} is used to indicate that the original
@@ -202,6 +204,29 @@ public final class Presence extends Stanza implements TypedCloneable<Presence> {
         this.status = status;
     }
 
+
+    public String getState() {
+        if (state == null || state.length() <= 0)
+            return null;
+        else
+            return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public SubType getSubType() {
+        return subType;
+    }
+
+    public void setSubType(SubType subType) {
+        if (subType == null) {
+            throw new NullPointerException("Type cannot be null");
+        }
+        this.subType = subType;
+    }
+
     /**
      * Returns the priority of the presence, or Integer.MIN_VALUE if no priority has been set.
      *
@@ -322,6 +347,84 @@ public final class Presence extends Stanza implements TypedCloneable<Presence> {
         Presence clone = clone();
         clone.setStanzaId(StanzaIdUtil.newStanzaId());
         return clone;
+    }
+
+    public enum SubType {
+        /**
+         * subtype aviable
+         */
+        available,
+        /**
+         * subtype nguoi dung moi
+         */
+        new_user,
+        /**
+         * subtype client info
+         */
+        client_info,
+        /**
+         * subtype change status
+         */
+        change_status,
+
+        /**
+         * subtype change avatar
+         */
+        change_avatar,
+
+        /**
+         * subtype remove avatar
+         */
+        remove_avatar,
+
+        /**
+         * subtype offline
+         */
+        offline,
+
+        /**
+         * subtype deactive
+         */
+        deactive,
+
+        /**
+         * invisible (de an)
+         */
+        invisible,
+        // presence thay doi domain
+        change_domain,
+        normal,
+
+        /**
+         * subtype last seen
+         */
+        background,
+        foreground,
+        // contact info (active,deactive,avatar,status,birthday,gender)
+        contactInfo,
+        //stranger music sub
+        music_sub,
+        music_unsub,
+        music_info,
+        // subscribe room chat
+        star_sub,
+        star_unsub,
+        // so nguoi follow sao
+        count_users,
+        // doi hinh nen sao
+        change_background,
+        //onmedia
+        feedInfo,
+        // thay doi quyen
+        change_permission,
+        // cap nhat info
+        updateInfo,
+        //cap nhat thong tin goi sub
+        package_info,
+        // cap nhat tam su ng lạ
+        confide_accepted,
+        // cap nhat vi tri cua minh
+        strangerLocation
     }
 
     /**

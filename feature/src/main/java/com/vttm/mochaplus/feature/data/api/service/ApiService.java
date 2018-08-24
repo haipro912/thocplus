@@ -30,5 +30,5 @@ public interface ApiService {
 
     @FormUrlEncoded
     @POST(ApiEndPoint.GEN_OTP)
-    Call<String> genOTP(@FieldMap(encoded=true) Map<String, String> options);
+    Call<String> genOTP(@FieldMap Map<String, String> options);
 }

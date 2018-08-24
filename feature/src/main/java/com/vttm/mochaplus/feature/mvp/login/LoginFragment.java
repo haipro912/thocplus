@@ -83,8 +83,8 @@ public class LoginFragment extends BaseFragment {
 
     private void doLogin() {
 //        currentPhone = "01695603459";
-//        edtPass.setText("595406");
-        edtPhone.setText("0983121485");
+        edtPass.setText("183770");
+        edtPhone.setText("01628874431");
         currentPhone = edtPhone.getText().toString().trim();
         new LoginByCodeAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, edtPass.getText().toString());
     }

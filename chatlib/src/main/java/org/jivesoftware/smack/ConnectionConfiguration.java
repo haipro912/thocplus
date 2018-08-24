@@ -84,13 +84,14 @@ public abstract class ConnectionConfiguration {
     // Holds the socket factory that is used to generate the socket in the connection
     private final SocketFactory socketFactory;
 
-    private final CharSequence username;
-    private String password;
+    private CharSequence username;
+    private final String password;
     private final Resourcepart resource;
 
-    private final String client_type;
-    private final String revision;
-    private final String country;
+    private String token;
+    private String client_type;
+    private String revision;
+    private String countryCode;
 
     /**
      * The optional SASL authorization identity (see RFC 6120 § 6.3.8).
@@ -136,7 +137,7 @@ public abstract class ConnectionConfiguration {
 
         client_type = builder.client_type;
         revision = builder.revision;
-        country = builder.countryCode;
+        countryCode = builder.countryCode;
 
         // Resource can be null, this means that the server must provide one
         resource = builder.resource;
@@ -236,9 +237,28 @@ public abstract class ConnectionConfiguration {
         return keystoreType;
     }
 
+    public void setUsername(String username)
+    {
+        this.username = username;
+    }
+
     public void setToken(String token)
     {
-        password = token;
+        this.token = token;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setRevision(String revision)
+    {
+        this.revision = revision;
+    }
+
+    public void setCountryCode(String country)
+    {
+        this.countryCode = country;
     }
 
     /**
@@ -432,7 +452,7 @@ public abstract class ConnectionConfiguration {
     }
 
     public String getCountryCode() {
-        return country;
+        return countryCode;
     }
 
     /**
@@ -563,6 +583,11 @@ public abstract class ConnectionConfiguration {
         public B setUsernameAndPassword(CharSequence username, String password) {
             this.username = username;
             this.password = password;
+            return getThis();
+        }
+
+        public B setUsername(CharSequence username) {
+            this.username = username;
             return getThis();
         }
 

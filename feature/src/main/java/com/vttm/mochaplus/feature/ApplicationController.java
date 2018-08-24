@@ -5,6 +5,8 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.vttm.mochaplus.feature.broadcast.NetworkChangeReceiver;
+import com.vttm.mochaplus.feature.business.ApplicationStateManager;
 import com.vttm.mochaplus.feature.business.ContactBusiness;
 import com.vttm.mochaplus.feature.business.LoginBusiness;
 import com.vttm.mochaplus.feature.business.MessageBusiness;
@@ -32,6 +34,8 @@ public class ApplicationController extends Application {
     private ReloadDataThread reloadDataThread;
 
     private XMPPManager xmppManager;
+    private ApplicationStateManager mAppStateManager;
+    private NetworkChangeReceiver networkReceiver;
 
     @Inject
     DataManager mDataManager;
@@ -88,6 +92,10 @@ public class ApplicationController extends Application {
     protected void createBusiness() {
         if (xmppManager == null) {
             xmppManager = new XMPPManager(this);
+        }
+
+        if (mAppStateManager == null) {
+            mAppStateManager = new ApplicationStateManager(this);
         }
 
         if (phoneUtil == null) {
@@ -173,6 +181,10 @@ public class ApplicationController extends Application {
 
     public ReengAccountBusiness getReengAccountBusiness() {
         return accountBusiness;
+    }
+
+    public ApplicationStateManager getAppStateManager() {
+        return mAppStateManager;
     }
 
     public XMPPManager getXmppManager() {

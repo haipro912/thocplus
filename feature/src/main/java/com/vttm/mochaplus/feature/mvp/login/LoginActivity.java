@@ -62,9 +62,9 @@ public class LoginActivity extends BaseActivity implements ILoginView{
         fragmentManager.beginTransaction().replace(R.id.container, currentFragment).commitAllowingStateLoss();
     }
 
-    public void gotoGenOtp(String phone, String currentPhone) {
+    public void gotoGenOtp(String phone, String coutryCode) {
         if(presenter != null)
-            presenter.genOtp(currentPhone, currentPhone);
+            presenter.genOtp(phone, coutryCode);
     }
 
     @Override
@@ -76,7 +76,6 @@ public class LoginActivity extends BaseActivity implements ILoginView{
     {
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
-
         finish();
     }
 }

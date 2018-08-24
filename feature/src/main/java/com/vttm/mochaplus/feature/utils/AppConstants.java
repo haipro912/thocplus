@@ -129,6 +129,41 @@ public final class AppConstants {
         public static final int LEVEL_6 = 9;
     }
 
+    public static final class SETTINGS {
+        public static final int TRANSLATE = 2;
+        public static final int CHANGE_STATUS = 6;
+        public static final int LOGOUT = 8;
+        public static final int LIST_ROOM_MUSIC = 9;
+        public static final int ABOUT = 12;
+        public static final int PACKAGE_DETAIL = 13;
+        public static final int NEAR_YOU = 14;
+
+        public static final int SETTING_NOTIFICATION = 14;
+        public static final int SETTING_PRIVATE = 15;
+        public static final int SETTING_CALL_MESSAGE = 16;
+        public static final int SETTING_IMAGE_SOUND = 17;
+        public static final int NOTE_MESSAGE = 18;
+
+        public static final String DATA_FRAGMENT = "fragment";
+        public static final int ALPHA_SHOW_ACTIONBAR = 200;
+    }
+
+    public static final class LOCK_APP {
+        public static final int LOCK_APP_SETTING = 1;
+        public static final int LOCK_APP_LOCKED = 2;
+        public static final int LOCK_APP_CHANGE_OLD_PASS = 3;
+        public static final int LOCK_APP_CHANGE_PASS = 4;
+        public static final int LOCK_APP_CHANGE_PASS_RE = 5;
+        public static final int LOCK_APP_OPEN_SETTING = 6;
+        public static final int LOCK_APP_LOCKED_SETTING = 7;
+
+        public static final int LOCK_APP_TIME_NOW = 100;//now
+        public static final int LOCK_APP_TIME_5_S = 5000;//10s
+        public static final int LOCK_APP_TIME_10_S = 10000;
+        public static final int LOCK_APP_TIME_30_S = 30000;
+        public static final int LOCK_APP_TIME_1_M = 60000;//60s
+    }
+
     public static final class PREFERENCE {
         public static final String PREF_DIR_NAME = "com.viettel.reeng.app";
         public static final String PREF_SPEAKER = "pref_speaker";

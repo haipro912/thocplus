@@ -427,7 +427,7 @@ public class XMPPTCPConnection extends AbstractXMPPConnection {
         // Now bind the resource. It is important to do this *after* we dropped an eventually
         // existing Stream Management state. As otherwise <bind/> and <session/> may end up in
         // unacknowledgedStanzas and become duplicated on reconnect. See SMACK-706.
-//        bindResourceAndEstablishSession(resource);
+        bindResourceAndEstablishSession(resource);
 
         if (isSmAvailable() && useSm) {
             // Remove what is maybe left from previously stream managed sessions

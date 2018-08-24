@@ -25,7 +25,6 @@ import org.jivesoftware.smack.SmackException.AlreadyLoggedInException;
 import org.jivesoftware.smack.SmackException.NoResponseException;
 import org.jivesoftware.smack.SmackException.NotConnectedException;
 import org.jivesoftware.smack.SmackException.NotLoggedInException;
-import org.jivesoftware.smack.SmackException.ResourceBindingNotOfferedException;
 import org.jivesoftware.smack.SmackException.SecurityRequiredByClientException;
 import org.jivesoftware.smack.SmackException.SecurityRequiredException;
 import org.jivesoftware.smack.SmackFuture.InternalSmackFuture;
@@ -37,7 +36,6 @@ import org.jivesoftware.smack.debugger.SmackDebugger;
 import org.jivesoftware.smack.debugger.SmackDebuggerFactory;
 import org.jivesoftware.smack.filter.IQReplyFilter;
 import org.jivesoftware.smack.filter.StanzaFilter;
-import org.jivesoftware.smack.filter.StanzaIdFilter;
 import org.jivesoftware.smack.iqrequest.IQRequestHandler;
 import org.jivesoftware.smack.packet.Bind;
 import org.jivesoftware.smack.packet.ErrorIQ;
@@ -66,7 +64,9 @@ import org.jivesoftware.smack.util.dns.HostAddress;
 import org.jxmpp.jid.DomainBareJid;
 import org.jxmpp.jid.EntityFullJid;
 import org.jxmpp.jid.Jid;
+import org.jxmpp.jid.impl.JidCreate;
 import org.jxmpp.jid.parts.Resourcepart;
+import org.jxmpp.stringprep.XmppStringprepException;
 import org.jxmpp.util.XmppStringUtils;
 import org.minidns.dnsname.DnsName;
 import org.xmlpull.v1.XmlPullParser;
@@ -424,6 +424,13 @@ public abstract class AbstractXMPPConnection implements XMPPConnection {
         connected = true;
         callConnectionConnectedListener();
 
+        if (isConnected() && !authenticated) { //change
+            // Make the login
+            if (config.getUsername() != null && config.getUsername().length() > 0) {
+                login(config.getUsername(), config.getToken(), AbstractXMPPConnection.TOKEN_AUTH_NON_SASL);
+            }
+        }
+
         return this;
     }
 
@@ -548,41 +555,45 @@ public abstract class AbstractXMPPConnection implements XMPPConnection {
     }
 
     protected void bindResourceAndEstablishSession(Resourcepart resource) throws XMPPErrorException,
-                    SmackException, InterruptedException {
+            SmackException, InterruptedException, XmppStringprepException {
 
         // Wait until either:
         // - the servers last features stanza has been parsed
         // - the timeout occurs
-        LOGGER.finer("Waiting for last features to be received before continuing with resource binding");
-        lastFeaturesReceived.checkIfSuccessOrWait();
-
-
-        if (!hasFeature(Bind.ELEMENT, Bind.NAMESPACE)) {
-            // Server never offered resource binding, which is REQUIRED in XMPP client and
-            // server implementations as per RFC6120 7.2
-            throw new ResourceBindingNotOfferedException();
-        }
-
-        // Resource binding, see RFC6120 7.
-        // Note that we can not use IQReplyFilter here, since the users full JID is not yet
-        // available. It will become available right after the resource has been successfully bound.
-        Bind bindResource = Bind.newSet(resource);
-        StanzaCollector packetCollector = createStanzaCollectorAndSend(new StanzaIdFilter(bindResource), bindResource);
-        Bind response = packetCollector.nextResultOrThrow();
+//        LOGGER.finer("Waiting for last features to be received before continuing with resource binding");
+//        lastFeaturesReceived.checkIfSuccessOrWait();
+//
+//
+//        if (!hasFeature(Bind.ELEMENT, Bind.NAMESPACE)) {
+//            // Server never offered resource binding, which is REQUIRED in XMPP client and
+//            // server implementations as per RFC6120 7.2
+//            throw new ResourceBindingNotOfferedException();
+//        }
+//
+//        // Resource binding, see RFC6120 7.
+//        // Note that we can not use IQReplyFilter here, since the users full JID is not yet
+//        // available. It will become available right after the resource has been successfully bound.
+//        Bind bindResource = Bind.newSet(resource);
+//        StanzaCollector packetCollector = createStanzaCollectorAndSend(new StanzaIdFilter(bindResource), bindResource);
+//        Bind response = packetCollector.nextResultOrThrow();
         // Set the connections user to the result of resource binding. It is important that we don't infer the user
         // from the login() arguments and the configurations service name, as, for example, when SASL External is used,
         // the username is not given to login but taken from the 'external' certificate.
+
+        EntityFullJid fullJid = JidCreate.entityFullFrom(usedUsername + "@" + config.getXMPPServiceDomain() + "/" + config.getResource());
+        Bind response = Bind.newResult(fullJid);
+
         user = response.getJid();
         xmppServiceDomain = user.asDomainBareJid();
 
-        Session.Feature sessionFeature = getFeature(Session.ELEMENT, Session.NAMESPACE);
-        // Only bind the session if it's announced as stream feature by the server, is not optional and not disabled
-        // For more information see http://tools.ietf.org/html/draft-cridland-xmpp-session-01
-        if (sessionFeature != null && !sessionFeature.isOptional()) {
-            Session session = new Session();
-            packetCollector = createStanzaCollectorAndSend(new StanzaIdFilter(session), session);
-            packetCollector.nextResultOrThrow();
-        }
+//        Session.Feature sessionFeature = getFeature(Session.ELEMENT, Session.NAMESPACE);
+//        // Only bind the session if it's announced as stream feature by the server, is not optional and not disabled
+//        // For more information see http://tools.ietf.org/html/draft-cridland-xmpp-session-01
+//        if (sessionFeature != null && !sessionFeature.isOptional()) {
+//            Session session = new Session();
+//            packetCollector = createStanzaCollectorAndSend(new StanzaIdFilter(session), session);
+//            packetCollector.nextResultOrThrow();
+//        }
     }
 
     protected void afterSuccessfulLogin(final boolean resumed) throws NotConnectedException, InterruptedException {

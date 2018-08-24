@@ -20,6 +20,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -34,11 +35,14 @@ import android.widget.Toast;
 
 import com.vttm.mochaplus.feature.ApplicationController;
 import com.vttm.mochaplus.feature.R;
-import com.vttm.mochaplus.feature.broadcast.NetworkStateReceiver;
+import com.vttm.mochaplus.feature.broadcast.NetworkChangeReceiver;
+import com.vttm.mochaplus.feature.business.ReengAccountBusiness;
 import com.vttm.mochaplus.feature.di.component.ActivityComponent;
 import com.vttm.mochaplus.feature.di.component.DaggerActivityComponent;
 import com.vttm.mochaplus.feature.di.module.ActivityModule;
 import com.vttm.mochaplus.feature.event.NetworkEvent;
+import com.vttm.mochaplus.feature.helper.NetworkHelper;
+import com.vttm.mochaplus.feature.helper.Version;
 import com.vttm.mochaplus.feature.utils.CommonUtils;
 import com.vttm.mochaplus.feature.utils.NetworkUtils;
 
@@ -52,7 +56,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  * Created by janisharali on 27/01/17.
  */
 
-public abstract class BaseActivity extends AppCompatActivity implements MvpView, BaseFragment.Callback, NetworkStateReceiver.NetworkStateReceiverListener {
+public abstract class BaseActivity extends AppCompatActivity implements MvpView, BaseFragment.Callback, NetworkHelper.NetworkChangedCallback {
 
     private ProgressDialog mProgressDialog;
 
@@ -60,21 +64,30 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView,
 
     private Unbinder mUnBinder;
     protected BaseFragment currentFragment;
-    private NetworkStateReceiver networkStateReceiver;
+
+    private ApplicationController applicationController;
+    private NetworkChangeReceiver networkReceiver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        applicationController = (ApplicationController) getApplication();
+
         mActivityComponent = DaggerActivityComponent.builder()
                 .activityModule(new ActivityModule(this))
                 .applicationComponent(((ApplicationController) getApplication()).getComponent())
                 .build();
 
-        networkStateReceiver = new NetworkStateReceiver();
-        networkStateReceiver.addListener(this);
-        this.registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
-
+        registerNetWorkReceiver();
+        NetworkHelper.getInstance().setNetworkChangedCallback(this);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkConnection();
+    }
+
 
     public ActivityComponent getActivityComponent() {
         return mActivityComponent;
@@ -191,22 +204,67 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView,
         }
         super.onDestroy();
 
-        networkStateReceiver.removeListener(this);
-        this.unregisterReceiver(networkStateReceiver);
+        unRegisterNetWorkReceiver();
+        NetworkHelper.getInstance().setNetworkChangedCallback(null);
     }
 
     protected abstract void setUp();
     protected abstract void notifyNetworkChange(boolean flag);
 
     @Override
-    public void networkAvailable() {
-        notifyNetworkChange(true);
-        EventBus.getDefault().post(new NetworkEvent(true));
+    public void onNetworkChanged(boolean isNetworkAvailable) {
+        notifyNetworkChange(isNetworkAvailable);
+        EventBus.getDefault().post(new NetworkEvent(isNetworkAvailable));
     }
 
-    @Override
-    public void networkUnavailable() {
-        notifyNetworkChange(false);
-        EventBus.getDefault().post(new NetworkEvent(false));
+    private void registerNetWorkReceiver() {
+        if (Version.hasN()) {
+            networkReceiver = new NetworkChangeReceiver();
+            registerReceiver(networkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    private void unRegisterNetWorkReceiver() {
+        if (Version.hasN() && networkReceiver != null) {
+            unregisterReceiver(networkReceiver);
+        }
+    }
+
+    private void checkConnection()
+    {
+        ReengAccountBusiness accountBusiness = applicationController.getReengAccountBusiness();
+        if (!applicationController.getXmppManager().isAuthenticated() &&
+                accountBusiness.isValidAccount() &&
+                NetworkHelper.isConnectInternet(getApplicationContext())) {
+
+
+//            Thread reconnectThread = new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+//                    XMPPManager mXmppManager = applicationController.getXmppManager();
+//                    ReengAccountBusiness mReengAccountBusiness = applicationController.getReengAccountBusiness();
+//                    if (mXmppManager != null) {
+//                        XMPPManager.notifyXMPPConnecting();
+//                        mXmppManager.connectByToken(applicationController, mReengAccountBusiness.getJidNumber(),
+//                                mReengAccountBusiness.getToken(), mReengAccountBusiness.getRegionCode());
+//                    }
+//                }
+//            });
+//            reconnectThread.setDaemon(true);
+//            reconnectThread.start();
+
+
+//            //neu co mang va chua ket noi toi XMPP thi thuc hien ket noi
+//            if (IMService.isReady()) {
+//                Log.i(TAG, " ---> connectByToken when network is available");
+//                IMService.getInstance().connectByToken();
+//            } else {
+////                    startService(new Intent(this, IMService.class));
+//                ApplicationController applicationController = (ApplicationController) getApplicationContext();
+//                if (applicationController != null)
+//                    applicationController.startIMService();
+//            }
+        }
     }
 }

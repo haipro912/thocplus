@@ -8,8 +8,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 
-import com.vttm.mochaplus.feature.interfaces.NetworkConnectivityChangeListener;
-
 /**
  * @author namnh40
  *
@@ -18,8 +16,6 @@ public class NetworkUtils {
     public static final int TYPE_WIFI = 1;
     public static final int TYPE_MOBILE = 0;
     public static final int TYPE_NOT_CONNECTED = 2;
-
-    private static NetworkConnectivityChangeListener mNetworkConnectivityChangeListeners;
 
     /**
      * Get the network info
@@ -137,10 +133,5 @@ public class NetworkUtils {
                 return TYPE_MOBILE;
         }
         return TYPE_NOT_CONNECTED;
-    }
-
-    public static synchronized void addNetworkConnectivityChangeListener(
-            NetworkConnectivityChangeListener listener) {
-        mNetworkConnectivityChangeListeners = listener;
     }
 }

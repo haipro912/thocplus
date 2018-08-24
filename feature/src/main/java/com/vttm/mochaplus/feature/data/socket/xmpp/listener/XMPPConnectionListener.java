@@ -1,7 +1,11 @@
 package com.vttm.mochaplus.feature.data.socket.xmpp.listener;
 
+import android.os.Process;
+
 import com.vttm.mochaplus.feature.ApplicationController;
+import com.vttm.mochaplus.feature.business.ReengAccountBusiness;
 import com.vttm.mochaplus.feature.data.socket.xmpp.XMPPManager;
+import com.vttm.mochaplus.feature.helper.NetworkHelper;
 import com.vttm.mochaplus.feature.interfaces.NetworkConnectivityChangeListener;
 import com.vttm.mochaplus.feature.utils.AppLogger;
 import com.vttm.mochaplus.feature.utils.NetworkUtils;
@@ -78,6 +82,30 @@ public class XMPPConnectionListener implements ConnectionListener, NetworkConnec
     }
 
     private void loginByToken() {
+
+        ReengAccountBusiness accountBusiness = mContext.getReengAccountBusiness();
+        if (!mContext.getXmppManager().isAuthenticated() &&
+                accountBusiness.isValidAccount() &&
+                NetworkHelper.isConnectInternet(mContext)) {
+
+
+            Thread reconnectThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+                    XMPPManager mXmppManager = mContext.getXmppManager();
+                    ReengAccountBusiness mReengAccountBusiness = mContext.getReengAccountBusiness();
+                    if (mXmppManager != null) {
+                        XMPPManager.notifyXMPPConnecting();
+                        mXmppManager.connectByToken(mContext, mReengAccountBusiness.getJidNumber(),
+                                mReengAccountBusiness.getToken(), mReengAccountBusiness.getRegionCode());
+                    }
+                }
+            });
+            reconnectThread.setDaemon(true);
+            reconnectThread.start();
+        }
+
 //        if (IMService.isReady()) {
 //            IMService.getInstance().connectByToken();
 //        } else {
@@ -102,7 +130,7 @@ public class XMPPConnectionListener implements ConnectionListener, NetworkConnec
                 } catch (Exception e) {
                     AppLogger.e(TAG, "Exception", e);
                 }
-                this.loginByToken();
+                loginByToken();
             } else {
                 //truong hop da login roi, chuyen doi giua wifi <--> 3G, ma isNetworkAvailable ko tra ve false
                 AppLogger.i(TAG, "preConnectedType = " + connectedType + " newConnectedType = " + newConnectedType);
