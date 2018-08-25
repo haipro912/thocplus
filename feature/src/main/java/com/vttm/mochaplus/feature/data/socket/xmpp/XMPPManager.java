@@ -153,8 +153,8 @@ public class XMPPManager {
 
             //Enable auto reconnection when connection is closed for some reason
             ReconnectionManager reconnectionManager = ReconnectionManager.getInstanceFor(mConnection);
-            reconnectionManager.setReconnectionPolicy(ReconnectionManager.ReconnectionPolicy.FIXED_DELAY);
-            reconnectionManager.setFixedDelay(5);
+//            reconnectionManager.setReconnectionPolicy(ReconnectionManager.ReconnectionPolicy.FIXED_DELAY);
+//            reconnectionManager.setFixedDelay(1);
             reconnectionManager.enableAutomaticReconnection();
         }
     }
@@ -179,17 +179,20 @@ public class XMPPManager {
         // login
         addAllListener(mContext);
 
-        mConnection.login(mPhoneNumber, password, AbstractXMPPConnection.CODE_AUTH_NON_SASL);
-//        mConnection.login("0948222060", "3072931738153512489568803", AbstractXMPPConnection.TOKEN_AUTH_NON_SASL);
+        if (mConnection.isConnected() && !mConnection.isAuthenticated()) {
+            mConnection.login(mPhoneNumber, password, AbstractXMPPConnection.CODE_AUTH_NON_SASL);
 
-        addConnectionListener();
+            //        mConnection.login("0948222060", "3072931738153512489568803", AbstractXMPPConnection.TOKEN_AUTH_NON_SASL);
+
+            addConnectionListener();
 //        sendPresenceAfterLogin(AbstractXMPPConnection.CODE_AUTH_NON_SASL, true);
-        // start ping
-        startPing();
-        // set roster
+            // start ping
+            startPing();
+            // set roster
 //        ApplicationController application = (ApplicationController) mContext.getApplicationContext();
 //        application.loadDataAfterLogin();
 //        DeviceHelper.checkToSendDeviceIdAfterLogin(application, mPhoneNumber);
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -229,10 +232,15 @@ public class XMPPManager {
             // logint
             addAllListener(mApplication);
             connect();
-            loginSuccessful = true;
-            Log.f(TAG, "login successful");
-            addConnectionListener();
+
+            if (mConnection.isConnected() && !mConnection.isAuthenticated()) {
+                mConnection.login(mPhoneNumber, mToken, AbstractXMPPConnection.TOKEN_AUTH_NON_SASL);
+
+                loginSuccessful = true;
+                Log.f(TAG, "login successful");
+                addConnectionListener();
 //            sendPresenceAfterLogin(AbstractXMPPConnection.TOKEN_AUTH_NON_SASL, false);
+            }
         } catch (IllegalStateException ie) {
             Log.e(TAG, "Exception", ie);
             messageException = "IllegalStateException";

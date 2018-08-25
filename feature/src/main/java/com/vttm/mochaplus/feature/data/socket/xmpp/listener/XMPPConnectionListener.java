@@ -83,28 +83,28 @@ public class XMPPConnectionListener implements ConnectionListener, NetworkConnec
 
     private void loginByToken() {
 
-        ReengAccountBusiness accountBusiness = mContext.getReengAccountBusiness();
-        if (!mContext.getXmppManager().isAuthenticated() &&
-                accountBusiness.isValidAccount() &&
-                NetworkHelper.isConnectInternet(mContext)) {
-
-
-            Thread reconnectThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-                    XMPPManager mXmppManager = mContext.getXmppManager();
-                    ReengAccountBusiness mReengAccountBusiness = mContext.getReengAccountBusiness();
-                    if (mXmppManager != null) {
-                        XMPPManager.notifyXMPPConnecting();
-                        mXmppManager.connectByToken(mContext, mReengAccountBusiness.getJidNumber(),
-                                mReengAccountBusiness.getToken(), mReengAccountBusiness.getRegionCode());
-                    }
-                }
-            });
-            reconnectThread.setDaemon(true);
-            reconnectThread.start();
-        }
+//        ReengAccountBusiness accountBusiness = mContext.getReengAccountBusiness();
+//        if (!mContext.getXmppManager().isAuthenticated() &&
+//                accountBusiness.isValidAccount() &&
+//                NetworkHelper.isConnectInternet(mContext)) {
+//
+//
+//            Thread reconnectThread = new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+//                    XMPPManager mXmppManager = mContext.getXmppManager();
+//                    ReengAccountBusiness mReengAccountBusiness = mContext.getReengAccountBusiness();
+//                    if (mXmppManager != null) {
+//                        XMPPManager.notifyXMPPConnecting();
+//                        mXmppManager.connectByToken(mContext, mReengAccountBusiness.getJidNumber(),
+//                                mReengAccountBusiness.getToken(), mReengAccountBusiness.getRegionCode());
+//                    }
+//                }
+//            });
+//            reconnectThread.setDaemon(true);
+//            reconnectThread.start();
+//        }
 
 //        if (IMService.isReady()) {
 //            IMService.getInstance().connectByToken();

@@ -154,7 +154,7 @@ public class NetworkHelper {
         } else {
             AppLogger.i(TAG, "no listener for connectivity changed : " + oldConnectedType + " new = " + connectedType);
             if (isNetworkAvailable()) {
-                startLoginServiceOnNetworkChanged(context);
+//                startLoginServiceOnNetworkChanged(context);
             }
         }
     }

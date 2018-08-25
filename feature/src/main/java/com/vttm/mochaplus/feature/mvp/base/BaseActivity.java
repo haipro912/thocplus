@@ -23,6 +23,7 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Process;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
@@ -37,6 +38,7 @@ import com.vttm.mochaplus.feature.ApplicationController;
 import com.vttm.mochaplus.feature.R;
 import com.vttm.mochaplus.feature.broadcast.NetworkChangeReceiver;
 import com.vttm.mochaplus.feature.business.ReengAccountBusiness;
+import com.vttm.mochaplus.feature.data.socket.xmpp.XMPPManager;
 import com.vttm.mochaplus.feature.di.component.ActivityComponent;
 import com.vttm.mochaplus.feature.di.component.DaggerActivityComponent;
 import com.vttm.mochaplus.feature.di.module.ActivityModule;
@@ -238,21 +240,21 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView,
                 NetworkHelper.isConnectInternet(getApplicationContext())) {
 
 
-//            Thread reconnectThread = new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-//                    XMPPManager mXmppManager = applicationController.getXmppManager();
-//                    ReengAccountBusiness mReengAccountBusiness = applicationController.getReengAccountBusiness();
-//                    if (mXmppManager != null) {
-//                        XMPPManager.notifyXMPPConnecting();
-//                        mXmppManager.connectByToken(applicationController, mReengAccountBusiness.getJidNumber(),
-//                                mReengAccountBusiness.getToken(), mReengAccountBusiness.getRegionCode());
-//                    }
-//                }
-//            });
-//            reconnectThread.setDaemon(true);
-//            reconnectThread.start();
+            Thread reconnectThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+                    XMPPManager mXmppManager = applicationController.getXmppManager();
+                    ReengAccountBusiness mReengAccountBusiness = applicationController.getReengAccountBusiness();
+                    if (mXmppManager != null) {
+                        XMPPManager.notifyXMPPConnecting();
+                        mXmppManager.connectByToken(applicationController, mReengAccountBusiness.getJidNumber(),
+                                mReengAccountBusiness.getToken(), mReengAccountBusiness.getRegionCode());
+                    }
+                }
+            });
+            reconnectThread.setDaemon(true);
+            reconnectThread.start();
 
 
 //            //neu co mang va chua ket noi toi XMPP thi thuc hien ket noi

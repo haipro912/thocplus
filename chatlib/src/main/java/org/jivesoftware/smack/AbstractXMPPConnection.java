@@ -16,6 +16,8 @@
  */
 package org.jivesoftware.smack;
 
+import android.text.TextUtils;
+
 import com.vttm.chatlib.NonSASLAuthentication;
 
 import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
@@ -424,13 +426,6 @@ public abstract class AbstractXMPPConnection implements XMPPConnection {
         connected = true;
         callConnectionConnectedListener();
 
-        if (isConnected() && !authenticated) { //change
-            // Make the login
-            if (config.getUsername() != null && config.getUsername().length() > 0) {
-                login(config.getUsername(), config.getToken(), AbstractXMPPConnection.TOKEN_AUTH_NON_SASL);
-            }
-        }
-
         return this;
     }
 
@@ -482,7 +477,11 @@ public abstract class AbstractXMPPConnection implements XMPPConnection {
         CharSequence username = usedUsername != null ? usedUsername : config.getUsername();
         String password = usedPassword != null ? usedPassword : config.getPassword();
         Resourcepart resource = usedResource != null ? usedResource : config.getResource();
-        login(username, password, resource, AbstractXMPPConnection.CODE_AUTH_NON_SASL);
+
+        if(TextUtils.isEmpty(config.getToken()))
+            login(username, password, resource, AbstractXMPPConnection.CODE_AUTH_NON_SASL);
+        else
+            login(username, config.getToken(), resource, AbstractXMPPConnection.TOKEN_AUTH_NON_SASL);
     }
 
     /**
