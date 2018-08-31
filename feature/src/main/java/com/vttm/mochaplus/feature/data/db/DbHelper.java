@@ -1,6 +1,7 @@
 package com.vttm.mochaplus.feature.data.db;
 
 import com.vttm.mochaplus.feature.data.db.datasource.exceptions.RepositoryException;
+import com.vttm.mochaplus.feature.data.db.model.BlockConstant;
 import com.vttm.mochaplus.feature.data.db.model.CallHistoryConstant;
 import com.vttm.mochaplus.feature.data.db.model.ContactConstant;
 import com.vttm.mochaplus.feature.data.db.model.ReengAccountConstant;
@@ -24,4 +25,11 @@ public interface DbHelper {
     void updateAccountToken(long reengAccountID, String token);
     ReengAccountConstant insertAccount(ReengAccountConstant element) throws RepositoryException;
     void removeAccount(ReengAccountConstant element);
+
+    //Block datasource
+    List<BlockConstant> getAllBlockNumber();
+    void deleteAllBlockNumber();
+    void deleteBlockNumber(BlockConstant number);
+    void insertListBlockNumber(List<BlockConstant> numbers) throws RepositoryException;
+    void insertBlockNumber(BlockConstant number) throws RepositoryException;
 }

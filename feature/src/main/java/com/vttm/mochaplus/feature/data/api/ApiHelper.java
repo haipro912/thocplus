@@ -16,7 +16,6 @@
 package com.vttm.mochaplus.feature.data.api;
 
 
-import com.vttm.mochaplus.feature.data.api.request.BaseRequest;
 import com.vttm.mochaplus.feature.data.api.request.GenOtpRequest;
 import com.vttm.mochaplus.feature.data.api.request.VideoDetailRequest;
 import com.vttm.mochaplus.feature.data.api.request.VideoRelateRequest;
@@ -34,7 +33,7 @@ public interface ApiHelper {
 
     ApiHeader getApiHeader();
 
-    void getVideoCategory(BaseRequest request, ApiCallback<VideoCategoryResponse> callBack);
+    void getVideoCategory(ApiCallback<VideoCategoryResponse> callBack);
     void getVideoList(VideoRequest request, ApiCallback<VideoResponse> callBack);
     void getVideoDetail(VideoDetailRequest request, ApiCallback<VideoDetailResponse> callBack);
     void getVideoRelate(VideoRelateRequest request, ApiCallback<VideoResponse> callBack);

@@ -1,7 +1,11 @@
 package com.vttm.mochaplus.feature.data.db.utils;
 
+import com.vttm.mochaplus.feature.data.db.model.BlockConstant;
 import com.vttm.mochaplus.feature.data.db.model.ReengAccountConstant;
 import com.vttm.mochaplus.feature.model.ReengAccount;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DbUtils {
 
@@ -47,5 +51,30 @@ public class DbUtils {
         object.setAvnoICFront(account.getIc_front());
         object.setAvnoICBack(account.getIc_back());
         return object;
+    }
+
+    public static BlockConstant clone(String number)
+    {
+        return new BlockConstant(number);
+    }
+
+    public static List<BlockConstant> cloneBlock(List<String> numbers)
+    {
+        ArrayList<BlockConstant> blockConstants = new ArrayList<>();
+        for(int i = 0; i < numbers.size(); i++)
+        {
+            blockConstants.add(new BlockConstant(numbers.get(i)));
+        }
+        return blockConstants;
+    }
+
+    public static ArrayList<String> clone(List<BlockConstant> numbers)
+    {
+        ArrayList<String> blockConstants = new ArrayList<>();
+        for(int i = 0; i < numbers.size(); i++)
+        {
+            blockConstants.add(numbers.get(i).getNumber());
+        }
+        return blockConstants;
     }
 }

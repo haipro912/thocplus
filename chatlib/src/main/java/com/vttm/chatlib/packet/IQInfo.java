@@ -65,22 +65,6 @@ public class IQInfo extends IQ {
 
     public String toXML() {
         StringBuilder buf = new StringBuilder();
-        buf.append("<iq");
-        if (getStanzaId() != null) {
-            buf.append(" id=\"").append(getStanzaId()).append("\"");
-        }
-        if (getTo() != null) {
-            buf.append(" to=\"").append(StringUtils.escapeForXml(getTo()))
-                    .append("\"");
-        }
-        if (getFrom() != null) {
-            buf.append(" from=\"").append(StringUtils.escapeForXml(getFrom()))
-                    .append("\"");
-        }
-        if (getType() != null) {
-            buf.append(" type=\"").append(getType()).append("\"");
-        }
-        buf.append(">");
         // add event namespace
         if (nameSpace != null) {
             buf.append("<query xmlns=\"").append(nameSpace).append("\">");
@@ -94,7 +78,6 @@ public class IQInfo extends IQ {
             // end add query
             buf.append("</query>");
         }
-        buf.append("</iq>");
         return buf.toString();
     }
 

@@ -304,6 +304,10 @@ public final class Presence extends Stanza implements TypedCloneable<Presence> {
         if (type != Type.available) {
             buf.attribute("type", type);
         }
+
+        if (subType != null && subType != SubType.normal)
+            buf.attribute("subtype", subType);
+
         buf.rightAngleBracket();
 
         buf.optElement("status", status);
@@ -314,10 +318,10 @@ public final class Presence extends Stanza implements TypedCloneable<Presence> {
             buf.element("show", mode);
         }
 
-        buf.append(getExtensions(), enclosingNamespace);
-
-        // Add the error sub-packet, if there is one.
-        appendErrorIfExists(buf, enclosingNamespace);
+//        buf.append(getExtensions(), enclosingNamespace);
+//
+//        // Add the error sub-packet, if there is one.
+//        appendErrorIfExists(buf, enclosingNamespace);
 
         buf.closeElement(ELEMENT);
 

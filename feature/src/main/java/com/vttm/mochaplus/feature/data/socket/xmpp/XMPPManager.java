@@ -30,6 +30,7 @@ import com.vttm.mochaplus.feature.data.socket.xmpp.listener.XMPPConnectionListen
 import com.vttm.mochaplus.feature.data.socket.xmpp.listener.interfaces.XMPPConnectivityChangeListener;
 import com.vttm.mochaplus.feature.helper.DeviceHelper;
 import com.vttm.mochaplus.feature.helper.NetworkHelper;
+import com.vttm.mochaplus.feature.helper.PacketMessageId;
 import com.vttm.mochaplus.feature.utils.AppConstants;
 import com.vttm.mochaplus.feature.utils.AppLogger;
 import com.vttm.mochaplus.feature.utils.Config;
@@ -156,6 +157,20 @@ public class XMPPManager {
 //            reconnectionManager.setReconnectionPolicy(ReconnectionManager.ReconnectionPolicy.FIXED_DELAY);
 //            reconnectionManager.setFixedDelay(1);
             reconnectionManager.enableAutomaticReconnection();
+
+
+            //Enable Ping
+//            PingManager pm =  PingManager.getInstanceFor(mConnection) ;
+//            pm.setPingInterval(60) ;
+//            pm.pingMyServer() ;
+//            pm.registerPingFailedListener(new PingFailedListener() {
+//
+//                @Override
+//                public void pingFailed() {
+//                    Log.e(TAG , "pingFailed") ;
+//                    //Ping error reconnect lai
+//                }
+//            });
         }
     }
 
@@ -182,12 +197,9 @@ public class XMPPManager {
         if (mConnection.isConnected() && !mConnection.isAuthenticated()) {
             mConnection.login(mPhoneNumber, password, AbstractXMPPConnection.CODE_AUTH_NON_SASL);
 
-            //        mConnection.login("0948222060", "3072931738153512489568803", AbstractXMPPConnection.TOKEN_AUTH_NON_SASL);
-
             addConnectionListener();
-//        sendPresenceAfterLogin(AbstractXMPPConnection.CODE_AUTH_NON_SASL, true);
-            // start ping
-            startPing();
+            sendPresenceAfterLogin(AbstractXMPPConnection.CODE_AUTH_NON_SASL, true);
+
             // set roster
 //        ApplicationController application = (ApplicationController) mContext.getApplicationContext();
 //        application.loadDataAfterLogin();
@@ -238,8 +250,9 @@ public class XMPPManager {
 
                 loginSuccessful = true;
                 Log.f(TAG, "login successful");
+
                 addConnectionListener();
-//            sendPresenceAfterLogin(AbstractXMPPConnection.TOKEN_AUTH_NON_SASL, false);
+                sendPresenceAfterLogin(AbstractXMPPConnection.TOKEN_AUTH_NON_SASL, false);
             }
         } catch (IllegalStateException ie) {
             Log.e(TAG, "Exception", ie);
@@ -272,26 +285,15 @@ public class XMPPManager {
             if (!loginSuccessful) {
                 destroyAnonymousConnection();
                 notifyXMPPDisconneted();
-                stopPing();
                 Log.f(TAG, "loginFail: " + messageException);
             } else {
                 notifyXMPPConnected();
 //                mApplication.getReengAccountBusiness().processChangeNumber();
-                startPing();
                 // login success get all contact, syncontact
 //                contactBusiness.queryPhoneNumberInfo();
 //                mApplication.getReengAccountBusiness().uploadDataIfNeeded();
             }
         }
-    }
-
-
-    private void startPing() {
-
-    }
-
-    private void stopPing() {
-
     }
 
     /**
@@ -377,10 +379,8 @@ public class XMPPManager {
                         IQ result = sendPacketThenWaitingResponse(iqInfo, false);
                         if (result != null && result.getType() != null && result.getType() == IQ.Type.result) {
                             Log.i(TAG, "update info --> success");
-                            mPref.edit().putInt(AppConstants.PREFERENCE.PREF_CLIENT_INFO_CODE_VERSION, currentVersion)
-                                    .apply();
-                            mPref.edit().putString(AppConstants.PREFERENCE.PREF_CLIENT_INFO_DEVICE_LANGUAGE,
-                                    currentLanguage).apply();
+                            mPref.edit().putInt(AppConstants.PREFERENCE.PREF_CLIENT_INFO_CODE_VERSION, currentVersion).apply();
+                            mPref.edit().putString(AppConstants.PREFERENCE.PREF_CLIENT_INFO_DEVICE_LANGUAGE, currentLanguage).apply();
                         }
                     } catch (Exception e) {
                         Log.e(TAG, "Exception", e);
@@ -405,7 +405,7 @@ public class XMPPManager {
     }
 
     public void sendPresencePacket(Presence packet) {
-//        packet.setStanzaId(PacketMessageId.getInstance().genPacketId(packet.getType().toString(), packet.getSubType().toString()));
+        packet.setStanzaId(PacketMessageId.getInstance().genPacketId(packet.getType().toString(), packet.getSubType().toString()));
         sendXmppPacket(packet);
     }
 

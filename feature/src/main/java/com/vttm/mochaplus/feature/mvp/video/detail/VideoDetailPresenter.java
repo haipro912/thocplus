@@ -7,7 +7,6 @@ import com.vttm.mochaplus.feature.data.api.response.VideoDetailResponse;
 import com.vttm.mochaplus.feature.data.api.response.VideoResponse;
 import com.vttm.mochaplus.feature.data.api.restful.ApiCallback;
 import com.vttm.mochaplus.feature.mvp.base.BasePresenter;
-import com.vttm.mochaplus.feature.utils.Config;
 import com.vttm.mochaplus.feature.utils.rx.SchedulerProvider;
 
 import javax.inject.Inject;
@@ -26,7 +25,7 @@ public class VideoDetailPresenter<V extends IVideoDetailView> extends BasePresen
 
     @Override
     public void loadVideoRelate(String query, int offset, int limit, String lastId) {
-        getDataManager().getVideoRelate(new VideoRelateRequest(query, offset, limit, lastId, Config.REVISION, Config.DOMAIN_VIDEO, Config.CLIENT_TYPE, "01628874431", "NOVIP"),
+        getDataManager().getVideoRelate(new VideoRelateRequest(query, offset, limit, lastId),
                 new ApiCallback<VideoResponse>() {
                     @Override
                     public void onResponse(Call<VideoResponse> call, Response<VideoResponse> response) {
@@ -48,7 +47,7 @@ public class VideoDetailPresenter<V extends IVideoDetailView> extends BasePresen
 
     @Override
     public void loadVideoDetail(String url) {
-        getDataManager().getVideoDetail(new VideoDetailRequest(url, Config.REVISION, Config.DOMAIN_VIDEO, Config.CLIENT_TYPE, "01628874431", "NOVIP"),
+        getDataManager().getVideoDetail(new VideoDetailRequest(url),
                 new ApiCallback<VideoDetailResponse>() {
                     @Override
                     public void onResponse(Call<VideoDetailResponse> call, Response<VideoDetailResponse> response) {

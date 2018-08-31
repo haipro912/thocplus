@@ -11,7 +11,7 @@ public class Authentication extends IQ {
     private static final String TAG = Authentication.class.getSimpleName();
 
     public static final String ELEMENT = "auth";
-    public static final String NAMESPACE = "http://jabber.org/protocol/auth";
+    public static final String NAMESPACE = "jabber:iq:auth";
 
     private String username = null;
     private String password = null;
@@ -182,7 +182,7 @@ public class Authentication extends IQ {
 //    }
     public String toXML() {
         StringBuilder buf = new StringBuilder();
-        buf.append("<query xmlns=\"jabber:iq:auth\">");
+        buf.append("<query xmlns=\"").append(NAMESPACE).append("\">");
         String mechanismMethod = getMechanismMethod();
         if (!TextUtils.isEmpty(mechanismMethod)) {
             buf.append("<mechanism>").append(mechanismMethod).append("</mechanism>");

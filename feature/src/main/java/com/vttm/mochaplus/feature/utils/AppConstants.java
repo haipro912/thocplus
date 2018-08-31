@@ -30,6 +30,19 @@ public final class AppConstants {
 
     public static final int NUM_SIZE = 20;
 
+    public static final class VIDEO_API {
+        public static final String VIP = "VIP";
+        public static final String NOVIP = "NOVIP";
+    }
+
+    public static final class ThreadMessageConstant {
+        public static final int TYPE_THREAD_PERSON_CHAT = 0;
+        public static final int TYPE_THREAD_GROUP_CHAT = 1;
+        public static final int TYPE_THREAD_OFFICER_CHAT = 2;
+        public static final int TYPE_THREAD_ROOM_CHAT = 3;
+        public static final int TYPE_THREAD_BROADCAST_CHAT = 4;
+    }
+
     public static final class XMPP {
         public static final String XMPP_RESOUCE = "@reeng/reeng";
         public static final String XMPP_DOMAIN = "reeng";
@@ -389,6 +402,8 @@ public final class AppConstants {
             public static final String FIREBASE_WAKEUP_ENABLE = "firebase.wakeup.enable";
             public static final String GET_LINK_LOCATION = "getlink.location";
             public static final String WHITELIST_DEVICE = "whitelist.device";
+            public static final String PREFIX_CHANGENUMBER = "changenum.prefix.v2";
+            public static final String PREFIX_CHANGENUMBER_TEST = "changenum.prefix.v2.test";
         }
     }
 
@@ -435,6 +450,20 @@ public final class AppConstants {
         public static final String PREF_DEF_VIDEO_UPLOAD_PASS = "974802c5178ab63eba02d8035ad3f6ab";
 
 
+    }
+
+    public static final class ALARM_MANAGER {
+        public static final long PING_TIMER = 60 * 1000L; //90s
+        public static final int PING_ID = 13579;
+        // ping pong music
+        public static final long MUSIC_PING_TIMER = 30000L;
+        public static final int MUSIC_PING_ID = 11112;
+        public static final int MUSIC_PONG_ID = 11113;
+        // timout timer
+        public static final int TIME_OUT_RESPONSE_ACTION_MUSIC = 30 * 1000;     // 30s
+        public static final int TIME_OUT_RECEIVE_INVITE_MUSIC = 20 * 1000;      // 20s
+        public static final long ENTER_BACKGROUND_MAX_TIME = 30 * 60 * 1000;    // 30 mins
+        //public static final long ENTER_BACKGROUND_MAX_TIME = 120 * 60 * 1000;    // 30 mins
     }
 
     public static final class CONTACT {

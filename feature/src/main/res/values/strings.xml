@@ -77,4 +77,14 @@
     <string name="share">Share</string>
 
     <string name="setting_select_sound_silent">Silent</string>
+
+    <string name="status_non_mocha" translatable="false">Nhận SMS miễn phí</string>
+    <string name="register_vip_banner" translatable="false">Đăng ký VIP để nhắn tin SMS miễn phí và miễn cước 3G</string>
+    <string name="register_vip_button" translatable="false">Đăng ký VIP</string>
+    <string name="register_vip_confirm" translatable="false">Mời Quý khách xác nhận đăng ký gói cước Mocha để được miễn phí nhắn tin nội mạng Viettel và miễn cước 3G nhắn tin, nghe nhạc trong Mocha (Cước phí 2.500đ/tuần đầu tiên, 5.000đ/tuần tiếp theo)</string>
+    <string name="msg_confirm_un_vip" translatable="false">Xác nhận hủy gói cước Mocha Free</string>
+    <string name="msg_reconfirm_vip" translatable="false">Xác nhận đăng ký gói cước Mocha Free</string>
+    <string name="call_out_label" translatable="false">Đang gọi từ Mocha ra mạng di động thông thường</string>
+    <string name="call_in_label" translatable="false">Đang nhận cuộc gọi viễn thông tới số %s</string>
+
 </resources>

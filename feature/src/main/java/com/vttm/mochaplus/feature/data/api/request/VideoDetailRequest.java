@@ -1,11 +1,9 @@
 package com.vttm.mochaplus.feature.data.api.request;
 
-public class VideoDetailRequest extends BaseRequest {
+public class VideoDetailRequest {
     String url;
 
-    public VideoDetailRequest(String url, String revision, String domain, String clientType, String msisdn, String vip) {
-        super(revision, domain, clientType, msisdn, vip);
-
+    public VideoDetailRequest(String url) {
         this.url = url;
     }
 

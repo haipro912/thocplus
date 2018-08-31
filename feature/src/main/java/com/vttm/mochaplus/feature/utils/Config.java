@@ -6,7 +6,7 @@ public class Config {
 
     public static final String REVISION = "1";
 
-    public static final String DOMAIN_VIDEO = "hl2.mocha.com.vn";
+    public static final String DOMAIN_VIDEO = "http://hl2.mocha.com.vn:8080";
     public static final String CLIENT_TYPE = "Android";
     public static final String COUNTRY_CODE = "VN";
 

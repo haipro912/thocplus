@@ -1,17 +1,12 @@
 package com.vttm.mochaplus.feature.data.api.request;
 
-public class VideoRequest extends BaseRequest {
+public class VideoRequest {
     int offset;
     int limit;
     int categoryid;
     String lastIdStr = "";
 
-    public VideoRequest(String revision, String domain, String clientType, String msisdn, String vip) {
-        super(revision, domain, clientType, msisdn, vip);
-    }
-
-    public VideoRequest(int offset, int limit, int categoryid, String lastIdStr, String revision, String domain, String clientType, String msisdn, String vip) {
-        super(revision, domain, clientType, msisdn, vip);
+    public VideoRequest(int offset, int limit, int categoryid, String lastIdStr) {
 
         this.offset = offset;
         this.limit = limit;

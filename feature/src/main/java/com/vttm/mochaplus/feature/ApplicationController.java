@@ -7,7 +7,9 @@ import android.support.multidex.MultiDex;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.vttm.mochaplus.feature.broadcast.NetworkChangeReceiver;
 import com.vttm.mochaplus.feature.business.ApplicationStateManager;
+import com.vttm.mochaplus.feature.business.BlockContactBusiness;
 import com.vttm.mochaplus.feature.business.ContactBusiness;
+import com.vttm.mochaplus.feature.business.ContentConfigBusiness;
 import com.vttm.mochaplus.feature.business.LoginBusiness;
 import com.vttm.mochaplus.feature.business.MessageBusiness;
 import com.vttm.mochaplus.feature.business.ReengAccountBusiness;
@@ -31,6 +33,8 @@ public class ApplicationController extends Application {
     private ReengAccountBusiness accountBusiness;
     private SettingBusiness settingBusiness;
     private LoginBusiness loginBusiness;
+    private BlockContactBusiness blockContactBusiness;
+    private ContentConfigBusiness configBusiness;
     private ReloadDataThread reloadDataThread;
 
     private XMPPManager xmppManager;
@@ -108,6 +112,7 @@ public class ApplicationController extends Application {
 
         if (accountBusiness == null) {
             accountBusiness = new ReengAccountBusiness(this);
+            accountBusiness.init();
         }
 
         if (messageBusiness == null) {
@@ -121,12 +126,20 @@ public class ApplicationController extends Application {
         if (loginBusiness == null) {
             loginBusiness = new LoginBusiness(this);
         }
+
+        if (blockContactBusiness == null) {
+            blockContactBusiness = new BlockContactBusiness(this);
+        }
+        if (configBusiness == null) {
+            configBusiness = new ContentConfigBusiness(this);
+        }
     }
 
     private void initBusiness()
     {
+        blockContactBusiness.init();
+        configBusiness.init();
         contactBusiness.init();
-        accountBusiness.init();
         messageBusiness.init();
     }
 
@@ -181,6 +194,14 @@ public class ApplicationController extends Application {
 
     public ReengAccountBusiness getReengAccountBusiness() {
         return accountBusiness;
+    }
+
+    public BlockContactBusiness getBlockContactBusiness() {
+        return blockContactBusiness;
+    }
+
+    public ContentConfigBusiness getConfigBusiness() {
+        return configBusiness;
     }
 
     public ApplicationStateManager getAppStateManager() {

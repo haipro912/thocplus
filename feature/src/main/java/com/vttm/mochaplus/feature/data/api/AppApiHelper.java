@@ -19,8 +19,9 @@ import android.app.Application;
 import android.os.Build;
 import android.text.TextUtils;
 
+import com.vttm.mochaplus.feature.ApplicationController;
 import com.vttm.mochaplus.feature.BuildConfig;
-import com.vttm.mochaplus.feature.data.api.request.BaseRequest;
+import com.vttm.mochaplus.feature.business.ReengAccountBusiness;
 import com.vttm.mochaplus.feature.data.api.request.GenOtpRequest;
 import com.vttm.mochaplus.feature.data.api.request.VideoDetailRequest;
 import com.vttm.mochaplus.feature.data.api.request.VideoRelateRequest;
@@ -32,6 +33,7 @@ import com.vttm.mochaplus.feature.data.api.restful.ApiCallback;
 import com.vttm.mochaplus.feature.data.api.restful.WSRestful;
 import com.vttm.mochaplus.feature.data.api.service.ApiService;
 import com.vttm.mochaplus.feature.helper.HttpHelper;
+import com.vttm.mochaplus.feature.utils.AppConstants;
 import com.vttm.mochaplus.feature.utils.Config;
 
 import java.net.URLEncoder;
@@ -42,7 +44,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
- * Created by janisharali on 28/01/17.
+ * Created by HaiKE on 28/01/17.
  */
 
 @Singleton
@@ -50,6 +52,7 @@ public class AppApiHelper implements ApiHelper {
 
     private ApiHeader mApiHeader;
     private Application context;
+    private ReengAccountBusiness reengAccountBusiness;
 
     @Inject
     public AppApiHelper(Application context, ApiHeader apiHeader) {
@@ -64,22 +67,29 @@ public class AppApiHelper implements ApiHelper {
 
     private String getToken()
     {
-        return "8229825071532685643600553";
+        return getReengAccountBusiness().getToken();
+    }
+
+    private ReengAccountBusiness getReengAccountBusiness()
+    {
+        if(reengAccountBusiness == null)
+            reengAccountBusiness = ((ApplicationController)context).getReengAccountBusiness();
+        return reengAccountBusiness;
     }
 
     @Override
-    public void getVideoCategory(BaseRequest request, ApiCallback<VideoCategoryResponse> callBack) {
+    public void getVideoCategory(ApiCallback<VideoCategoryResponse> callBack) {
 
         final String timeStamp = System.currentTimeMillis() + "";
-        String security = HttpHelper.encryptDataV2(context, request.getMsisdn() + request.getDomain() + getToken() + timeStamp, getToken());
+        String security = HttpHelper.encryptDataV2(context, getReengAccountBusiness().getJidNumber() + Config.DOMAIN_VIDEO + getToken() + timeStamp, getToken());
 
         Map<String, String> data = new HashMap<>();
-        data.put("revision", request.getRevision());
-        data.put("domain", request.getDomain());
+        data.put("revision", Config.REVISION);
+        data.put("domain", Config.DOMAIN_VIDEO);
         data.put("timestamp", timeStamp);
-        data.put("clientType", request.getClientType());
-        data.put("msisdn", request.getMsisdn());
-        data.put("vip", request.getVip());
+        data.put("clientType", Config.CLIENT_TYPE);
+        data.put("msisdn", getReengAccountBusiness().getJidNumber());
+        data.put("vip", getReengAccountBusiness().isVip() ? AppConstants.VIDEO_API.VIP : AppConstants.VIDEO_API.NOVIP);
         data.put("security", URLEncoder.encode(security));
 
         WSRestful restful = new WSRestful(context);
@@ -93,15 +103,15 @@ public class AppApiHelper implements ApiHelper {
         final String timeStamp = System.currentTimeMillis() + "";
         String lastId =  TextUtils.isEmpty(request.getLastIdStr()) ? "" : request.getLastIdStr();
 
-        String security = HttpHelper.encryptDataV2(context, request.getMsisdn() + request.getDomain() + request.getCategoryid() + request.getLimit() + request.getOffset() + lastId + getToken() + timeStamp, getToken());
+        String security = HttpHelper.encryptDataV2(context, getReengAccountBusiness().getJidNumber() + Config.DOMAIN_VIDEO  + request.getCategoryid() + request.getLimit() + request.getOffset() + lastId + getToken() + timeStamp, getToken());
 
         Map<String, String> data = new HashMap<>();
-        data.put("revision", request.getRevision());
-        data.put("domain", request.getDomain());
+        data.put("revision", Config.REVISION);
+        data.put("domain", Config.DOMAIN_VIDEO);
         data.put("timestamp", timeStamp);
-        data.put("clientType", request.getClientType());
-        data.put("msisdn", request.getMsisdn());
-        data.put("vip", request.getVip());
+        data.put("clientType", Config.CLIENT_TYPE);
+        data.put("msisdn", getReengAccountBusiness().getJidNumber());
+        data.put("vip", getReengAccountBusiness().isVip() ? AppConstants.VIDEO_API.VIP : AppConstants.VIDEO_API.NOVIP);
         data.put("offset", request.getOffset() + "");
         data.put("limit", request.getLimit() + "");
         data.put("categoryid", request.getCategoryid() + "");
@@ -116,15 +126,15 @@ public class AppApiHelper implements ApiHelper {
     @Override
     public void getVideoDetail(VideoDetailRequest request, ApiCallback<VideoDetailResponse> callBack) {
         final String timeStamp = System.currentTimeMillis() + "";
-        String security = HttpHelper.encryptDataV2(context, request.getMsisdn() + request.getDomain() + request.getUrl() + getToken() + timeStamp, getToken());
+        String security = HttpHelper.encryptDataV2(context, getReengAccountBusiness().getJidNumber() + Config.DOMAIN_VIDEO  + request.getUrl() + getToken() + timeStamp, getToken());
 
         Map<String, String> data = new HashMap<>();
-        data.put("revision", request.getRevision());
-        data.put("domain", request.getDomain());
+        data.put("revision", Config.REVISION);
+        data.put("domain", Config.DOMAIN_VIDEO);
         data.put("timestamp", timeStamp);
-        data.put("clientType", request.getClientType());
-        data.put("msisdn", request.getMsisdn());
-        data.put("vip", request.getVip());
+        data.put("clientType", Config.CLIENT_TYPE);
+        data.put("msisdn", getReengAccountBusiness().getJidNumber());
+        data.put("vip", getReengAccountBusiness().isVip() ? AppConstants.VIDEO_API.VIP : AppConstants.VIDEO_API.NOVIP);
         data.put("security", URLEncoder.encode(security));
         data.put("url", URLEncoder.encode(request.getUrl()));
 
@@ -137,15 +147,15 @@ public class AppApiHelper implements ApiHelper {
     public void getVideoRelate(VideoRelateRequest request, ApiCallback<VideoResponse> callBack) {
         final String timeStamp = System.currentTimeMillis() + "";
         String lastId =  TextUtils.isEmpty(request.getLastIdStr()) ? "" : request.getLastIdStr();
-        String security = HttpHelper.encryptDataV2(context, request.getMsisdn() + request.getDomain() + request.getQuery() + request.getLimit() + request.getOffset() + lastId + getToken() + timeStamp, getToken());
+        String security = HttpHelper.encryptDataV2(context, getReengAccountBusiness().getJidNumber() + Config.DOMAIN_VIDEO + request.getQuery() + request.getLimit() + request.getOffset() + lastId + getToken() + timeStamp, getToken());
 
         Map<String, String> data = new HashMap<>();
-        data.put("revision", request.getRevision());
-        data.put("domain", request.getDomain());
+        data.put("revision", Config.REVISION);
+        data.put("domain", Config.DOMAIN_VIDEO);
         data.put("timestamp", timeStamp);
-        data.put("clientType", request.getClientType());
-        data.put("msisdn", request.getMsisdn());
-        data.put("vip", request.getVip());
+        data.put("clientType", Config.CLIENT_TYPE);
+        data.put("msisdn", getReengAccountBusiness().getJidNumber());
+        data.put("vip", getReengAccountBusiness().isVip() ? AppConstants.VIDEO_API.VIP : AppConstants.VIDEO_API.NOVIP);
         data.put("q", URLEncoder.encode(request.getQuery()));
         data.put("offset", request.getOffset() + "");
         data.put("limit", request.getLimit() + "");

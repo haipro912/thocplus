@@ -132,7 +132,7 @@ public final class Roster extends Manager {
 
     private static final StanzaFilter OUTGOING_USER_UNAVAILABLE_PRESENCE = new AndFilter(PresenceTypeFilter.UNAVAILABLE, ToMatchesFilter.MATCH_NO_TO_SET);
 
-    private static boolean rosterLoadedAtLoginDefault = true;
+    private static boolean rosterLoadedAtLoginDefault = false;
 
     /**
      * The default subscription processing mode to use when a Roster is created. By default

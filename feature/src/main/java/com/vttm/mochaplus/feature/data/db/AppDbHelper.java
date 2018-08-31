@@ -15,15 +15,18 @@
 
 package com.vttm.mochaplus.feature.data.db;
 
+import com.vttm.mochaplus.feature.data.db.datasource.BlockDataSource;
 import com.vttm.mochaplus.feature.data.db.datasource.CallHistoryDataSource;
 import com.vttm.mochaplus.feature.data.db.datasource.ContactDataSource;
 import com.vttm.mochaplus.feature.data.db.datasource.ReengAccountDataSource;
 import com.vttm.mochaplus.feature.data.db.datasource.exceptions.RepositoryException;
+import com.vttm.mochaplus.feature.data.db.model.BlockConstant;
 import com.vttm.mochaplus.feature.data.db.model.CallHistoryConstant;
 import com.vttm.mochaplus.feature.data.db.model.ContactConstant;
 import com.vttm.mochaplus.feature.data.db.model.ReengAccountConstant;
 import com.vttm.mochaplus.feature.data.db.providers.RealmProvider;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -40,6 +43,7 @@ public class AppDbHelper implements DbHelper {
     ContactDataSource contactDataSource;
     CallHistoryDataSource callHistoryDataSource;
     ReengAccountDataSource reengAccountDataSource;
+    BlockDataSource blockDataSource;
 
     @Inject
     public AppDbHelper(RealmProvider realmProvider) {
@@ -47,6 +51,7 @@ public class AppDbHelper implements DbHelper {
         contactDataSource = new ContactDataSource(realmProvider);
         callHistoryDataSource = new CallHistoryDataSource(realmProvider);
         reengAccountDataSource = new ReengAccountDataSource(realmProvider);
+        blockDataSource = new BlockDataSource(realmProvider);
     }
 
     @Override
@@ -87,5 +92,30 @@ public class AppDbHelper implements DbHelper {
     @Override
     public void removeAccount(ReengAccountConstant element) {
         reengAccountDataSource.remove(element);
+    }
+
+    @Override
+    public ArrayList<BlockConstant> getAllBlockNumber() {
+        return blockDataSource.findAll();
+    }
+
+    @Override
+    public void deleteAllBlockNumber() {
+        blockDataSource.removeAll();
+    }
+
+    @Override
+    public void deleteBlockNumber(BlockConstant number) {
+        blockDataSource.remove(number);
+    }
+
+    @Override
+    public void insertListBlockNumber(ArrayList<BlockConstant> numbers) throws RepositoryException {
+        blockDataSource.insertAll(numbers);
+    }
+
+    @Override
+    public void insertBlockNumber(BlockConstant number) throws RepositoryException {
+        blockDataSource.insert(number);
     }
 }

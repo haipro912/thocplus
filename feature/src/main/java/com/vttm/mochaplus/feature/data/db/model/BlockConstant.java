@@ -7,6 +7,20 @@ import io.realm.annotations.RealmNamingPolicy;
 
 @RealmClass(name = "block_number", fieldNamingPolicy = RealmNamingPolicy.PASCAL_CASE)
 public class BlockConstant extends RealmObject {
+    public static final String NUMBER = "number";
+
     @RealmField(name = "number")
     private String number;
+
+    public BlockConstant(String number) {
+        this.number = number;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
 }
